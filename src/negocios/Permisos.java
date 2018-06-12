@@ -5,10 +5,9 @@
  */
 package negocios;
 
-import java.sql.PreparedStatement;
 import conexion.ConexionDB;
 import java.sql.Connection;
-import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -22,28 +21,29 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author REBOOTSYSTEM
  */
-public class Clientes {
+public class Permisos extends Base {
 
-    private static final Logger LOG = Logger.getLogger(Clientes.class.getName());
+    private static final Logger LOG = Logger.getLogger(Permisos.class.getName());
     private Integer id = null;
-    private Integer identificacion = null;
-    private String nombreCompleto = null;
-    private Date fechaNacimiento = null;
-    private String telefono = null;
-    private String direccion = null;
+    private String nombre = null;
+    private String descripcion = null;
     private static Connection con = null;
     private static ConexionDB cxn = null;
     private static PreparedStatement stmt = null;
     private static ResultSet rs = null;
     DefaultTableModel model = new DefaultTableModel();
-    private static final String tableName = "clientes";
+    private static final String tableName = "permisos";
 
-    public Clientes() {
+    /**
+     * El constructor revisa si no existe la tabla, en tal caso la crea.
+     *
+     */
+    public Permisos() {
 
         cxn = new ConexionDB();
 
-        // Si no existe la tabla Clientes Crearla Automaticamente
-        if (!cxn.tableExist("clientes")) {
+
+        if (!cxn.tableExist(tableName)) {
             Statement stmt = null;
 
             try {
@@ -52,19 +52,16 @@ public class Clientes {
                 con = cxn.openDB();
                 stmt = con.createStatement();
 
-                String sql = "CREATE TABLE `clientes` (\n"
-                        + "	`id` INT(11) NOT NULL AUTO_INCREMENT,\n"
-                        + "	`identificacion` VARCHAR(20) NOT NULL COLLATE 'utf8_spanish2_ci',\n"
-                        + "	`nombre_completo` VARCHAR(100) NULL DEFAULT NULL COLLATE 'utf8_spanish2_ci',\n"
-                        + "	`fecha_nacimiento` DATE NULL DEFAULT NULL,\n"
-                        + "	`telefono` VARCHAR(20) NULL DEFAULT NULL COLLATE 'utf8_spanish2_ci',\n"
-                        + "	`direccion` VARCHAR(100) NULL DEFAULT NULL COLLATE 'utf8_spanish2_ci',\n"
-                        + "	PRIMARY KEY (`id`),\n"
-                        + "	UNIQUE INDEX `identificacion_UNIQUE` (`identificacion`),\n"
-                        + "	UNIQUE INDEX `id_UNIQUE` (`id`)\n"
+                String sql = "CREATE TABLE `permisos` (\n"
+                        + "	`Id` INT(10) NOT NULL AUTO_INCREMENT,\n"
+                        + "	`nombre` VARCHAR(50) NOT NULL DEFAULT '0' COLLATE 'utf8_spanish2_ci',\n"
+                        + "	`descripcion` VARCHAR(50) NULL DEFAULT '0' COLLATE 'utf8_spanish2_ci',\n"
+                        + "	PRIMARY KEY (`Id`),\n"
+                        + "	UNIQUE INDEX `nombre` (`nombre`)\n"
                         + ")\n"
                         + "COLLATE='utf8_spanish2_ci'\n"
-                        + "ENGINE=InnoDB:";
+                        + "ENGINE=InnoDB\n"
+                        + ";";
 
                 stmt.executeUpdate(sql);
                 stmt.close();
@@ -74,23 +71,27 @@ public class Clientes {
                 LOG.log(Level.SEVERE, null, e);
                 System.exit(0);
             }
-            System.out.println("Se ha creado la tabla");
+            System.out.println("Se ha creado la tabla " + tableName);
         }
+
     }
 
-    public static void create(Integer identificacion, String nombreCompleto, Date fechaNacimiento, String telefono, String direccion) {
+    /**
+     * Crea un nuevo registro en la tabla $tableName
+     *
+     * @param nombre
+     * @param descripcion
+     */
+    public static void create(String nombre, String descripcion) {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = cxn.openDB();
-            String sqlQuery = "INSERT INTO clientes(identificacion, nombre_completo, fecha_nacimiento, telefono, direccion) VALUES( ?, ?, ?, ?, ?);";
+            String sqlQuery = "INSERT INTO permisos(nombre, descripcion) VALUES(?, ?);";
             java.sql.PreparedStatement stmt = con.prepareStatement(sqlQuery);
 
-            stmt.setInt(1, identificacion);
-            stmt.setString(2, nombreCompleto);
-            stmt.setDate(3, fechaNacimiento);
-            stmt.setString(4, telefono);
-            stmt.setString(5, direccion);
+            stmt.setString(1, nombre);
+            stmt.setString(2, descripcion);
 
             stmt.executeUpdate();
             con.close();
@@ -103,7 +104,7 @@ public class Clientes {
     }
 
     /**
-     * Busca un Cliente por el id
+     * Busca un registro por el id
      *
      * @param Id
      */
@@ -112,30 +113,31 @@ public class Clientes {
     }
 
     /**
-     * Busca un cliente por un campo diferente al id
+     * Busca un registro por un campo diferente al id
      */
     public static void findByField() {
 
     }
 
-    public void update(String nombreCompleto, Date fechaNacimiento, String telefono, String direccion, int id) {
+    public void update(String rol, Integer id) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = cxn.openDB();
-            String sqlQuery = "UPDATE clientes SET nombre_completo=?, fecha_nacimiento=?, telefono=?, direccion=? WHERE id=?";
+            String sqlQuery = "UPDATE ? SET nombre=?, descripcion=? WHERE id=?";
             stmt = con.prepareStatement(sqlQuery);
 
-            stmt.setString(1, nombreCompleto);
-            stmt.setDate(2, fechaNacimiento);
-            stmt.setString(3, telefono);
-            stmt.setString(4, direccion);
+            stmt.setString(1, tableName);
+            stmt.setString(2, nombre);
+            stmt.setString(3, descripcion);
+            stmt.setInt(4, id);
 
             stmt.executeUpdate();
             con.close();
 
-            JOptionPane.showMessageDialog(null, "Se ha modificado un cliente");
+            JOptionPane.showMessageDialog(null, "Se ha modificado un " + tableName);
+
         } catch (ClassNotFoundException | SQLException e) {
-            JOptionPane.showMessageDialog(null, "Ocurrio un error al modificar un cliente");
+            JOptionPane.showMessageDialog(null, "Ocurrio un error al modificar " + tableName);
             LOG.log(Level.SEVERE, null, e);
         }
     }
@@ -145,20 +147,21 @@ public class Clientes {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 con = cxn.openDB();
-                String sqlQuery = "DELETE FROM clientes WHERE id=?";
+                String sqlQuery = "DELETE FROM ? WHERE id=?";
                 stmt = con.prepareStatement(sqlQuery);
 
-                stmt.setInt(1, Id);
+                stmt.setString(1, tableName);
+                stmt.setInt(2, Id);
 
                 stmt.executeUpdate();
                 con.close();
 
                 con.close();
 
-                JOptionPane.showMessageDialog(null, "Se ha eliminado el cliente con el indice #" + Id);
+                JOptionPane.showMessageDialog(null, "Se ha eliminado el rol con el indice #" + Id);
 
             } catch (ClassNotFoundException | SQLException e) {
-                JOptionPane.showMessageDialog(null, "Ocurrio un error al eliminar un cliente [" + e.getClass().getName() + ": " + e.getMessage() + "]");
+                JOptionPane.showMessageDialog(null, "Ocurrio un error al eliminar " + tableName + " " + e.getClass().getName() + ": " + e.getMessage() + "]");
                 LOG.log(Level.SEVERE, null, e);
             }
 
@@ -171,7 +174,7 @@ public class Clientes {
             con = cxn.openDB();
 
             Statement st = con.createStatement();
-            String query = "SELECT * FROM clientes";
+            String query = "SELECT * FROM " + tableName;
             rs = st.executeQuery(query);
             ResultSetMetaData rsMd = rs.getMetaData();
 
@@ -189,7 +192,7 @@ public class Clientes {
                 model.addRow(fila);
             }
             con.close();
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
             LOG.log(Level.SEVERE, null, e);
             return model;

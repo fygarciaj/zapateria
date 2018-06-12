@@ -9,7 +9,10 @@ public class Roles {
         this.Id = null;
         this.Rol = null;
     }
-
+    
+    public Roles(String Rol) {
+        this.Rol = Rol;
+    }
     public Integer getId() {
         return Id;
     }
@@ -22,9 +25,6 @@ public class Roles {
         this.Rol = Rol;
     }
 
-    public Roles(Integer Id, String Rol) {
-        this.Id = Id;
-        this.Rol = Rol;
-    }
+
 
 }

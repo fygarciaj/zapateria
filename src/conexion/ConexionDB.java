@@ -59,7 +59,7 @@ public class ConexionDB {
      * @param tableName
      * @return true | false
      */
-    public boolean existeTabla(String tableName) {
+    public boolean tableExist(String tableName) {
 
         Boolean result = false;
         try {

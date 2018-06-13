@@ -19,6 +19,8 @@ public class Usuarios {
     private Integer Edad;
     private String Direccion;
     private String Telefono;
+    private String NombreUsuario;
+    private String Password;
     private Roles RolId;
     
     
@@ -91,6 +93,23 @@ public class Usuarios {
         this.RolId = RolId;
     }
 
+    public String getNombreUsuario() {
+        return NombreUsuario;
+    }
+
+    public void setNombreUsuario(String NombreUsuario) {
+        this.NombreUsuario = NombreUsuario;
+    }
+
+    public String getPassword() {
+        return Password;
+    }
+
+    public void setPassword(String Password) {
+        this.Password = Password;
+    }
+
+    
     
 
 

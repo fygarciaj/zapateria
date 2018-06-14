@@ -11,20 +11,20 @@ import java.util.List;
  *
  * @author REBOOTSYSTEM
  */
-public class Usuarios {
+public class Usuario {
 
     private static int Id;
-    private Long Identificacion;
+    private String Identificacion;
     private String NombreCompleto;
     private Integer Edad;
     private String Direccion;
     private String Telefono;
     private String NombreUsuario;
     private String Password;
-    private Roles RolId;
+    private Rol RolId;
     
     
-    public Usuarios() {
+    public Usuario() {
         this.Identificacion = null;
         this.NombreCompleto = null;
         this.Edad = null;
@@ -33,7 +33,7 @@ public class Usuarios {
         this.RolId = null;
     }
 
-    public Usuarios(Long Identificacion, String NombreCompleto, int Edad, String Direccion, String Telefono, Roles RolId) {
+    public Usuario(String Identificacion, String NombreCompleto, Integer Edad, String Direccion, String Telefono, Rol RolId) {
         this.Identificacion = Identificacion;
         this.NombreCompleto = NombreCompleto;
         this.Edad = Edad;
@@ -45,11 +45,15 @@ public class Usuarios {
         return Id;
     }
 
-    public Long getIdentificacion() {
+    public static void setId(int Id) {
+        Usuario.Id = Id;
+    }
+
+    public String getIdentificacion() {
         return Identificacion;
     }
 
-    public void setIdentificacion(Long Identificacion) {
+    public void setIdentificacion(String Identificacion) {
         this.Identificacion = Identificacion;
     }
 
@@ -85,11 +89,11 @@ public class Usuarios {
         this.Telefono = Telefono;
     }
 
-    public Roles getRolId() {
+    public Rol getRolId() {
         return RolId;
     }
 
-    public void setRolId(Roles RolId) {
+    public void setRolId(Rol RolId) {
         this.RolId = RolId;
     }
 
@@ -109,8 +113,7 @@ public class Usuarios {
         this.Password = Password;
     }
 
-    
-    
-
-
+    public void setEdad(String edad) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

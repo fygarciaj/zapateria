@@ -5,16 +5,16 @@
  */
 package datos;
 
-public class Permisos {
+public class Permiso {
 
     private Integer Id;
     private String Nombre;
     private String Descripcion;
 
-    public Permisos() {
+    public Permiso() {
     }
 
-    public Permisos(String Nombre, String Descripcion) {
+    public Permiso(String Nombre, String Descripcion) {
         this.Nombre = Nombre;
         this.Descripcion = Descripcion;
     }

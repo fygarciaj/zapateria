@@ -6,9 +6,8 @@
 package ui;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import ui.appmain_ui;
-import ui.JLogin_ui;
+import negocios.seed.ClientesSeed;
+import ui.JAppmain_ui;
 
 /**
  *
@@ -21,13 +20,18 @@ public class JMain {
      */
     public static void main(String[] args) {
        
-        JFrame login = new JLogin_ui();
-        login.setVisible(true);
+       // UsuariosSeed.insertUsuarios();
+        ClientesSeed.insertClients();
         
         /*
-        JFrame main_ui = new appmain_ui();
+        JFrame login = new JLogin_ui();
+        login.setVisible(true);
+        */
+        
+        JFrame main_ui = new JAppmain_ui();
+        main_ui.setTitle("Aplicación para Zapaterías");
         main_ui.setVisible(true);
-*/
+
     }
     
 }

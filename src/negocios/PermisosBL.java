@@ -64,8 +64,7 @@ public class PermisosBL extends BaseBL {
                         + ";";
 
                 stmt.executeUpdate(sql);
-                stmt.close();
-                con.close();
+
             } catch (ClassNotFoundException | SQLException e) {
                 JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
                 LOG.log(Level.SEVERE, null, e);
@@ -94,7 +93,7 @@ public class PermisosBL extends BaseBL {
             stmt.setString(2, descripcion);
 
             stmt.executeUpdate();
-            con.close();
+
 
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
@@ -132,7 +131,6 @@ public class PermisosBL extends BaseBL {
             stmt.setInt(4, id);
 
             stmt.executeUpdate();
-            con.close();
 
             JOptionPane.showMessageDialog(null, "Se ha modificado un " + tableName);
 
@@ -154,9 +152,6 @@ public class PermisosBL extends BaseBL {
                 stmt.setInt(2, Id);
 
                 stmt.executeUpdate();
-                con.close();
-
-                con.close();
 
                 JOptionPane.showMessageDialog(null, "Se ha eliminado el rol con el indice #" + Id);
 
@@ -191,8 +186,8 @@ public class PermisosBL extends BaseBL {
                 }
                 model.addRow(fila);
             }
-            con.close();
-        } catch (Exception e) {
+
+        } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
             LOG.log(Level.SEVERE, null, e);
             return model;

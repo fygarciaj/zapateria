@@ -1,20 +1,20 @@
 package datos;
 
-public class TicketsDetalles {
+public class DetalleTicket {
 
     private Integer Id;
-    private Tickets TicketId;
-    private Reparaciones ReparacionId;
+    private Ticket TicketId;
+    private Reparacion ReparacionId;
     private Double ValorUnitario;
     private Integer Cantidad;
     private Double SubTotal;
     private Double Descuento;
 
-    public TicketsDetalles() {
+    public DetalleTicket() {
         
     }
 
-    public TicketsDetalles(Tickets TicketId, Reparaciones ReparacionId, Double ValorUnitario, Integer Cantidad, Double SubTotal, Double Descuento) {
+    public DetalleTicket(Ticket TicketId, Reparacion ReparacionId, Double ValorUnitario, Integer Cantidad, Double SubTotal, Double Descuento) {
         this.TicketId = TicketId;
         this.ReparacionId = ReparacionId;
         this.ValorUnitario = ValorUnitario;
@@ -27,19 +27,19 @@ public class TicketsDetalles {
         return Id;
     }
 
-    public Tickets getTicketId() {
+    public Ticket getTicketId() {
         return TicketId;
     }
 
-    public void setTicketId(Tickets TicketId) {
+    public void setTicketId(Ticket TicketId) {
         this.TicketId = TicketId;
     }
 
-    public Reparaciones getReparacionId() {
+    public Reparacion getReparacionId() {
         return ReparacionId;
     }
 
-    public void setReparacionId(Reparaciones ReparacionId) {
+    public void setReparacionId(Reparacion ReparacionId) {
         this.ReparacionId = ReparacionId;
     }
 

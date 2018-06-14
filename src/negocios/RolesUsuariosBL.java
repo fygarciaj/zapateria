@@ -63,8 +63,7 @@ public class RolesUsuariosBL {
                         + "ENGINE = InnoDB";
 
                 stmt.executeUpdate(sql);
-                stmt.close();
-                con.close();
+
             } catch (ClassNotFoundException | SQLException e) {
                 JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
                 LOG.log(Level.SEVERE, null, e);
@@ -86,7 +85,6 @@ public class RolesUsuariosBL {
             stmt.setInt(2, usuarios_id);
 
             stmt.executeUpdate();
-            con.close();
 
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
@@ -123,7 +121,6 @@ public class RolesUsuariosBL {
             stmt.setInt(3, roles_id);
 
             stmt.executeUpdate();
-            con.close();
 
             JOptionPane.showMessageDialog(null, "Se ha modificado un " + tableName);
 
@@ -145,9 +142,6 @@ public class RolesUsuariosBL {
                 stmt.setInt(2, roles_id);
 
                 stmt.executeUpdate();
-                con.close();
-
-                con.close();
 
                 JOptionPane.showMessageDialog(null, "Se ha eliminado con el indice #" + roles_id);
 
@@ -182,7 +176,7 @@ public class RolesUsuariosBL {
                 }
                 model.addRow(fila);
             }
-            con.close();
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
             LOG.log(Level.SEVERE, null, e);

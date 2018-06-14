@@ -1,16 +1,16 @@
 package datos;
 
-public class Roles {
+public class Rol {
 
     private Integer Id;
     private String Rol;
 
-    public Roles() {
+    public Rol() {
         this.Id = null;
         this.Rol = null;
     }
     
-    public Roles(String Rol) {
+    public Rol(String Rol) {
         this.Rol = Rol;
     }
     public Integer getId() {

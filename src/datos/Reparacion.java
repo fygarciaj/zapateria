@@ -3,17 +3,17 @@
  */
 package datos;
 
-public class Reparaciones {
+public class Reparacion {
 
     private Integer Id;
     private String DescripcionReparacion;
     private Double Valor;
-    private TiposCalzados TipoCalzado;
+    private TipoCalzado TipoCalzado;
 
-    public Reparaciones() {
+    public Reparacion() {
     }
 
-    public Reparaciones(String DescripcionReparacion, Double Valor, TiposCalzados TipoCalzado) {
+    public Reparacion(String DescripcionReparacion, Double Valor, TipoCalzado TipoCalzado) {
         this.DescripcionReparacion = DescripcionReparacion;
         this.Valor = Valor;
         this.TipoCalzado = TipoCalzado;
@@ -39,11 +39,11 @@ public class Reparaciones {
         this.Valor = Valor;
     }
 
-    public TiposCalzados getTipoCalzado() {
+    public TipoCalzado getTipoCalzado() {
         return TipoCalzado;
     }
 
-    public void setTipoCalzado(TiposCalzados TipoCalzado) {
+    public void setTipoCalzado(TipoCalzado TipoCalzado) {
         this.TipoCalzado = TipoCalzado;
     }
     

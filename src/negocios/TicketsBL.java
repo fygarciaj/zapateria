@@ -70,8 +70,7 @@ public class TicketsBL extends BaseBL {
                         + "ENGINE = InnoDB;";
 
                 stmt.executeUpdate(sql);
-                stmt.close();
-                con.close();
+
             } catch (ClassNotFoundException | SQLException e) {
                 JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
                 LOG.log(Level.SEVERE, null, e);
@@ -97,7 +96,6 @@ public class TicketsBL extends BaseBL {
             stmt.setInt(4, clientes_id);
 
             stmt.executeUpdate();
-            con.close();
 
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
@@ -136,7 +134,6 @@ public class TicketsBL extends BaseBL {
             stmt.setInt(6, id);
 
             stmt.executeUpdate();
-            con.close();
 
             JOptionPane.showMessageDialog(null, "Se ha modificado un registro en " + tableName);
 
@@ -158,9 +155,6 @@ public class TicketsBL extends BaseBL {
                 stmt.setInt(2, Id);
 
                 stmt.executeUpdate();
-                con.close();
-
-                con.close();
 
                 JOptionPane.showMessageDialog(null, "Se ha eliminado el registro con el indice #" + Id);
 
@@ -195,7 +189,7 @@ public class TicketsBL extends BaseBL {
                 }
                 model.addRow(fila);
             }
-            con.close();
+
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
             LOG.log(Level.SEVERE, null, e);

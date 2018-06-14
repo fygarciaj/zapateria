@@ -16,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import datos.Reparaciones;
+import datos.Reparacion;
 
 /**
  *
@@ -76,8 +76,7 @@ public class ReparacionesBL extends BaseBL {
                         + "ENGINE = InnoDB;";
 
                 stmt.executeUpdate(sql);
-                stmt.close();
-                con.close();
+
             } catch (ClassNotFoundException | SQLException e) {
                 JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
                 LOG.log(Level.SEVERE, null, e);
@@ -104,7 +103,6 @@ public class ReparacionesBL extends BaseBL {
             stmt.setInt(5, tipos_calzados_id);
 
             stmt.executeUpdate();
-            con.close();
 
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
@@ -144,7 +142,6 @@ public class ReparacionesBL extends BaseBL {
             stmt.setInt(6, id);
 
             stmt.executeUpdate();
-            con.close();
 
             JOptionPane.showMessageDialog(null, "Se ha modificado un registro en " + tableName);
 
@@ -166,9 +163,6 @@ public class ReparacionesBL extends BaseBL {
                 stmt.setInt(2, Id);
 
                 stmt.executeUpdate();
-                con.close();
-
-                con.close();
 
                 JOptionPane.showMessageDialog(null, "Se ha eliminado el registro con el indice #" + Id);
 
@@ -203,7 +197,7 @@ public class ReparacionesBL extends BaseBL {
                 }
                 model.addRow(fila);
             }
-            con.close();
+
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
             LOG.log(Level.SEVERE, null, e);

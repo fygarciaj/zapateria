@@ -9,34 +9,34 @@ package datos;
  *
  * @author REBOOTSYSTEM
  */
-public class RolesUsuarios {
+public class RolUsuario {
     
-    private Roles RolId;
-    private Usuarios UsuarioId;
+    private Rol RolId;
+    private Usuario UsuarioId;
 
-    public RolesUsuarios() {
+    public RolUsuario() {
         this.RolId = null;
         this.UsuarioId = null;
     }
 
-    public RolesUsuarios(Roles RolId, Usuarios UsuarioId) {
+    public RolUsuario(Rol RolId, Usuario UsuarioId) {
         this.RolId = RolId;
         this.UsuarioId = UsuarioId;
     }
 
-    public Roles getRolId() {
+    public Rol getRolId() {
         return RolId;
     }
 
-    public void setRolId(Roles RolId) {
+    public void setRolId(Rol RolId) {
         this.RolId = RolId;
     }
 
-    public Usuarios getUsuarioId() {
+    public Usuario getUsuarioId() {
         return UsuarioId;
     }
 
-    public void setUsuarioId(Usuarios UsuarioId) {
+    public void setUsuarioId(Usuario UsuarioId) {
         this.UsuarioId = UsuarioId;
     }
     

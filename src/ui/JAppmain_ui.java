@@ -5,17 +5,20 @@
  */
 package ui;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author REBOOTSYSTEM
  */
-public class appmain_ui extends javax.swing.JFrame {
+public class JAppmain_ui extends javax.swing.JFrame {
 
     /**
      * Creates new form appmain_ui
      */
-    public appmain_ui() {
+    public JAppmain_ui() {
         initComponents();
+        this.setExtendedState(MAXIMIZED_BOTH);
     }
 
     /**
@@ -27,7 +30,7 @@ public class appmain_ui extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jDesktopPane1 = new javax.swing.JDesktopPane();
+        dskMain = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mnuClientes = new javax.swing.JMenuItem();
@@ -41,21 +44,23 @@ public class appmain_ui extends javax.swing.JFrame {
         mnuRoles = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Aplicación para Zapaterías Calzaditos");
         setBackground(new java.awt.Color(255, 255, 255));
+        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/res/shoe.png")).getImage());
         setPreferredSize(new java.awt.Dimension(1024, 768));
 
-        jDesktopPane1.setBackground(new java.awt.Color(255, 255, 255));
-        jDesktopPane1.setAlignmentX(0.0F);
-        jDesktopPane1.setAlignmentY(0.0F);
+        dskMain.setBackground(new java.awt.Color(255, 255, 255));
+        dskMain.setAlignmentX(0.0F);
+        dskMain.setAlignmentY(0.0F);
 
-        javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
-        jDesktopPane1.setLayout(jDesktopPane1Layout);
-        jDesktopPane1Layout.setHorizontalGroup(
-            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout dskMainLayout = new javax.swing.GroupLayout(dskMain);
+        dskMain.setLayout(dskMainLayout);
+        dskMainLayout.setHorizontalGroup(
+            dskMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 721, Short.MAX_VALUE)
         );
-        jDesktopPane1Layout.setVerticalGroup(
-            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        dskMainLayout.setVerticalGroup(
+            dskMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 436, Short.MAX_VALUE)
         );
 
@@ -64,8 +69,22 @@ public class appmain_ui extends javax.swing.JFrame {
 
         mnuClientes.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK));
         mnuClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/user_24.png"))); // NOI18N
+        mnuClientes.setMnemonic('c');
         mnuClientes.setText("Clientes");
+        mnuClientes.setToolTipText("Presenta el formulario de clientes");
+        mnuClientes.setSelected(true);
+        mnuClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                mnuClientesMouseClicked(evt);
+            }
+        });
+        mnuClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuClientesActionPerformed(evt);
+            }
+        });
         jMenu1.add(mnuClientes);
+        mnuClientes.getAccessibleContext().setAccessibleParent(this);
 
         mnuReparaciones.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_MASK));
         mnuReparaciones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/magic-wand_24.png"))); // NOI18N
@@ -84,11 +103,6 @@ public class appmain_ui extends javax.swing.JFrame {
         mnuSalir.setMnemonic('s');
         mnuSalir.setText("Salir");
         mnuSalir.setToolTipText("Cerrar la aplicacion");
-        mnuSalir.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                mnuSalirMouseClicked(evt);
-            }
-        });
         jMenu1.add(mnuSalir);
 
         jMenuBar1.add(jMenu1);
@@ -116,25 +130,45 @@ public class appmain_ui extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(jDesktopPane1)
+                .addComponent(dskMain)
                 .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(jDesktopPane1)
+                .addComponent(dskMain)
                 .addGap(0, 0, 0))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void mnuSalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mnuSalirMouseClicked
-     
-        this.dispose();
-             
-    }//GEN-LAST:event_mnuSalirMouseClicked
+    private void mnuClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mnuClientesMouseClicked
+
+        try {
+            JClientes_ui cliente_ui = new JClientes_ui();
+            this.dskMain.add(cliente_ui);
+            cliente_ui.show();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+
+    }//GEN-LAST:event_mnuClientesMouseClicked
+
+    private void mnuClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuClientesActionPerformed
+
+        if (evt.getSource().equals(this.mnuClientes)) {
+            JClientes_ui cliente_ui = new JClientes_ui();
+            this.dskMain.add(cliente_ui);
+            cliente_ui.show();
+        }
+        if (evt.getSource().equals(this.mnuSalir)) {
+            this.setVisible(false);
+            this.dispose();
+        }
+        
+    }//GEN-LAST:event_mnuClientesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -153,26 +187,27 @@ public class appmain_ui extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(appmain_ui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JAppmain_ui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(appmain_ui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JAppmain_ui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(appmain_ui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JAppmain_ui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(appmain_ui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JAppmain_ui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new appmain_ui().setVisible(true);
+                new JAppmain_ui().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JDesktopPane dskMain;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;

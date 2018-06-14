@@ -17,19 +17,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import datos.Clientes;
+import datos.Cliente;
 
 /**
- * 
+ *
  * @author REBOOTSYSTEM
  */
 public class ClientesBL extends BaseBL {
 
     private static final Logger LOG = Logger.getLogger(ClientesBL.class.getName());
     private Integer id = null;
-    private Integer identificacion = null;
+    private String identificacion = null;
     private String nombreCompleto = null;
-    private Date fechaNacimiento = null;
+    private String fechaNacimiento = null;
     private String telefono = null;
     private String direccion = null;
     private static Connection con = null;
@@ -63,13 +63,13 @@ public class ClientesBL extends BaseBL {
                         + "	PRIMARY KEY (`id`),\n"
                         + "	UNIQUE INDEX `identificacion_UNIQUE` (`identificacion`),\n"
                         + "	UNIQUE INDEX `id_UNIQUE` (`id`)\n"
+                        + "     INDEX `identificacion` (`identificacion`)\n"
                         + ")\n"
                         + "COLLATE='utf8_spanish2_ci'\n"
                         + "ENGINE=InnoDB;";
 
-                stmt.executeUpdate(sql);
-                stmt.close();
-                con.close();
+                int Result = stmt.executeUpdate(sql);
+
             } catch (ClassNotFoundException | SQLException e) {
                 JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
                 LOG.log(Level.SEVERE, null, e);
@@ -79,7 +79,7 @@ public class ClientesBL extends BaseBL {
         }
     }
 
-    public static void create(Integer identificacion, String nombreCompleto, Date fechaNacimiento, String telefono, String direccion) {
+    public static void create(String identificacion, String nombreCompleto, String fechaNacimiento, String telefono, String direccion) {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -87,14 +87,13 @@ public class ClientesBL extends BaseBL {
             String sqlQuery = "INSERT INTO clientes(identificacion, nombre_completo, fecha_nacimiento, telefono, direccion) VALUES( ?, ?, ?, ?, ?);";
             java.sql.PreparedStatement stmt = con.prepareStatement(sqlQuery);
 
-            stmt.setInt(1, identificacion);
+            stmt.setString(1, identificacion);
             stmt.setString(2, nombreCompleto);
-            stmt.setDate(3, fechaNacimiento);
+            stmt.setString(3, fechaNacimiento);
             stmt.setString(4, telefono);
             stmt.setString(5, direccion);
 
             stmt.executeUpdate();
-            con.close();
 
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
@@ -132,7 +131,6 @@ public class ClientesBL extends BaseBL {
             stmt.setString(4, direccion);
 
             stmt.executeUpdate();
-            con.close();
 
             JOptionPane.showMessageDialog(null, "Se ha modificado un cliente");
         } catch (ClassNotFoundException | SQLException e) {
@@ -152,9 +150,6 @@ public class ClientesBL extends BaseBL {
                 stmt.setInt(1, Id);
 
                 stmt.executeUpdate();
-                con.close();
-
-                con.close();
 
                 JOptionPane.showMessageDialog(null, "Se ha eliminado el cliente con el indice #" + Id);
 
@@ -166,7 +161,11 @@ public class ClientesBL extends BaseBL {
         }
     }
 
-    public DefaultTableModel listar() {
+    public static DefaultTableModel listar() {
+
+        String[] columns = {"Id", "Identificación", "Nombres Completos", "Fecha Nacimiento", "Teléfono", "Dirección"};
+        DefaultTableModel model = new DefaultTableModel(null, columns);
+
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = cxn.openDB();
@@ -178,10 +177,17 @@ public class ClientesBL extends BaseBL {
 
             int countColumns = rsMd.getColumnCount();
 
-            for (int i = 0; i < countColumns; i++) {
+            /*for (int i = 0; i < countColumns; i++) {
                 model.addColumn(rsMd.getColumnLabel(i + 1));
             }
-
+            model.addColumn("Id");
+            model.addColumn("Identificacion");
+            model.addColumn("Nombres Completos");
+            model.addColumn("Fecha Nacimiento");
+            model.addColumn("Teléfono");
+            model.addColumn("Dirección");
+             */
+            
             while (rs.next()) {
                 Object[] fila = new Object[countColumns];
                 for (int i = 0; i < countColumns; i++) {
@@ -189,7 +195,7 @@ public class ClientesBL extends BaseBL {
                 }
                 model.addRow(fila);
             }
-            con.close();
+
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
             LOG.log(Level.SEVERE, null, e);

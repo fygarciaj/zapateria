@@ -7,15 +7,15 @@ package datos;
  * @author REBOOTSYSTEM
  *
  */
-public class TiposCalzados {
+public class TipoCalzado {
 
     private static Integer Id;
     private String NombreCalzado;
 
-    public TiposCalzados() {
+    public TipoCalzado() {
     }
 
-    public TiposCalzados(String NombreCalzado) {
+    public TipoCalzado(String NombreCalzado) {
         this.NombreCalzado = NombreCalzado;
     }
 

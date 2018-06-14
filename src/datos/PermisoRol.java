@@ -9,31 +9,31 @@ package datos;
  *
  * @author REBOOTSYSTEM
  */
-public class PermisosRoles {
-    private Permisos PermisoId;
-    private Roles RolId;
+public class PermisoRol {
+    private Permiso PermisoId;
+    private Rol RolId;
 
-    public PermisosRoles() {
+    public PermisoRol() {
     }
 
-    public PermisosRoles(Permisos PermisoId, Roles RolId) {
+    public PermisoRol(Permiso PermisoId, Rol RolId) {
         this.PermisoId = PermisoId;
         this.RolId = RolId;
     }
 
-    public Permisos getPermisoId() {
+    public Permiso getPermisoId() {
         return PermisoId;
     }
 
-    public void setPermisoId(Permisos PermisoId) {
+    public void setPermisoId(Permiso PermisoId) {
         this.PermisoId = PermisoId;
     }
 
-    public Roles getRolId() {
+    public Rol getRolId() {
         return RolId;
     }
 
-    public void setRolId(Roles RolId) {
+    public void setRolId(Rol RolId) {
         this.RolId = RolId;
     }
     

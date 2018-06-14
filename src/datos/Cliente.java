@@ -9,7 +9,7 @@ import java.sql.Date;
  * @author REBOOTSYSTEM
  *
  */
-public class Clientes {
+public class Cliente {
 
     private Integer Id;
     private Integer Identificacion;
@@ -18,7 +18,7 @@ public class Clientes {
     private String Telefono;
     private String Direccion;
 
-    public Clientes() {
+    public Cliente() {
     }
     
 

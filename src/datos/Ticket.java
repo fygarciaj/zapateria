@@ -9,23 +9,23 @@ import java.sql.Date;
  * @author REBOOTSYSTEM
  *
  */
-public class Tickets {
+public class Ticket {
 
     private Integer Id;
     private Date Fecha;
     private Double ValorTotal;
-    private Usuarios UsuarioID;
-    private Clientes ClienteID;
+    private Usuario UsuarioID;
+    private Cliente ClienteID;
 
     
-    public Tickets() {
+    public Ticket() {
         this.Id = null;
         this.Fecha = null;
         this.UsuarioID = null;
         this.ClienteID = null;
     }
 
-    public Tickets(Date Fecha, Double ValorTotal, Usuarios UsuarioID, Clientes ClienteID) {
+    public Ticket(Date Fecha, Double ValorTotal, Usuario UsuarioID, Cliente ClienteID) {
         this.Fecha = Fecha;
         this.ValorTotal = ValorTotal;
         this.UsuarioID = UsuarioID;
@@ -52,19 +52,19 @@ public class Tickets {
         this.ValorTotal = ValorTotal;
     }
 
-    public Usuarios getUsuarioID() {
+    public Usuario getUsuarioID() {
         return UsuarioID;
     }
 
-    public void setUsuarioID(Usuarios UsuarioID) {
+    public void setUsuarioID(Usuario UsuarioID) {
         this.UsuarioID = UsuarioID;
     }
 
-    public Clientes getClienteID() {
+    public Cliente getClienteID() {
         return ClienteID;
     }
 
-    public void setClienteID(Clientes ClienteID) {
+    public void setClienteID(Cliente ClienteID) {
         this.ClienteID = ClienteID;
     }
 

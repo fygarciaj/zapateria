@@ -21,17 +21,17 @@ public class JMain {
     public static void main(String[] args) {
        
        // UsuariosSeed.insertUsuarios();
-        ClientesSeed.insertClients();
+       // ClientesSeed.insertClients();
         
-        /*
+        
         JFrame login = new JLogin_ui();
         login.setVisible(true);
-        */
         
+        /*
         JFrame main_ui = new JAppmain_ui();
         main_ui.setTitle("Aplicación para Zapaterías");
         main_ui.setVisible(true);
-
+*/
     }
     
 }

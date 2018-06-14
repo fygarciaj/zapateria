@@ -103,6 +103,11 @@ public class JAppmain_ui extends javax.swing.JFrame {
         mnuSalir.setMnemonic('s');
         mnuSalir.setText("Salir");
         mnuSalir.setToolTipText("Cerrar la aplicacion");
+        mnuSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuSalirActionPerformed(evt);
+            }
+        });
         jMenu1.add(mnuSalir);
 
         jMenuBar1.add(jMenu1);
@@ -160,6 +165,7 @@ public class JAppmain_ui extends javax.swing.JFrame {
 
         if (evt.getSource().equals(this.mnuClientes)) {
             JClientes_ui cliente_ui = new JClientes_ui();
+            cliente_ui.dskApp = this.dskMain;
             this.dskMain.add(cliente_ui);
             cliente_ui.show();
         }
@@ -167,8 +173,14 @@ public class JAppmain_ui extends javax.swing.JFrame {
             this.setVisible(false);
             this.dispose();
         }
-        
+
     }//GEN-LAST:event_mnuClientesActionPerformed
+
+    private void mnuSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSalirActionPerformed
+        this.setVisible(false);
+        this.dispose();
+        System.exit(0);
+    }//GEN-LAST:event_mnuSalirActionPerformed
 
     /**
      * @param args the command line arguments

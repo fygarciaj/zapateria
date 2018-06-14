@@ -6,9 +6,11 @@
 package ui;
 
 import java.sql.SQLException;
+import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import negocios.ClientesBL;
+import ui.Client.JAddClient;
 
 /**
  *
@@ -16,11 +18,13 @@ import negocios.ClientesBL;
  */
 public class JClientes_ui extends javax.swing.JInternalFrame {
 
+    public static JDesktopPane dskApp = null;
     /**
      * Creates new form JClientes_ui
      */
     public JClientes_ui() {
         initComponents();
+        disableButtons();
         fillTable();
     }
 
@@ -34,7 +38,11 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jToolBar1 = new javax.swing.JToolBar();
-        btnAddClient = new javax.swing.JButton();
+        btnNew = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JToolBar.Separator();
+        btnEdit = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
+        btnDelete = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblClients = new javax.swing.JTable();
@@ -46,11 +54,36 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
 
         jToolBar1.setRollover(true);
 
-        btnAddClient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/add-customer_24.png"))); // NOI18N
-        btnAddClient.setFocusable(false);
-        btnAddClient.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAddClient.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(btnAddClient);
+        btnNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/user_add_24.png"))); // NOI18N
+        btnNew.setText("Nuevo");
+        btnNew.setToolTipText("Crea un nuevo cliente");
+        btnNew.setFocusable(false);
+        btnNew.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnNew.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnNew);
+        jToolBar1.add(jSeparator1);
+
+        btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/user_edit_24.png"))); // NOI18N
+        btnEdit.setText("Editar");
+        btnEdit.setToolTipText("Edita un cliente");
+        btnEdit.setFocusable(false);
+        btnEdit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEdit.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(btnEdit);
+        jToolBar1.add(jSeparator2);
+
+        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/user_delete_24.png"))); // NOI18N
+        btnDelete.setText("Eliminar");
+        btnDelete.setToolTipText("Elimina un cliente");
+        btnDelete.setFocusable(false);
+        btnDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnDelete.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(btnDelete);
 
         jScrollPane1.setViewportView(tblClients);
 
@@ -67,7 +100,7 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -93,15 +126,31 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
+        
+        
+        JAddClient addClient  = new JAddClient();
+        this.dskApp.add(addClient);
+        addClient.show();
+    }//GEN-LAST:event_btnNewActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAddClient;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnNew;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JToolBar.Separator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTable tblClients;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Llena la tabla con los valores en la base de datos.
+     * 
+     */
     private void fillTable() {
 
         try {
@@ -114,5 +163,11 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(rootPane, "Error al cargar la lista de clientes " + e.getMessage());
         }
 
+    }
+
+    private void disableButtons() {
+        // Si no esta seleccionado un registro es mejor desactivar los botones. fyg
+        this.btnEdit.setEnabled(false);
+        this.btnDelete.setEnabled(false);
     }
 }

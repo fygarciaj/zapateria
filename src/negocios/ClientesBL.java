@@ -176,17 +176,6 @@ public class ClientesBL extends BaseBL {
             ResultSetMetaData rsMd = rs.getMetaData();
 
             int countColumns = rsMd.getColumnCount();
-
-            /*for (int i = 0; i < countColumns; i++) {
-                model.addColumn(rsMd.getColumnLabel(i + 1));
-            }
-            model.addColumn("Id");
-            model.addColumn("Identificacion");
-            model.addColumn("Nombres Completos");
-            model.addColumn("Fecha Nacimiento");
-            model.addColumn("Teléfono");
-            model.addColumn("Dirección");
-             */
             
             while (rs.next()) {
                 Object[] fila = new Object[countColumns];

@@ -265,6 +265,9 @@ public class UsuariosBL {
     }
 
     public DefaultTableModel listar() {
+        
+        String[] columns = {"Id", "Identificación", "Nombres Completos", "Edad", "Dirección", "Telefono", "Nombre Usuario"};
+        DefaultTableModel model = new DefaultTableModel(null, columns);
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = cxn.openDB();
@@ -275,10 +278,6 @@ public class UsuariosBL {
             ResultSetMetaData rsMd = rs.getMetaData();
 
             int countColumns = rsMd.getColumnCount();
-
-            for (int i = 0; i < countColumns; i++) {
-                model.addColumn(rsMd.getColumnLabel(i + 1));
-            }
 
             while (rs.next()) {
                 Object[] fila = new Object[countColumns];
@@ -291,6 +290,8 @@ public class UsuariosBL {
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
             LOG.log(Level.SEVERE, null, e);
+            e.printStackTrace();
+            
             return model;
         }
 

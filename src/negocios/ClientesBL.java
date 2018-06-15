@@ -8,7 +8,6 @@ package negocios;
 import java.sql.PreparedStatement;
 import conexion.ConexionDB;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -18,7 +17,6 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import datos.Cliente;
-import datos.Usuario;
 
 /**
  *
@@ -102,6 +100,7 @@ public class ClientesBL extends BaseBL {
 
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
             LOG.log(Level.SEVERE, null, e);
+            e.printStackTrace();
         }
 
     }
@@ -127,6 +126,7 @@ public class ClientesBL extends BaseBL {
 
             JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
             LOG.log(Level.SEVERE, null, e);
+            e.printStackTrace();
         }
 
     }
@@ -161,16 +161,10 @@ public class ClientesBL extends BaseBL {
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, "Ocurrio un error buscar el cliente " + tableName);
             LOG.log(Level.SEVERE, null, e);
+            e.printStackTrace();
         }
 
         return cliente;
-    }
-
-    /**
-     * Busca un cliente por un campo diferente al id
-     */
-    public static void findByField() {
-
     }
 
     public void update(String nombreCompleto, String fechaNacimiento, String telefono, String direccion, int id) {
@@ -194,6 +188,7 @@ public class ClientesBL extends BaseBL {
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, "Ocurrio un error al modificar un cliente");
             LOG.log(Level.SEVERE, null, e);
+            e.printStackTrace();
         }
     }
 
@@ -270,6 +265,8 @@ public class ClientesBL extends BaseBL {
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
             LOG.log(Level.SEVERE, null, e);
+            e.printStackTrace();
+            
             return model;
         }
 

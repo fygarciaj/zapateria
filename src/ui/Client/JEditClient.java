@@ -8,9 +8,12 @@ package ui.Client;
 import com.mysql.jdbc.StringUtils;
 import datos.Cliente;
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Calendar;
 import java.util.List;
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.text.JTextComponent;
 import negocios.ClientesBL;
@@ -20,11 +23,11 @@ import ui.JClientes_ui;
  *
  * @author REBOOTSYSTEM
  */
-public class JAddClient extends javax.swing.JInternalFrame {
+public class JEditClient extends javax.swing.JInternalFrame {
 
     private JClientes_ui clientes_ui;
     private Cliente cliente = null;
-    private ClientesBL clientebl = null;
+    private ClientesBL clientebl = new ClientesBL();
 
     DateFormat df = DateFormat.getDateInstance();
     InputVerifier verifierIdentificacion = new InputVerifier() {
@@ -78,11 +81,13 @@ public class JAddClient extends javax.swing.JInternalFrame {
     /**
      * Creates new form JAddClient
      */
-    public JAddClient(JClientes_ui cliente_ui) {
+    public JEditClient(JClientes_ui cliente_ui, Cliente cliente) {
         // referencia al formulario principal de clientes
         this.clientes_ui = cliente_ui;
+        this.cliente = cliente;
         initComponents();
-        
+        fillFields();
+
     }
 
     /**
@@ -117,14 +122,15 @@ public class JAddClient extends javax.swing.JInternalFrame {
 
         sqlDateModel1.setSelected(true);
 
-        setTitle("Nuevo Cliente");
+        setTitle("Editar Cliente");
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/user_add_32.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/user_edit_32.png"))); // NOI18N
 
         jLabel2.setLabelFor(txtIdentificacion);
         jLabel2.setText("Identificación");
 
-        txtIdentificacion.setInputVerifier(verifierIdentificacion);
+        txtIdentificacion.setEnabled(false);
+        txtIdentificacion.setFocusable(false);
 
         jLabel3.setLabelFor(txtNombreCompleto);
         jLabel3.setText("Nombres y Apellidos");
@@ -255,24 +261,28 @@ public class JAddClient extends javax.swing.JInternalFrame {
         if (this.txtIdentificacion.getText().length() > 0) {
             if (this.txtNombreCompleto.getText().length() > 0) {
                 try {
-                    cliente = new Cliente();
-
+                   
                     String fecha = this.dtpFechaNacimiento.getFormattedTextField().getText();
-                    List<String> fecha1 = StringUtils.split(fecha, "/", true);
-                    fecha = fecha1.get(2)+"-"+fecha1.get(1)+"-"+fecha1.get(0);
+                    if (fecha.length() > 0) {
+                        List<String> fecha1 = StringUtils.split(fecha, "/", true);
+                        fecha = fecha1.get(2) + "-" + fecha1.get(1) + "-" + fecha1.get(0);
+                    }
+                    else
+                        fecha = "1900-01-01";
                     cliente.setIdentificacion(this.txtIdentificacion.getText());
                     cliente.setNombreCompleto(this.txtNombreCompleto.getText());
                     cliente.setFechaNacimiento(fecha);
                     cliente.setDireccion(this.txtDireccion.getText());
                     cliente.setTelefono(this.txtTelefono.getText());
-                    
-                    clientebl.create(cliente);
+
+                    clientebl.update(cliente, cliente.getId());
 
                     clearFields();
                     this.clientes_ui.fillTable();
-                    
+
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(rootPane, e.getLocalizedMessage());
+                    e.printStackTrace();
                 }
 
             }
@@ -307,11 +317,28 @@ public class JAddClient extends javax.swing.JInternalFrame {
     private org.jdatepicker.UtilDateModel utilDateModel1;
     // End of variables declaration//GEN-END:variables
 
-    private void clearFields() {       
+    private void clearFields() {
         this.txtIdentificacion.setText("");
         this.txtNombreCompleto.setText("");
         this.txtDireccion.setText("");
         this.txtTelefono.setText("");
+    }
+
+    private void fillFields() {
+
+        try {
+
+            this.txtIdentificacion.setText(this.cliente.getIdentificacion());
+            this.txtNombreCompleto.setText(this.cliente.getNombreCompleto());
+            // TODO: Esta mier.. jode mucho buscar otra manera con los date
+            //this.dtpFechaNacimiento.getFormattedTextField().setValue(this.cliente.getFechaNacimiento());
+            this.txtDireccion.setText(this.cliente.getDireccion());
+            this.txtTelefono.setText(this.cliente.getTelefono());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

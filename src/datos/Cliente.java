@@ -3,8 +3,6 @@
  */
 package datos;
 
-import java.sql.Date;
-
 /**
  * @author REBOOTSYSTEM
  *
@@ -12,9 +10,9 @@ import java.sql.Date;
 public class Cliente {
 
     private Integer Id;
-    private Integer Identificacion;
+    private String Identificacion;
     private String NombreCompleto;
-    private Date FechaNacimiento;
+    private String FechaNacimiento;
     private String Telefono;
     private String Direccion;
 
@@ -29,20 +27,20 @@ public class Cliente {
         return Id;
     }
 
-    /**
-     * @return the Identificacion
-     */
-    public Integer getIdentificacion() {
+    public void setId(Integer Id) {
+        this.Id = Id;
+    }
+
+    
+    public String getIdentificacion() {
         return Identificacion;
     }
 
-    /**
-     * @param Identificacion the Identificacion to set
-     */
-    public void setIdentificacion(Integer Identificacion) {
+    public void setIdentificacion(String Identificacion) {
         this.Identificacion = Identificacion;
     }
 
+    
     /**
      * @return the NombreCompleto
      */
@@ -57,19 +55,14 @@ public class Cliente {
         this.NombreCompleto = NombreCompleto;
     }
 
-    /**
-     * @return the FechaNacimiento
-     */
-    public Date getFechaNacimiento() {
+    public String getFechaNacimiento() {
         return FechaNacimiento;
     }
 
-    /**
-     * @param FechaNacimiento the FechaNacimiento to set
-     */
-    public void setFechaNacimiento(Date FechaNacimiento) {
+    public void setFechaNacimiento(String FechaNacimiento) {
         this.FechaNacimiento = FechaNacimiento;
     }
+
 
     /**
      * @return the Telefono

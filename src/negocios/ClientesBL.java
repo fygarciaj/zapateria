@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import datos.Cliente;
+import datos.Usuario;
 
 /**
  *
@@ -95,8 +96,36 @@ public class ClientesBL extends BaseBL {
 
             stmt.executeUpdate();
 
+            JOptionPane.showMessageDialog(null, "Se ha guardado el cliente");
+
         } catch (ClassNotFoundException | SQLException e) {
+
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
+            LOG.log(Level.SEVERE, null, e);
+        }
+
+    }
+
+    public static void create(Cliente cliente) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = cxn.openDB();
+            String sqlQuery = "INSERT INTO clientes(identificacion, nombre_completo, fecha_nacimiento, telefono, direccion) VALUES( ?, ?, ?, ?, ?);";
+            java.sql.PreparedStatement stmt = con.prepareStatement(sqlQuery);
+
+            stmt.setString(1, cliente.getIdentificacion());
+            stmt.setString(2, cliente.getNombreCompleto());
+            stmt.setString(3, cliente.getFechaNacimiento());
+            stmt.setString(4, cliente.getTelefono());
+            stmt.setString(5, cliente.getDireccion());
+
+            stmt.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Se ha guardado el cliente");
+
+        } catch (ClassNotFoundException | SQLException e) {
+
+            JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
             LOG.log(Level.SEVERE, null, e);
         }
 
@@ -107,8 +136,34 @@ public class ClientesBL extends BaseBL {
      *
      * @param Id
      */
-    public static void findById(Integer Id) {
+    public static Cliente findById(Integer id) {
 
+        Cliente cliente = new Cliente();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = cxn.openDB();
+            String sqlQuery = "SELECT * FROM clientes WHERE id=?";
+            stmt = con.prepareStatement(sqlQuery);
+
+            stmt.setInt(1, id);
+
+            ResultSet rst = stmt.executeQuery();
+
+            if (rst.next()) {
+                cliente.setId(rst.getInt("id"));
+                cliente.setIdentificacion(rst.getString("identificacion"));
+                cliente.setNombreCompleto(rst.getString("nombre_completo"));
+                cliente.setFechaNacimiento(rst.getString("fecha_nacimiento"));
+                cliente.setDireccion(rst.getString("direccion"));
+                cliente.setTelefono(rst.getString("telefono"));
+            }
+
+        } catch (ClassNotFoundException | SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un error buscar el cliente " + tableName);
+            LOG.log(Level.SEVERE, null, e);
+        }
+
+        return cliente;
     }
 
     /**
@@ -118,7 +173,7 @@ public class ClientesBL extends BaseBL {
 
     }
 
-    public void update(String nombreCompleto, Date fechaNacimiento, String telefono, String direccion, int id) {
+    public void update(String nombreCompleto, String fechaNacimiento, String telefono, String direccion, int id) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = cxn.openDB();
@@ -126,16 +181,43 @@ public class ClientesBL extends BaseBL {
             stmt = con.prepareStatement(sqlQuery);
 
             stmt.setString(1, nombreCompleto);
-            stmt.setDate(2, fechaNacimiento);
+            stmt.setString(2, fechaNacimiento);
             stmt.setString(3, telefono);
             stmt.setString(4, direccion);
+            
+            stmt.setInt(5, id);
 
             stmt.executeUpdate();
 
-            JOptionPane.showMessageDialog(null, "Se ha modificado un cliente");
+            JOptionPane.showMessageDialog(null, "Se ha actualizado un cliente");
+            
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, "Ocurrio un error al modificar un cliente");
             LOG.log(Level.SEVERE, null, e);
+        }
+    }
+
+    public void update(Cliente cliente, Integer id) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = cxn.openDB();
+            String sqlQuery = "UPDATE clientes SET nombre_completo=?, fecha_nacimiento=?, telefono=?, direccion=? WHERE id=?";
+            stmt = con.prepareStatement(sqlQuery);
+
+            stmt.setString(1, cliente.getNombreCompleto());
+            stmt.setString(2, cliente.getFechaNacimiento());
+            stmt.setString(3, cliente.getTelefono());
+            stmt.setString(4, cliente.getDireccion());
+            stmt.setInt(5, id);
+            
+            stmt.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Se ha actualizado un cliente");
+
+        } catch (ClassNotFoundException | SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un error al modificar un cliente");
+            LOG.log(Level.SEVERE, null, e);
+            e.printStackTrace();
         }
     }
 
@@ -176,7 +258,7 @@ public class ClientesBL extends BaseBL {
             ResultSetMetaData rsMd = rs.getMetaData();
 
             int countColumns = rsMd.getColumnCount();
-            
+
             while (rs.next()) {
                 Object[] fila = new Object[countColumns];
                 for (int i = 0; i < countColumns; i++) {

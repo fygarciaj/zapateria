@@ -5,12 +5,14 @@
  */
 package ui;
 
+import datos.Cliente;
 import java.sql.SQLException;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import negocios.ClientesBL;
 import ui.Client.JAddClient;
+import ui.Client.JEditClient;
 
 /**
  *
@@ -19,6 +21,8 @@ import ui.Client.JAddClient;
 public class JClientes_ui extends javax.swing.JInternalFrame {
 
     public static JDesktopPane dskApp = null;
+    private int cliente_id = 0;
+
     /**
      * Creates new form JClientes_ui
      */
@@ -43,6 +47,8 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
         btnEdit = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
         btnDelete = new javax.swing.JButton();
+        jSeparator3 = new javax.swing.JToolBar.Separator();
+        btnRefresh = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblClients = new javax.swing.JTable();
@@ -74,6 +80,11 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
         btnEdit.setFocusable(false);
         btnEdit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnEdit.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
         jToolBar1.add(btnEdit);
         jToolBar1.add(jSeparator2);
 
@@ -83,8 +94,34 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
         btnDelete.setFocusable(false);
         btnDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnDelete.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
         jToolBar1.add(btnDelete);
+        jToolBar1.add(jSeparator3);
 
+        btnRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/refresh_24.png"))); // NOI18N
+        btnRefresh.setText("Actualizar");
+        btnRefresh.setFocusable(false);
+        btnRefresh.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnRefresh.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnRefresh);
+
+        tblClients.setEditingColumn(0);
+        tblClients.setEditingRow(0);
+        tblClients.getTableHeader().setReorderingAllowed(false);
+        tblClients.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblClientsMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblClients);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -127,37 +164,92 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
-        
-        
-        JAddClient addClient  = new JAddClient();
+
+        JAddClient addClient = new JAddClient(this);
+
         this.dskApp.add(addClient);
         addClient.show();
     }//GEN-LAST:event_btnNewActionPerformed
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        fillTable();
+    }//GEN-LAST:event_btnRefreshActionPerformed
+
+    private void tblClientsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientsMouseClicked
+
+        int row = this.tblClients.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(null, "Seleccione una fila");
+            disableButtons();
+        } else {
+            cliente_id = (int) this.tblClients.getValueAt(row, 0);
+            enabledButtons();
+            //txfNombre.setText(String.valueOf(table.getValueAt(row, 1)));
+            //JOptionPane.showMessageDialog(rootPane, "Se ha seleccionado el registro "+this.tblClients.getValueAt(row, 1));
+        }
+
+    }//GEN-LAST:event_tblClientsMouseClicked
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        if (cliente_id > 0) {
+            try {
+                int result = JOptionPane.showConfirmDialog(rootPane, "Desea borrar el cliente?", "Borrar Cliente", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                if (result == 0) {
+                    ClientesBL.delete(cliente_id);
+                    fillTable();
+                    disableButtons();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        
+        if (cliente_id > 0)
+        {
+            try {
+                Cliente cliente = ClientesBL.findById(cliente_id);
+                JEditClient editCliente = new JEditClient(this, cliente);
+                this.dskApp.add(editCliente);
+                editCliente.show();
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+    }//GEN-LAST:event_btnEditActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnNew;
+    private javax.swing.JButton btnRefresh;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTable tblClients;
     // End of variables declaration//GEN-END:variables
 
     /**
      * Llena la tabla con los valores en la base de datos.
-     * 
+     *
      */
-    private void fillTable() {
+    public void fillTable() {
 
         try {
             DefaultTableModel modelClients;
 
             modelClients = ClientesBL.listar();
             this.tblClients.setModel(modelClients);
+            disableButtons();
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, "Error al cargar la lista de clientes " + e.getMessage());
@@ -169,5 +261,10 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
         // Si no esta seleccionado un registro es mejor desactivar los botones. fyg
         this.btnEdit.setEnabled(false);
         this.btnDelete.setEnabled(false);
+    }
+
+    private void enabledButtons() {
+        this.btnEdit.setEnabled(true);
+        this.btnDelete.setEnabled(true);
     }
 }

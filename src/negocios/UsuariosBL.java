@@ -120,18 +120,17 @@ public class UsuariosBL {
 
             ResultSet rst = stmt.executeQuery();
 
-            if (rst != null) {
+            if (rst.next()) {
                 usuario.setId(rst.getInt("id"));
-                usuario.setIdentificacion("identificacion");
-                usuario.setNombreCompleto("nombre_completo");
-                usuario.setDireccion("direccion");
-                usuario.setTelefono("telefono");
-                usuario.setEdad("edad");
-                usuario.setNombreUsuario("nombre_usuario");
-                usuario.setPassword("password");
+                usuario.setIdentificacion(rst.getString("identificacion"));
+                usuario.setNombreCompleto(rst.getString("nombre_completo"));
+                usuario.setDireccion(rst.getString("direccion"));
+                usuario.setTelefono(rst.getString("telefono"));
+                usuario.setEdad(rst.getInt("edad"));
+                usuario.setNombreUsuario(rst.getString("nombre_usuario"));
+                usuario.setPassword(rst.getString("password"));
             }
 
-           // con.close();
 
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, "Ocurrio un error buscar el usuario " + tableName);
@@ -214,6 +213,11 @@ public class UsuariosBL {
         }
     }
 
+    public static void update(Usuario usuario) {
+        
+    }
+    
+    
     public static void updatePassword(String password, Integer id) {
 
         try {

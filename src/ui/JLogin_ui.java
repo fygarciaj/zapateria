@@ -162,7 +162,7 @@ public class JLogin_ui extends javax.swing.JFrame {
     private void btnLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseClicked
         // TODO add your handling code here:
         if (Security.checkAcceso(this.txtUsername.getText(), String.valueOf(this.txtPassword.getPassword()))){
-            JOptionPane.showMessageDialog(rootPane, "El usuario y la contraseña son correctos");
+           // JOptionPane.showMessageDialog(rootPane, "El usuario y la contraseña son correctos");
             
             JAppmain_ui app = new JAppmain_ui();
             app.setVisible(true);

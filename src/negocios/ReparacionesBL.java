@@ -25,6 +25,7 @@ import datos.Reparacion;
 public class ReparacionesBL extends BaseBL {
 
     private static final Logger LOG = Logger.getLogger(ClientesBL.class.getName());
+
     private Integer id = null;
     private static Connection con = null;
     private static ConexionDB cxn = null;
@@ -85,9 +86,7 @@ public class ReparacionesBL extends BaseBL {
             System.out.println("Se ha creado la tabla");
         }
     }
-    
-    
-    
+
     public static void create(String descripcion_reparacion, Double valor, Integer clientes_id, Integer usuarios_id, Integer tipos_calzados_id) {
 
         try {
@@ -111,13 +110,63 @@ public class ReparacionesBL extends BaseBL {
 
     }
 
+    public static void create(Reparacion reparacion) {
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = cxn.openDB();
+            String sqlQuery = "INSERT INTO reparaciones(descripcion_reparacion, valor, clientes_id, usuarios_id, tipos_calzados_id) VALUES(?,?,?,?,?);";
+            java.sql.PreparedStatement stmt = con.prepareStatement(sqlQuery);
+
+            stmt.setString(1, reparacion.getDescripcionReparacion());
+            stmt.setDouble(2, reparacion.getValor());
+            stmt.setInt(3, reparacion.getClienteID());
+            stmt.setInt(4, reparacion.getUsuariosId());
+            stmt.setInt(5, reparacion.getTipoCalzadoId());
+
+            stmt.executeUpdate();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
+            LOG.log(Level.SEVERE, null, e);
+            e.printStackTrace();
+        }
+
+    }
+
     /**
      * Busca un registro por el id
      *
      * @param Id
      */
-    public static void findById(Integer Id) {
+    public static Reparacion findById(Integer id) {
+        Reparacion reparacion = new Reparacion();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = cxn.openDB();
+            String sqlQuery = "SELECT * FROM reparaciones WHERE id=?";
+            stmt = con.prepareStatement(sqlQuery);
 
+            stmt.setInt(1, id);
+
+            ResultSet rst = stmt.executeQuery();
+
+            if (rst.next()) {
+                reparacion.setId(rst.getInt("id"));
+                reparacion.setDescripcionReparacion(rst.getString("descripcion_reparacion"));
+                reparacion.setClienteID(rst.getInt("clientes_id"));
+                reparacion.setUsuariosId(rst.getInt("usuarios_id"));
+                reparacion.setValor(rst.getDouble("valor"));
+                reparacion.setTipoCalzadoId(rst.getInt("tipos_calzados_id"));
+            }
+
+        } catch (ClassNotFoundException | SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un error buscar el reparacion " + tableName);
+            LOG.log(Level.SEVERE, null, e);
+            e.printStackTrace();
+        }
+
+        return reparacion;
     }
 
     /**
@@ -127,16 +176,16 @@ public class ReparacionesBL extends BaseBL {
 
     }
 
-    public void update(String descripcion_reparacion, Double valor, Integer clientes_id, Integer usuarios_id, Integer tipos_calzados_id, Integer id) {
+    public void update(String descripcion_reparacion, Double valor, Integer reparacions_id, Integer usuarios_id, Integer tipos_calzados_id, Integer id) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = cxn.openDB();
-            String sqlQuery = "UPDATE usuarios SET descripcion_reparacion=?, valor=?, clientes_id=?, usuarios_id=?, tipos_calzados_id=? WHERE id=?";
+            String sqlQuery = "UPDATE usuarios SET descripcion_reparacion=?, valor=?, reparacions_id=?, usuarios_id=?, tipos_calzados_id=? WHERE id=?";
             stmt = con.prepareStatement(sqlQuery);
-           
+
             stmt.setString(1, descripcion_reparacion);
             stmt.setDouble(2, valor);
-            stmt.setInt(3, clientes_id);
+            stmt.setInt(3, reparacions_id);
             stmt.setInt(4, usuarios_id);
             stmt.setInt(5, tipos_calzados_id);
             stmt.setInt(6, id);
@@ -149,6 +198,10 @@ public class ReparacionesBL extends BaseBL {
             JOptionPane.showMessageDialog(null, "Ocurrio un error al modificar " + tableName);
             LOG.log(Level.SEVERE, null, e);
         }
+    }
+
+    public static void update(Reparacion reparacion, Integer id) {
+
     }
 
     public static void delete(Integer Id) {
@@ -174,7 +227,10 @@ public class ReparacionesBL extends BaseBL {
         }
     }
 
-    public DefaultTableModel listar() {
+    public static DefaultTableModel listar() {
+        String[] columns = {"Id", "Descripción", "Valor", "Tipo Calzado"};
+        DefaultTableModel model = new DefaultTableModel(null, columns);
+
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = cxn.openDB();
@@ -185,10 +241,6 @@ public class ReparacionesBL extends BaseBL {
             ResultSetMetaData rsMd = rs.getMetaData();
 
             int countColumns = rsMd.getColumnCount();
-
-            for (int i = 0; i < countColumns; i++) {
-                model.addColumn(rsMd.getColumnLabel(i + 1));
-            }
 
             while (rs.next()) {
                 Object[] fila = new Object[countColumns];

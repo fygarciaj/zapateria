@@ -6,6 +6,9 @@
 package ui;
 
 import javax.swing.JOptionPane;
+import ui.ervin.JReparaciones_ui;
+import ui.jorge.Tickets_ui;
+import ui.mario_empleados.Empleado_ui;
 
 /**
  *
@@ -89,12 +92,22 @@ public class JAppmain_ui extends javax.swing.JFrame {
         mnuReparaciones.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_MASK));
         mnuReparaciones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/magic-wand_24.png"))); // NOI18N
         mnuReparaciones.setText("Reparaciones");
+        mnuReparaciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuReparacionesActionPerformed(evt);
+            }
+        });
         jMenu1.add(mnuReparaciones);
         jMenu1.add(jSeparator1);
 
         mnuTitcketes.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.ALT_MASK));
         mnuTitcketes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/printer_24.png"))); // NOI18N
         mnuTitcketes.setText("Ticketes");
+        mnuTitcketes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuTitcketesActionPerformed(evt);
+            }
+        });
         jMenu1.add(mnuTitcketes);
         jMenu1.add(jSeparator2);
 
@@ -115,9 +128,14 @@ public class JAppmain_ui extends javax.swing.JFrame {
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/settings_24.png"))); // NOI18N
         jMenu2.setText("Configuración");
 
-        mnuUsuarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_MASK));
+        mnuUsuarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK));
         mnuUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/user_config_24.png"))); // NOI18N
-        mnuUsuarios.setText("Usuarios");
+        mnuUsuarios.setText("Empleados");
+        mnuUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuUsuariosActionPerformed(evt);
+            }
+        });
         jMenu2.add(mnuUsuarios);
 
         mnuRoles.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.SHIFT_MASK));
@@ -181,6 +199,39 @@ public class JAppmain_ui extends javax.swing.JFrame {
         this.dispose();
         System.exit(0);
     }//GEN-LAST:event_mnuSalirActionPerformed
+
+    private void mnuReparacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuReparacionesActionPerformed
+        try {
+            JReparaciones_ui repara_ui = new JReparaciones_ui();
+            repara_ui.dskApp = this.dskMain;
+            this.dskMain.add(repara_ui);
+            repara_ui.show();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+    }//GEN-LAST:event_mnuReparacionesActionPerformed
+
+    private void mnuTitcketesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuTitcketesActionPerformed
+        try {
+            Tickets_ui tickets_ui = new Tickets_ui();
+            //tickets_ui.dskApp = this.dskMain;
+            this.dskMain.add(tickets_ui);
+            tickets_ui.show();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+    }//GEN-LAST:event_mnuTitcketesActionPerformed
+
+    private void mnuUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuUsuariosActionPerformed
+        try {
+            Empleado_ui empleado_ui = new Empleado_ui();
+            //tickets_ui.dskApp = this.dskMain;
+            this.dskMain.add(empleado_ui);
+            empleado_ui.show();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+    }//GEN-LAST:event_mnuUsuariosActionPerformed
 
     /**
      * @param args the command line arguments

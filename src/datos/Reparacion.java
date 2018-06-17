@@ -8,19 +8,25 @@ public class Reparacion {
     private Integer Id;
     private String DescripcionReparacion;
     private Double Valor;
-    private TipoCalzado TipoCalzado;
+    private Integer ClienteID;
+    private Integer UsuariosId;
+    private Integer TipoCalzadoId;
 
     public Reparacion() {
     }
 
-    public Reparacion(String DescripcionReparacion, Double Valor, TipoCalzado TipoCalzado) {
+    public Reparacion(String DescripcionReparacion, Double Valor, Integer TipoCalzadoId) {
         this.DescripcionReparacion = DescripcionReparacion;
         this.Valor = Valor;
-        this.TipoCalzado = TipoCalzado;
+        this.TipoCalzadoId = TipoCalzadoId;
     }
 
     public Integer getId() {
         return Id;
+    }
+
+    public void setId(Integer Id) {
+        this.Id = Id;
     }
 
     public String getDescripcionReparacion() {
@@ -39,14 +45,30 @@ public class Reparacion {
         this.Valor = Valor;
     }
 
-    public TipoCalzado getTipoCalzado() {
-        return TipoCalzado;
+    public Integer getTipoCalzadoId() {
+        return TipoCalzadoId;
     }
 
-    public void setTipoCalzado(TipoCalzado TipoCalzado) {
-        this.TipoCalzado = TipoCalzado;
+    public void setTipoCalzadoId(Integer TipoCalzadoId) {
+        this.TipoCalzadoId = TipoCalzadoId;
     }
-    
-    
 
+    public Integer getClienteID() {
+        return ClienteID;
+    }
+
+    public void setClienteID(Integer ClienteID) {
+        this.ClienteID = ClienteID;
+    }
+
+    public Integer getUsuariosId() {
+        return UsuariosId;
+    }
+
+    public void setUsuariosId(Integer UsuariosId) {
+        this.UsuariosId = UsuariosId;
+    }
+
+    
+   
 }

@@ -6,7 +6,6 @@
 package ui;
 
 import datos.Cliente;
-import java.sql.SQLException;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;

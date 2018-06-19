@@ -17,6 +17,8 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import datos.Cliente;
+import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
@@ -273,4 +275,76 @@ public class ClientesBL extends BaseBL {
         return model;
     }
 
+    public static class ClientesCbo {
+        private Integer id;
+        private String nombre_completo;
+
+        public ClientesCbo() {
+        }
+
+        public ClientesCbo(Integer id, String nombre_completo) {
+            this.id = id;
+            this.nombre_completo = nombre_completo;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        public String getNombre_completo() {
+            return nombre_completo;
+        }
+
+        public void setNombre_completo(String nombre_completo) {
+            this.nombre_completo = nombre_completo;
+        }
+
+        @Override
+        public String toString() {
+            return this.nombre_completo;
+        }
+        
+        
+    }
+    
+    
+    public static DefaultComboBoxModel cboClientes() {
+
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = cxn.openDB();
+
+            Statement st = con.createStatement();
+            String query = "SELECT id, nombre_completo FROM clientes";
+            rs = st.executeQuery(query);
+            ResultSetMetaData rsMd = rs.getMetaData();
+
+            int countColumns = rsMd.getColumnCount();
+
+            while (rs.next()) {
+
+//                Object[] fila = new Object[countColumns];
+//                for (int i = 0; i < countColumns; i++) {
+//                    fila[i] = rs.getObject(i + 1);
+//                }
+                model.addElement(new ClientesCbo(rs.getInt("id"), rs.getString("nombre_completo")));
+            }
+
+        } catch (ClassNotFoundException | SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
+            e.printStackTrace();
+            
+            return model;
+        }
+
+        return model;
+    }
+    
 }

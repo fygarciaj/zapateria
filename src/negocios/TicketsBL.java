@@ -6,13 +6,14 @@
 package negocios;
 
 import conexion.ConexionDB;
+import datos.Ticket;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Date;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -79,10 +80,8 @@ public class TicketsBL extends BaseBL {
             System.out.println("Se ha creado la tabla");
         }
     }
-    
-    
-    
-    public static void create(Date fecha, Double valor_total, Integer usuarios_id, Integer clientes_id) {
+
+    public static void create(String fecha, Double valor_total, Integer usuarios_id, Integer clientes_id) {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -90,7 +89,7 @@ public class TicketsBL extends BaseBL {
             String sqlQuery = "INSERT INTO tickets(fecha, valor_total, usuarios_id, clientes_id) VALUES(?,?,?,?);";
             java.sql.PreparedStatement stmt = con.prepareStatement(sqlQuery);
 
-            stmt.setDate(1, fecha);
+            stmt.setString(1, fecha);
             stmt.setDouble(2, valor_total);
             stmt.setInt(3, usuarios_id);
             stmt.setInt(4, clientes_id);
@@ -103,6 +102,29 @@ public class TicketsBL extends BaseBL {
         }
 
     }
+    
+        public static void create(Ticket ticket) {
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = cxn.openDB();
+            String sqlQuery = "INSERT INTO tickets(fecha, valor_total, usuarios_id, clientes_id) VALUES(?,?,?,?);";
+            java.sql.PreparedStatement stmt = con.prepareStatement(sqlQuery);
+
+            stmt.setString(1, ticket.getFecha());
+            stmt.setDouble(2, ticket.getValorTotal());
+            stmt.setInt(3, ticket.getUsuarioID());
+            stmt.setInt(4, ticket.getClienteID());
+
+            stmt.executeUpdate();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
+            LOG.log(Level.SEVERE, null, e);
+        }
+
+    }
+
 
     /**
      * Busca un registro por el id
@@ -120,14 +142,14 @@ public class TicketsBL extends BaseBL {
 
     }
 
-    public void update(Date fecha, Double valor_total, Integer usuarios_id, Integer clientes_id, Integer id) {
+    public void update(String fecha, Double valor_total, Integer usuarios_id, Integer clientes_id, Integer id) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = cxn.openDB();
             String sqlQuery = "UPDATE usuarios SET fecha=?, valor_total=?, usuarios_id=?, clientes_id=?  WHERE id=?";
             stmt = con.prepareStatement(sqlQuery);
-           
-            stmt.setDate(1, fecha);
+
+            stmt.setString(1, fecha);
             stmt.setDouble(2, valor_total);
             stmt.setInt(3, usuarios_id);
             stmt.setInt(4, clientes_id);
@@ -166,21 +188,22 @@ public class TicketsBL extends BaseBL {
         }
     }
 
-    public DefaultTableModel listar() {
+    public static DefaultTableModel listar() {
+        String[] columns = {"Id", "Fecha", "Cliente", "Valor"};
+        DefaultTableModel model = new DefaultTableModel(null, columns);
+
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = cxn.openDB();
 
             Statement st = con.createStatement();
-            String query = "SELECT * FROM " + tableName;
+            String query = "SELECT tickets.id, tickets.fecha, clientes.nombre_completo, tickets.valor_total\n"
+                    + "FROM tickets INNER JOIN clientes ON tickets.clientes_id = clientes.id;";
+
             rs = st.executeQuery(query);
             ResultSetMetaData rsMd = rs.getMetaData();
 
             int countColumns = rsMd.getColumnCount();
-
-            for (int i = 0; i < countColumns; i++) {
-                model.addColumn(rsMd.getColumnLabel(i + 1));
-            }
 
             while (rs.next()) {
                 Object[] fila = new Object[countColumns];
@@ -192,11 +215,11 @@ public class TicketsBL extends BaseBL {
 
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
-            LOG.log(Level.SEVERE, null, e);
+            e.printStackTrace();
             return model;
         }
 
         return model;
     }
-    
+
 }

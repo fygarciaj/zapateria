@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import datos.Reparacion;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
@@ -25,6 +26,7 @@ import datos.Reparacion;
 public class ReparacionesBL extends BaseBL {
 
     private static final Logger LOG = Logger.getLogger(ClientesBL.class.getName());
+
 
     private Integer id = null;
     private static Connection con = null;
@@ -259,4 +261,129 @@ public class ReparacionesBL extends BaseBL {
         return model;
     }
 
+    /**
+     * Clase para llenar los combos de reparaciones
+     */
+    public static class ReparacionesCBO {
+        
+            Integer id;
+            String descripcion_reparacion;
+            Double valor;
+
+        public ReparacionesCBO() {
+        }
+
+        public ReparacionesCBO(Integer id, String descripcion_reparacion, Double valor) {
+            this.id = id;
+            this.descripcion_reparacion = descripcion_reparacion;
+            this.valor = valor;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        public String getDescripcion_reparacion() {
+            return descripcion_reparacion;
+        }
+
+        public void setDescripcion_reparacion(String descripcion_reparacion) {
+            this.descripcion_reparacion = descripcion_reparacion;
+        }
+
+        public Double getValor() {
+            return valor;
+        }
+
+        public void setValor(Double valor) {
+            this.valor = valor;
+        }
+
+        @Override
+        public String toString() {
+            return descripcion_reparacion;
+        }
+            
+        
+            
+    
+    }
+    
+    
+    public static DefaultComboBoxModel cboReparaciones() {
+
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = cxn.openDB();
+
+            Statement st = con.createStatement();
+            String query = "SELECT id, descripcion_reparacion, valor FROM reparaciones";
+            rs = st.executeQuery(query);
+            ResultSetMetaData rsMd = rs.getMetaData();
+
+            int countColumns = rsMd.getColumnCount();
+
+            while (rs.next()) {
+
+//                Object[] fila = new Object[countColumns];
+//                for (int i = 0; i < countColumns; i++) {
+//                    fila[i] = rs.getObject(i + 1);
+//                }
+                model.addElement(new ReparacionesCBO(rs.getInt("id"), rs.getString("descripcion_reparacion"), rs.getDouble("valor")));
+            }
+
+        } catch (ClassNotFoundException | SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
+            e.printStackTrace();
+            
+            return model;
+        }
+
+        return model;
+    }
+    
+        public static DefaultComboBoxModel cboReparaciones(Integer cliente_id) {
+
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = cxn.openDB();
+            
+            String sqlQuery = "SELECT id, descripcion_reparacion, valor FROM reparaciones WHERE clientes_id =?;";
+            stmt = con.prepareStatement(sqlQuery);;
+            stmt.setInt(1, cliente_id);
+            
+            rs = stmt.executeQuery();
+            ResultSetMetaData rsMd = rs.getMetaData();
+
+            int countColumns = rsMd.getColumnCount();
+
+            while (rs.next()) {
+
+//                Object[] fila = new Object[countColumns];
+//                for (int i = 0; i < countColumns; i++) {
+//                    fila[i] = rs.getObject(i + 1);
+//                }
+                model.addElement(new ReparacionesCBO(rs.getInt("id"), rs.getString("descripcion_reparacion"), rs.getDouble("valor")));
+            }
+
+        } catch (ClassNotFoundException | SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
+            e.printStackTrace();
+            
+            return model;
+        }
+
+        return model;
+    }
+    
 }

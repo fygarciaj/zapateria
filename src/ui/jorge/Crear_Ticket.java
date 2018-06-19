@@ -5,13 +5,40 @@
  */
 package ui.jorge;
 
+import datos.DetalleTickets;
+import datos.Ticket;
+import java.sql.Date;
+import java.time.LocalDate;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import negocios.ClientesBL;
+import negocios.DetallesTicketsBL;
+import negocios.ReparacionesBL;
+import negocios.TicketsBL;
+
 public class Crear_Ticket extends javax.swing.JPanel {
 
+    private Integer cliente_id;
+    private String nombre_cliente;
+    private Integer reparacion_id;
+    private String descripcion_reparacion;
+    private Integer cantidad;
+    private Double valor;
+    private Integer nrow_detalle;
+    String[] columns = {"#", "Reparación", "Cantidad", "Valor Unitario", "Valor Total"};
+    private DefaultTableModel dataModelDetalleTicket = new DefaultTableModel(null, columns);
+    
+    
     /**
      * Creates new form editar_empleado
      */
     public Crear_Ticket() {
         initComponents();
+        desactivarControles();
+        llenarComboCliente();
+
     }
 
     /**
@@ -26,22 +53,22 @@ public class Crear_Ticket extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        dtpFecha = new com.toedter.calendar.JDateChooser();
+        cboCliente = new javax.swing.JComboBox<>();
+        cboReparacion = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        spnCantidad = new javax.swing.JSpinner();
         jLabel9 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtValor = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
+        tblDetalle = new javax.swing.JTable();
+        btnAdd = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        txtSubTotal = new javax.swing.JTextField();
+        btnCancel = new javax.swing.JButton();
 
         setMaximumSize(new java.awt.Dimension(663, 448));
         setMinimumSize(new java.awt.Dimension(663, 448));
@@ -52,7 +79,12 @@ public class Crear_Ticket extends javax.swing.JPanel {
 
         jLabel3.setText("Reparación");
 
-        jButton1.setText("Guardar");
+        btnSave.setText("Guardar");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
 
         jLabel7.setBackground(new java.awt.Color(204, 255, 204));
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -60,13 +92,23 @@ public class Crear_Ticket extends javax.swing.JPanel {
         jLabel7.setText("Nuevo Ticket");
         jLabel7.setOpaque(true);
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboCliente.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cboClienteItemStateChanged(evt);
+            }
+        });
+
+        cboReparacion.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cboReparacionItemStateChanged(evt);
+            }
+        });
 
         jLabel8.setText("Cantidad");
 
         jLabel9.setText("Valor Unitario");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblDetalle.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -77,7 +119,7 @@ public class Crear_Ticket extends javax.swing.JPanel {
                 "#", "Reparacion", "Cantidad", "Valor Unitario", "Valor Total"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblDetalle);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -96,11 +138,16 @@ public class Crear_Ticket extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        jButton2.setText("Agregar");
+        btnAdd.setText("Agregar");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("SubTotal:");
 
-        jButton3.setText("Cancelar");
+        btnCancel.setText("Cancelar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -113,33 +160,33 @@ public class Crear_Ticket extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel2)
-                                            .addComponent(jLabel1)
-                                            .addComponent(jLabel7))
-                                        .addGap(8, 8, 8)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jSpinner1))
                                             .addGroup(layout.createSequentialGroup()
                                                 .addComponent(jLabel3)
                                                 .addGap(153, 153, 153)
-                                                .addComponent(jLabel8)))
-                                        .addGap(18, 18, 18)
+                                                .addComponent(jLabel8))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(cboReparacion, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(spnCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(4, 4, 4)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel9)
                                             .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(18, 18, 18)
-                                                .addComponent(jButton2)))))
+                                                .addComponent(btnAdd))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel2)
+                                            .addComponent(jLabel1))
+                                        .addGap(32, 32, 32)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(cboCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -148,12 +195,12 @@ public class Crear_Ticket extends javax.swing.JPanel {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(23, 23, 23))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jButton1)
+                                .addComponent(btnSave)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton3)
+                                .addComponent(btnCancel)
                                 .addGap(20, 20, 20))))))
         );
         layout.setVerticalGroup(
@@ -163,12 +210,12 @@ public class Crear_Ticket extends javax.swing.JPanel {
                 .addComponent(jLabel7)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dtpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cboCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 14, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -176,34 +223,80 @@ public class Crear_Ticket extends javax.swing.JPanel {
                     .addComponent(jLabel9))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
+                    .addComponent(cboReparacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spnCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAdd))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton3))
+                    .addComponent(btnSave)
+                    .addComponent(btnCancel))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    
+    private void cboClienteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboClienteItemStateChanged
+
+        ClientesBL.ClientesCbo cbo = (ClientesBL.ClientesCbo) cboCliente.getSelectedItem();
+
+        this.cliente_id = cbo.getId();
+        this.nombre_cliente = cbo.getNombre_completo();
+
+        llenarComboReparaciones();
+
+    }//GEN-LAST:event_cboClienteItemStateChanged
+
+    private void cboReparacionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboReparacionItemStateChanged
+        ReparacionesBL.ReparacionesCBO cbo = (ReparacionesBL.ReparacionesCBO) cboReparacion.getSelectedItem();
+        try {
+
+            this.spnCantidad.setValue(1);
+            this.txtValor.setText(cbo.getValor().toString());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }//GEN-LAST:event_cboReparacionItemStateChanged
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+
+        nrow_detalle++;
+        
+        DetalleTickets det = new DetalleTickets(this.reparacion_id, this.descripcion_reparacion, this.cantidad, this.valor);
+        
+        //dataModelDetalleTicket.addRow((Object) det);
+        this.tblDetalle.setModel(dataModelDetalleTicket);
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        
+        Ticket ticket = new Ticket();
+        
+        ticket.setClienteID(cliente_id);
+        ticket.setFecha(this.dtpFecha.getDate().toString());
+        ticket.setValorTotal(this.valor);
+        TicketsBL ticketbl = new TicketsBL();
+        
+        ticketbl.create(ticket);
+        
+        
+    }//GEN-LAST:event_btnSaveActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnSave;
+    private javax.swing.JComboBox<String> cboCliente;
+    private javax.swing.JComboBox<String> cboReparacion;
+    private com.toedter.calendar.JDateChooser dtpFecha;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -213,9 +306,53 @@ public class Crear_Ticket extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JSpinner spnCantidad;
+    private javax.swing.JTable tblDetalle;
+    private javax.swing.JTextField txtSubTotal;
+    private javax.swing.JTextField txtValor;
     // End of variables declaration//GEN-END:variables
+
+    private void llenarComboCliente() {
+
+        this.cboCliente.removeAllItems();
+        try {
+            DefaultComboBoxModel modelClientes;
+
+            modelClientes = ClientesBL.cboClientes();
+            this.cboCliente.setModel(modelClientes);
+            //disableButtons();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar la lista de clientes " + e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
+
+    private void llenarComboReparaciones() {
+
+        this.cboReparacion.removeAllItems();
+        this.cboReparacion.setEnabled(true);
+
+        try {
+            DefaultComboBoxModel modelReparaciones;
+
+            modelReparaciones = ReparacionesBL.cboReparaciones(this.cliente_id);
+            this.cboReparacion.setModel(modelReparaciones);
+            //disableButtons();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar la lista de reparaciones " + e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
+
+    private void desactivarControles() {
+        this.dtpFecha.setDate(Date.valueOf(LocalDate.now()));
+        this.cboCliente.removeAllItems();
+        this.cboReparacion.removeAllItems();
+        this.cboReparacion.setEnabled(false);
+        this.tblDetalle.setModel(dataModelDetalleTicket);
+    }
 }

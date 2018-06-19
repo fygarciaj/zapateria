@@ -5,6 +5,10 @@
  */
 package ui.jorge;
 
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import negocios.TicketsBL;
+
 public class Lista_ventas extends javax.swing.JPanel {
 
     /**
@@ -12,6 +16,7 @@ public class Lista_ventas extends javax.swing.JPanel {
      */
     public Lista_ventas() {
         initComponents();
+        llenarLista();
     }
 
     /**
@@ -24,29 +29,10 @@ public class Lista_ventas extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tblTickets = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {"1", "2018-06-16", "Fulanito de Tal", "100000"},
-                {"2", "2018-06-13", "Pedro Peres", "200000"},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Id", "Fecha", "Cliente", "Valor"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                true, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tblTickets);
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 153));
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -82,6 +68,24 @@ public class Lista_ventas extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable tblTickets;
     // End of variables declaration//GEN-END:variables
+
+    private void llenarLista() {
+
+        TicketsBL lista = new TicketsBL();
+
+        try {
+            DefaultTableModel modelTickets;
+
+            modelTickets = TicketsBL.listar();
+            this.tblTickets.setModel(modelTickets);
+            //disableButtons();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar la lista de clientes " + e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
 }

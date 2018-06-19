@@ -44,6 +44,7 @@ public class Tickets_ui extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setTitle("Ventas por Tickets por Jorge Marquez");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/res/receipt_24.png"))); // NOI18N
 
         jButton1.setBackground(new java.awt.Color(204, 255, 204));
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/receipt_24.png"))); // NOI18N

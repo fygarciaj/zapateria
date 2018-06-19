@@ -3,7 +3,7 @@
  */
 package datos;
 
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * @author REBOOTSYSTEM
@@ -12,10 +12,10 @@ import java.sql.Date;
 public class Ticket {
 
     private Integer Id;
-    private Date Fecha;
+    private String Fecha;
     private Double ValorTotal;
-    private Usuario UsuarioID;
-    private Cliente ClienteID;
+    private Integer UsuarioID;
+    private Integer ClienteID;
 
     
     public Ticket() {
@@ -25,7 +25,7 @@ public class Ticket {
         this.ClienteID = null;
     }
 
-    public Ticket(Date Fecha, Double ValorTotal, Usuario UsuarioID, Cliente ClienteID) {
+    public Ticket(String Fecha, Double ValorTotal, Integer UsuarioID, Integer ClienteID) {
         this.Fecha = Fecha;
         this.ValorTotal = ValorTotal;
         this.UsuarioID = UsuarioID;
@@ -36,11 +36,15 @@ public class Ticket {
         return Id;
     }
 
-    public Date getFecha() {
+    public void setId(Integer Id) {
+        this.Id = Id;
+    }
+
+    public String getFecha() {
         return Fecha;
     }
 
-    public void setFecha(Date Fecha) {
+    public void setFecha(String Fecha) {
         this.Fecha = Fecha;
     }
 
@@ -52,21 +56,22 @@ public class Ticket {
         this.ValorTotal = ValorTotal;
     }
 
-    public Usuario getUsuarioID() {
+    public Integer getUsuarioID() {
         return UsuarioID;
     }
 
-    public void setUsuarioID(Usuario UsuarioID) {
+    public void setUsuarioID(Integer UsuarioID) {
         this.UsuarioID = UsuarioID;
     }
 
-    public Cliente getClienteID() {
+    public Integer getClienteID() {
         return ClienteID;
     }
 
-    public void setClienteID(Cliente ClienteID) {
+    public void setClienteID(Integer ClienteID) {
         this.ClienteID = ClienteID;
     }
+
 
     
 }

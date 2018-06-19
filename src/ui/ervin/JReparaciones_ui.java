@@ -49,7 +49,7 @@ public final class JReparaciones_ui extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setTitle("Reparaciones por Ervin Arsuza");
-        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/res/user_32.png"))); // NOI18N
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons8-martillo-64.png"))); // NOI18N
 
         jToolBar1.setRollover(true);
 

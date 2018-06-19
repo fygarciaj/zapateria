@@ -14,7 +14,6 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.text.JTextComponent;
 import negocios.ClientesBL;
-import ui.JClientes_ui;
 
 /**
  *

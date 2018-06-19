@@ -17,7 +17,6 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.text.JTextComponent;
 import negocios.ClientesBL;
-import ui.JClientes_ui;
 
 /**
  *

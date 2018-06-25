@@ -5,6 +5,7 @@
  */
 package ui;
 
+import java.awt.Dimension;
 import ui.Client.JClientes_ui;
 import javax.swing.JOptionPane;
 import ui.ervin.JReparaciones_ui;
@@ -46,6 +47,9 @@ public class JAppmain_ui extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         mnuUsuarios = new javax.swing.JMenuItem();
         mnuRoles = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Aplicación para Zapaterías Calzaditos");
@@ -146,6 +150,24 @@ public class JAppmain_ui extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
+        jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/info24.png"))); // NOI18N
+        jMenu3.setText("Ayuda");
+
+        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/speedometer24.png"))); // NOI18N
+        jMenuItem2.setText("Dashboard");
+        jMenu3.add(jMenuItem2);
+
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/earth-globe24.png"))); // NOI18N
+        jMenuItem1.setText("Acerca de");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu3);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -215,7 +237,7 @@ public class JAppmain_ui extends javax.swing.JFrame {
     private void mnuTitcketesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuTitcketesActionPerformed
         try {
             Tickets_ui tickets_ui = new Tickets_ui();
-            //tickets_ui.dskApp = this.dskMain;
+
             this.dskMain.add(tickets_ui);
             tickets_ui.show();
         } catch (Exception e) {
@@ -226,13 +248,28 @@ public class JAppmain_ui extends javax.swing.JFrame {
     private void mnuUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuUsuariosActionPerformed
         try {
             Empleado_ui empleado_ui = new Empleado_ui();
-            //tickets_ui.dskApp = this.dskMain;
+
             this.dskMain.add(empleado_ui);
             empleado_ui.show();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
     }//GEN-LAST:event_mnuUsuariosActionPerformed
+
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        try {
+            JAbout about = new JAbout();
+            this.dskMain.add(about);
+            Dimension desktopSize = this.dskMain.getSize();
+            Dimension FrameSize = about.getSize();
+            about.setLocation((desktopSize.width - FrameSize.width) / 2, (desktopSize.height - FrameSize.height) / 2);
+            about.show();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -274,7 +311,10 @@ public class JAppmain_ui extends javax.swing.JFrame {
     private javax.swing.JDesktopPane dskMain;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JMenuItem mnuClientes;

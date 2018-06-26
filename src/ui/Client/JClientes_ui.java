@@ -9,9 +9,8 @@ import datos.Cliente;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import negocios.ClientesBL;
-import ui.Client.JAddClient;
-import ui.Client.JEditClient;
 
 /**
  *
@@ -28,6 +27,7 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
     public JClientes_ui() {
         initComponents();
         disableButtons();
+        initTable();
         fillTable();
     }
 
@@ -48,12 +48,15 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
         btnDelete = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
         btnRefresh = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblClients = new javax.swing.JTable();
 
         setClosable(true);
         setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
         setTitle("Clientes");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/res/user_32.png"))); // NOI18N
 
@@ -113,9 +116,21 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
         });
         jToolBar1.add(btnRefresh);
 
-        tblClients.setEditingColumn(0);
-        tblClients.setEditingRow(0);
+        jTextField1.setText("jTextField1");
+        jToolBar1.add(jTextField1);
+
+        tblClients.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        tblClients.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         tblClients.getTableHeader().setReorderingAllowed(false);
+        tblClients.setUpdateSelectionOnSort(false);
+        tblClients.setVerifyInputWhenFocusTarget(false);
         tblClients.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblClientsMouseClicked(evt);
@@ -127,16 +142,16 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 766, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 774, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(28, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -146,7 +161,7 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(141, 141, 141)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -206,20 +221,19 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        
-        if (cliente_id > 0)
-        {
+
+        if (cliente_id > 0) {
             try {
                 Cliente cliente = ClientesBL.findById(cliente_id);
                 JEditClient editCliente = new JEditClient(this, cliente);
                 this.dskApp.add(editCliente);
                 editCliente.show();
-                
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        
+
     }//GEN-LAST:event_btnEditActionPerformed
 
 
@@ -233,6 +247,7 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTable tblClients;
     // End of variables declaration//GEN-END:variables
@@ -248,6 +263,14 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
 
             modelClients = ClientesBL.listar();
             this.tblClients.setModel(modelClients);
+            TableColumnModel columnModel = tblClients.getColumnModel();
+
+            columnModel.getColumn(0).setPreferredWidth(30);
+            columnModel.getColumn(1).setPreferredWidth(150);
+            columnModel.getColumn(2).setPreferredWidth(200);
+            columnModel.getColumn(3).setPreferredWidth(250);
+            columnModel.getColumn(4).setPreferredWidth(250);
+            columnModel.getColumn(5).setPreferredWidth(250);
             disableButtons();
 
         } catch (Exception e) {
@@ -266,4 +289,11 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
         this.btnEdit.setEnabled(true);
         this.btnDelete.setEnabled(true);
     }
+
+    private void initTable() {
+
+    }
+    
+    
 }
+

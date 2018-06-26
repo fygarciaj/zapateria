@@ -180,13 +180,13 @@ public class ClientesBL extends BaseBL {
             stmt.setString(2, fechaNacimiento);
             stmt.setString(3, telefono);
             stmt.setString(4, direccion);
-            
+
             stmt.setInt(5, id);
 
             stmt.executeUpdate();
 
             JOptionPane.showMessageDialog(null, "Se ha actualizado un cliente");
-            
+
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, "Ocurrio un error al modificar un cliente");
             LOG.log(Level.SEVERE, null, e);
@@ -206,7 +206,7 @@ public class ClientesBL extends BaseBL {
             stmt.setString(3, cliente.getTelefono());
             stmt.setString(4, cliente.getDireccion());
             stmt.setInt(5, id);
-            
+
             stmt.executeUpdate();
 
             JOptionPane.showMessageDialog(null, "Se ha actualizado un cliente");
@@ -243,7 +243,13 @@ public class ClientesBL extends BaseBL {
     public static DefaultTableModel listar() {
 
         String[] columns = {"Id", "Identificación", "Nombres Completos", "Fecha Nacimiento", "Teléfono", "Dirección"};
-        DefaultTableModel model = new DefaultTableModel(null, columns);
+        DefaultTableModel model = new DefaultTableModel(null, columns) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                //all cells false
+                return false;
+            }
+        };
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -268,7 +274,7 @@ public class ClientesBL extends BaseBL {
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
             LOG.log(Level.SEVERE, null, e);
             e.printStackTrace();
-            
+
             return model;
         }
 
@@ -276,6 +282,7 @@ public class ClientesBL extends BaseBL {
     }
 
     public static class ClientesCbo {
+
         private Integer id;
         private String nombre_completo;
 
@@ -307,15 +314,12 @@ public class ClientesBL extends BaseBL {
         public String toString() {
             return this.nombre_completo;
         }
-        
-        
+
     }
-    
-    
+
     public static DefaultComboBoxModel cboClientes() {
 
         DefaultComboBoxModel model = new DefaultComboBoxModel();
-        
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -340,11 +344,11 @@ public class ClientesBL extends BaseBL {
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
             e.printStackTrace();
-            
+
             return model;
         }
 
         return model;
     }
-    
+
 }

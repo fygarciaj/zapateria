@@ -6,6 +6,7 @@
     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
       <Color blue="9c" green="bc" red="1a" type="rgb"/>
     </Property>
+    <Property name="locationByPlatform" type="boolean" value="true"/>
     <Property name="undecorated" type="boolean" value="true"/>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
@@ -69,7 +70,7 @@
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
                                   <Component id="btnLogin" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="btnClose" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="1" attributes="0">
@@ -133,7 +134,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="LOGIN"/>
+            <Property name="text" type="java.lang.String" value="INICIAR SESION"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtUsername">
@@ -141,8 +142,9 @@
             <Property name="text" type="java.lang.String" value="fygarciaj"/>
             <Property name="toolTipText" type="java.lang.String" value="Ingrese su Nombre de Usuario"/>
             <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-              <Insets value="[0, 0, 0, 0]"/>
+              <Insets value="[3, 3, 3, 3]"/>
             </Property>
+            <Property name="name" type="java.lang.String" value="" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JPasswordField" name="txtPassword">
@@ -155,6 +157,7 @@
         <Component class="javax.swing.JButton" name="btnLogin">
           <Properties>
             <Property name="text" type="java.lang.String" value="Iniciar"/>
+            <Property name="toolTipText" type="java.lang.String" value="Inicia Sesi&#xf3;n si el usuario y la contrase&#xf1;a son correctos"/>
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnLoginMouseClicked"/>
@@ -178,7 +181,7 @@
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/res/settings_24.png"/>
+              <Image iconType="3" name="/res/keyhole_24.png"/>
             </Property>
             <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
               <ComponentRef name="txtPassword"/>
@@ -188,7 +191,7 @@
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/res/keyhole_128.png"/>
+              <Image iconType="3" name="/res/login_128.png"/>
             </Property>
           </Properties>
         </Component>

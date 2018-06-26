@@ -24,6 +24,7 @@ public class JAppmain_ui extends javax.swing.JFrame {
     public JAppmain_ui() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
+        dashboard();
     }
 
     /**
@@ -324,4 +325,16 @@ public class JAppmain_ui extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuTitcketes;
     private javax.swing.JMenuItem mnuUsuarios;
     // End of variables declaration//GEN-END:variables
+
+    private void dashboard() {
+        try {
+            JDashboard_ui dash = new JDashboard_ui(this.dskMain);
+            this.dskMain.add(dash);
+            dash.setMaximum(true);
+            dash.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 }

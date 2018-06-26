@@ -5,8 +5,13 @@
  */
 package ui;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import negocios.Security;
+
 /**
  *
  * @author REBOOTSYSTEM
@@ -42,6 +47,7 @@ public class JLogin_ui extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(26, 188, 156));
+        setLocationByPlatform(true);
         setUndecorated(true);
         setResizable(false);
 
@@ -49,17 +55,19 @@ public class JLogin_ui extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setForeground(java.awt.Color.white);
-        jLabel1.setText("LOGIN");
+        jLabel1.setText("INICIAR SESION");
 
         txtUsername.setText("fygarciaj");
         txtUsername.setToolTipText("Ingrese su Nombre de Usuario");
-        txtUsername.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        txtUsername.setMargin(new java.awt.Insets(3, 3, 3, 3));
+        txtUsername.setName(""); // NOI18N
 
         txtPassword.setText("fygarciaj");
         txtPassword.setToolTipText("Ingrese su contraseña");
         txtPassword.setVerifyInputWhenFocusTarget(false);
 
         btnLogin.setText("Iniciar");
+        btnLogin.setToolTipText("Inicia Sesión si el usuario y la contraseña son correctos");
         btnLogin.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnLoginMouseClicked(evt);
@@ -75,10 +83,10 @@ public class JLogin_ui extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/user_24.png"))); // NOI18N
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/settings_24.png"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/keyhole_24.png"))); // NOI18N
         jLabel3.setLabelFor(txtPassword);
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/keyhole_128.png"))); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/login_128.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -96,7 +104,7 @@ public class JLogin_ui extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(btnLogin)
-                                .addGap(18, 18, 18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnClose))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -161,17 +169,32 @@ public class JLogin_ui extends javax.swing.JFrame {
 
     private void btnLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseClicked
         // TODO add your handling code here:
-        if (Security.checkAcceso(this.txtUsername.getText(), String.valueOf(this.txtPassword.getPassword()))){
-           // JOptionPane.showMessageDialog(rootPane, "El usuario y la contraseña son correctos");
-            
+        if (Security.checkAcceso(this.txtUsername.getText(), String.valueOf(this.txtPassword.getPassword()))) {
+            // JOptionPane.showMessageDialog(rootPane, "El usuario y la contraseña son correctos");
+
             JAppmain_ui app = new JAppmain_ui();
+//            app.setDefaultLookAndFeelDecorated(true);
+//            try {
+//                //JDialog.setDefaultLookAndFeelDecorated(true);
+//                UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+//                //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+//                //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+//               // UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+//            } catch (ClassNotFoundException ex) {
+//                Logger.getLogger(JLogin_ui.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (InstantiationException ex) {
+//                Logger.getLogger(JLogin_ui.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (IllegalAccessException ex) {
+//                Logger.getLogger(JLogin_ui.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (UnsupportedLookAndFeelException ex) {
+//                Logger.getLogger(JLogin_ui.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+
             app.setVisible(true);
             this.dispose();
-        }
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(rootPane, "El usuario y la contraseña NO son correctos");
-        } 
+        }
     }//GEN-LAST:event_btnLoginMouseClicked
 
     /**

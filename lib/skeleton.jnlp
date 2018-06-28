@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<jnlp 
+	spec="1.0+" 
+	codebase="http://www.jgoodies.com/download/demos/skeleton/" 
+	href="skeleton.jnlp">
+  <information>
+    <title>Skeleton</title>
+    <vendor>JGoodies Software GmbH</vendor>
+    <homepage href="http://www.jgoodies.com/" />
+
+    <description>Skeleton</description>
+    <description kind="short">A sample Swing app that utilizes the JGoodies Smart Client.</description>
+    <description kind="tooltip">Skeleton</description>
+
+    <icon href="skeleton32x32.gif"   width="32" height="32" />
+    <icon href="skeleton64x64.gif"   width="64" height="64" />
+    <icon href="skeleton-splash.png" kind="splash" 	     />
+    <offline-allowed />
+  </information>
+  <security>
+    <all-permissions />
+  </security>
+  <resources>
+    <j2se version="1.8"   />
+    <j2se version="9+"    
+        java-vm-args="--add-exports=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED"
+    />
+    <jar href="skeleton.jar" main="true" />
+    <property name="jnlp.packEnabled" value="true" />    
+  </resources>
+  <application-desc />
+</jnlp>
+

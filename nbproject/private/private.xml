@@ -5,6 +5,8 @@
         <group>
             <file>file:/D:/proyectos/zapateria/src/ui/Client/JClientes_ui.java</file>
             <file>file:/D:/proyectos/zapateria/src/ui/JMain.java</file>
+            <file>file:/D:/proyectos/zapateria/src/negocios/ClientesBL.java</file>
+            <file>file:/D:/proyectos/zapateria/src/ui/Client/JAddClient.java</file>
             <file>file:/D:/proyectos/zapateria/src/ui/ervin/JReparaciones_ui.java</file>
             <file>file:/D:/proyectos/zapateria/src/ui/JAppmain_ui.java</file>
         </group>

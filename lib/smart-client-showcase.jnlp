@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<jnlp 
+	spec="1.0+" 
+	codebase="http://www.jgoodies.com/download/demos/showcase/" 
+	href="smart-client-showcase.jnlp">
+  <information>
+    <title>Showcase</title>
+    <vendor>JGoodies Software GmbH</vendor>
+    <homepage href="http://www.jgoodies.com/" />
+
+    <description>Test Drive the JGoodies Smart Client</description>
+    <description kind="short">The demo utilizes, presents and tests the JGoodies Smart Client product.</description>
+    <description kind="tooltip">The JGoodies Smart Client Showcase Application</description>
+
+    <icon href="showcase-logo-32x32.png"   width="32" height="32" />
+    <icon href="showcase-logo-64x64.png"   width="64" height="64" />
+    <icon href="showcase-splash.png" kind="splash"         	      />
+    <offline-allowed />
+  </information>
+  <security>
+    <all-permissions />
+  </security>
+  <resources>
+    <j2se version="1.8"   />
+    <j2se version="9+"    
+        java-vm-args="--add-exports=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED
+                      --add-opens=java.base/java.lang=ALL-UNNAMED"
+    />
+    <jar href="smart-client-showcase.jar" main="true"	/>
+     <property name="jnlp.packEnabled" value="true" />
+  </resources>
+  <application-desc />
+</jnlp>
+

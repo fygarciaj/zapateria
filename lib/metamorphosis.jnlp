@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<jnlp 
+	spec="1.0+" 
+	codebase="http://www.jgoodies.com/download/demos/metamorphosis/" 
+	href="metamorphosis.jnlp">
+  <information>
+    <title>Metamorphosis</title>
+    <vendor>JGoodies Software GmbH</vendor>
+    <homepage href="http://www.jgoodies.com/" />
+
+    <description>Metamorphosis - A Short Course in Swing Visual Design</description>
+    <description kind="short">Metamorphosis can help you understand and avoid common errors of Swing based Java clients.</description>
+    <description kind="tooltip">Metamorphosis</description>
+
+    <icon href="metamorphosis32x32.gif"   width="32" height="32" />
+    <icon href="metamorphosis64x64.gif"   width="64" height="64" />
+    <icon href="metamorphosis-splash.png" kind="splash"   />
+    <offline-allowed />
+  </information>
+  <security>
+    <all-permissions />
+  </security>
+  <resources>
+    <j2se version="1.8"   />
+    <j2se version="9+"    
+        java-vm-args="--add-exports=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED"
+    />
+    <jar href="metamorphosis.jar" main="true" />
+    <property name="jnlp.packEnabled" value="true" />
+  </resources>
+  <application-desc />
+</jnlp>
+

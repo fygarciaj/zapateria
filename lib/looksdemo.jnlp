@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<jnlp 
+	spec="1.0+" 
+	codebase="http://www.jgoodies.com/download/demos/looks/" 
+	href="looksdemo.jnlp">
+  <information>
+    <title>JGoodies Looks Demo</title>
+    <vendor>JGoodies Software GmbH</vendor>
+    <homepage href="http://www.jgoodies.com/" />
+
+    <description>Test Drive the JGoodies Looks</description>
+    <description kind="short">The demo utilizes, presents and tests the JGoodies Windows and Plastic look-and-feel.</description>
+    <description kind="tooltip">The JGoodies Looks Demo</description>
+
+    <icon href="looksdemo32x32.gif"   width="32" height="32" />
+    <icon href="looksdemo64x64.gif"   width="64" height="64" />
+    <icon href="looksdemo-splash.png" kind="splash" 	     />
+    <offline-allowed />
+  </information>
+  <security>
+    <all-permissions />
+  </security>
+  <resources>
+    <j2se version="1.8"	  />
+    <j2se version="9+"    
+        java-vm-args="--add-exports=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED"
+    />
+    <jar href="looksdemo.jar" main="true" />
+    <property name="jnlp.packEnabled" value="true" />
+  </resources>
+  <application-desc />
+</jnlp>
+

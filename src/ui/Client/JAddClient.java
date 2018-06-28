@@ -106,7 +106,7 @@ public class JAddClient extends javax.swing.JInternalFrame {
         txtNombreCompleto = new javax.swing.JTextField();
         txtDireccion = new javax.swing.JTextField();
         txtTelefono = new javax.swing.JTextField();
-        dtpFechaNacimiento = new org.jdatepicker.JDatePicker();
+        dtpFechaNacimiento = new com.toedter.calendar.JDateChooser();
         jToolBar1 = new javax.swing.JToolBar();
         btnSave = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
@@ -137,6 +137,9 @@ public class JAddClient extends javax.swing.JInternalFrame {
         jLabel6.setLabelFor(txtTelefono);
         jLabel6.setText("Teléfono");
 
+        dtpFechaNacimiento.setDateFormatString("yyyy-MM-d");
+        dtpFechaNacimiento.setMinSelectableDate(new java.util.Date(-2208967363000L));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -159,9 +162,9 @@ public class JAddClient extends javax.swing.JInternalFrame {
                             .addComponent(jLabel6))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(dtpFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addComponent(txtDireccion)
-                            .addComponent(txtTelefono))))
+                            .addComponent(txtTelefono)
+                            .addComponent(dtpFechaNacimiento, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE))))
                 .addGap(307, 307, 307))
         );
         jPanel1Layout.setVerticalGroup(
@@ -179,7 +182,7 @@ public class JAddClient extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
                     .addComponent(dtpFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -187,7 +190,7 @@ public class JAddClient extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(92, Short.MAX_VALUE))
+                .addContainerGap(96, Short.MAX_VALUE))
         );
 
         jToolBar1.setRollover(true);
@@ -256,9 +259,10 @@ public class JAddClient extends javax.swing.JInternalFrame {
                 try {
                     cliente = new Cliente();
 
-                    String fecha = this.dtpFechaNacimiento.getFormattedTextField().getText();
-                    List<String> fecha1 = StringUtils.split(fecha, "/", true);
-                    fecha = fecha1.get(2)+"-"+fecha1.get(1)+"-"+fecha1.get(0);
+//                    String fecha = this.dtpFechaNacimiento.getFormattedTextField().getText();
+//                    List<String> fecha1 = StringUtils.split(fecha, "/", true);
+//                    fecha = fecha1.get(2)+"-"+fecha1.get(1)+"-"+fecha1.get(0);
+String fecha = this.dtpFechaNacimiento.
                     cliente.setIdentificacion(this.txtIdentificacion.getText());
                     cliente.setNombreCompleto(this.txtNombreCompleto.getText());
                     cliente.setFechaNacimiento(fecha);
@@ -288,7 +292,7 @@ public class JAddClient extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnSave;
-    private org.jdatepicker.JDatePicker dtpFechaNacimiento;
+    private com.toedter.calendar.JDateChooser dtpFechaNacimiento;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

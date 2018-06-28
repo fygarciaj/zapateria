@@ -8,6 +8,7 @@ package ui.Client;
 import com.mysql.jdbc.StringUtils;
 import datos.Cliente;
 import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
@@ -81,7 +82,7 @@ public class JAddClient extends javax.swing.JInternalFrame {
         // referencia al formulario principal de clientes
         this.clientes_ui = cliente_ui;
         initComponents();
-        
+
     }
 
     /**
@@ -261,19 +262,20 @@ public class JAddClient extends javax.swing.JInternalFrame {
 
 //                    String fecha = this.dtpFechaNacimiento.getFormattedTextField().getText();
 //                    List<String> fecha1 = StringUtils.split(fecha, "/", true);
-//                    fecha = fecha1.get(2)+"-"+fecha1.get(1)+"-"+fecha1.get(0);
-String fecha = this.dtpFechaNacimiento.
+ //                  fecha = fecha1.get(2)+"-"+fecha1.get(1)+"-"+fecha1.get(0);
+                    Date d = this.dtpFechaNacimiento.getDate();
+                    String fecha = this.dtpFechaNacimiento.getDate().getYear()+"-"+this.dtpFechaNacimiento.getDate().getMonth()+"-"+this.dtpFechaNacimiento.getDate().getDay();
                     cliente.setIdentificacion(this.txtIdentificacion.getText());
                     cliente.setNombreCompleto(this.txtNombreCompleto.getText());
                     cliente.setFechaNacimiento(fecha);
                     cliente.setDireccion(this.txtDireccion.getText());
                     cliente.setTelefono(this.txtTelefono.getText());
-                    
+
                     clientebl.create(cliente);
 
                     clearFields();
                     this.clientes_ui.fillTable();
-                    
+
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(rootPane, e.getLocalizedMessage());
                 }
@@ -310,7 +312,7 @@ String fecha = this.dtpFechaNacimiento.
     private org.jdatepicker.UtilDateModel utilDateModel1;
     // End of variables declaration//GEN-END:variables
 
-    private void clearFields() {       
+    private void clearFields() {
         this.txtIdentificacion.setText("");
         this.txtNombreCompleto.setText("");
         this.txtDireccion.setText("");

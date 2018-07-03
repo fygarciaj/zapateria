@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui.ervin;
+package ui.repair;
 
 
 import com.mysql.jdbc.StringUtils;

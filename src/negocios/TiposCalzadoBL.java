@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -24,6 +25,7 @@ import javax.swing.table.DefaultTableModel;
 public class TiposCalzadoBL extends BaseBL {
 
     private static final Logger LOG = Logger.getLogger(ClientesBL.class.getName());
+
     private Integer id = null;
     private String nombre_calzado = null;
     private static Connection con = null;
@@ -168,10 +170,82 @@ public class TiposCalzadoBL extends BaseBL {
                 model.addRow(fila);
             }
 
-            
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
             LOG.log(Level.SEVERE, null, e);
+            return model;
+        }
+
+        return model;
+    }
+    
+    public static class TiposCalzadoscbo {
+        
+        private int Id;
+        private String nombre_calzado;
+
+        public TiposCalzadoscbo(int Id, String nombre_calzado) {
+            this.Id = Id;
+            this.nombre_calzado = nombre_calzado;
+        }
+
+        public TiposCalzadoscbo() {
+        }
+        
+
+        public int getId() {
+            return Id;
+        }
+
+        public void setId(int Id) {
+            this.Id = Id;
+        }
+
+        public String getNombre_calzado() {
+            return nombre_calzado;
+        }
+
+        public void setNombre_calzado(String nombre_calzado) {
+            this.nombre_calzado = nombre_calzado;
+        }
+
+        @Override
+        public String toString() {
+            return nombre_calzado;
+        }
+        
+        
+        
+    }
+
+    public static DefaultComboBoxModel cboTiposCalzado() {
+
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = cxn.openDB();
+
+            Statement st = con.createStatement();
+            String query = "SELECT id, nombre_calzado FROM tipos_calzados";
+            rs = st.executeQuery(query);
+            ResultSetMetaData rsMd = rs.getMetaData();
+
+            int countColumns = rsMd.getColumnCount();
+
+            while (rs.next()) {
+
+//                Object[] fila = new Object[countColumns];
+//                for (int i = 0; i < countColumns; i++) {
+//                    fila[i] = rs.getObject(i + 1);
+//                }
+                model.addElement(new TiposCalzadoscbo(rs.getInt("id"), rs.getString("nombre_calzado")));
+            }
+
+        } catch (ClassNotFoundException | SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
+            e.printStackTrace();
+
             return model;
         }
 

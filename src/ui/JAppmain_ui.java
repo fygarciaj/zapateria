@@ -8,7 +8,7 @@ package ui;
 import java.awt.Dimension;
 import ui.Client.JClientes_ui;
 import javax.swing.JOptionPane;
-import ui.ervin.JReparaciones_ui;
+import ui.repair.JReparaciones_ui;
 import ui.jorge.Tickets_ui;
 import ui.mario_empleados.Empleado_ui;
 

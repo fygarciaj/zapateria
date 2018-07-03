@@ -27,6 +27,7 @@ import javax.swing.DefaultComboBoxModel;
 public class ClientesBL extends BaseBL {
 
     private static final Logger LOG = Logger.getLogger(ClientesBL.class.getName());
+
     private Integer id = null;
     private String identificacion = null;
     private String nombreCompleto = null;
@@ -281,6 +282,10 @@ public class ClientesBL extends BaseBL {
         return model;
     }
 
+    /** 
+     * Clase para los registros que se llenan el combobox de clientes
+     * 
+     */
     public static class ClientesCbo {
 
         private Integer id;
@@ -350,5 +355,72 @@ public class ClientesBL extends BaseBL {
 
         return model;
     }
+
+    /**
+     *  Retorna un objeto DefaultTableModel para llenar una tabla de los clientes filtrados por el nombre, el telefono o la dirección
+     * 
+     * @param text
+     * @return 
+     */
+    public static DefaultTableModel buscarCliente(String text) {
+
+        String[] columns = {"Id", "Identificación", "Nombres Completos", "Fecha Nacimiento", "Teléfono", "Dirección"};
+        DefaultTableModel model = new DefaultTableModel(null, columns) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                //all cells false
+                return false;
+            }
+        };
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = cxn.openDB();
+
+            String sqlQuery = "SELECT * FROM clientes "
+                    + "WHERE nombre_completo LIKE ? "
+                    + "OR telefono LIKE ? "
+                    + "OR direccion LIKE ? ";
+
+            String sqlQuery1 = "SELECT * FROM clientes "
+                    + "WHERE(((clientes.nombre_completo) Like '%F%')) "
+                    + "OR(((clientes.telefono) Like '%F%')) "
+                    + "OR(((clientes.direccion) Like '%F%'));";
+
+            stmt = con.prepareStatement(sqlQuery);
+
+        stmt.setString(1, "%" + text + "%");
+        stmt.setString(2, "%" + text + "%");
+         stmt.setString(3, "%" + text + "%");
+
+        rs = stmt.executeQuery();
+
+        ResultSetMetaData rsMd = rs.getMetaData();
+
+        int countColumns = rsMd.getColumnCount();
+
+        while (rs.next()) {
+            Object[] fila = new Object[countColumns];
+            for (int i = 0; i < countColumns; i++) {
+                fila[i] = rs.getObject(i + 1);
+            }
+            model.addRow(fila);
+        }
+
+    }
+    catch (ClassNotFoundException | SQLException e
+
+    
+        ) {
+            JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
+        LOG.log(Level.SEVERE, null, e);
+        e.printStackTrace();
+
+        return model;
+    }
+
+    return model ;
+
+}
 
 }

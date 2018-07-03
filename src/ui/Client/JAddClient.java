@@ -9,6 +9,7 @@ import com.mysql.jdbc.StringUtils;
 import datos.Cliente;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
@@ -82,7 +83,7 @@ public class JAddClient extends javax.swing.JInternalFrame {
         // referencia al formulario principal de clientes
         this.clientes_ui = cliente_ui;
         initComponents();
-
+        this.dtpFechaNacimiento.setDate(new Date());
     }
 
     /**
@@ -264,7 +265,9 @@ public class JAddClient extends javax.swing.JInternalFrame {
 //                    List<String> fecha1 = StringUtils.split(fecha, "/", true);
  //                  fecha = fecha1.get(2)+"-"+fecha1.get(1)+"-"+fecha1.get(0);
                     Date d = this.dtpFechaNacimiento.getDate();
-                    String fecha = this.dtpFechaNacimiento.getDate().getYear()+"-"+this.dtpFechaNacimiento.getDate().getMonth()+"-"+this.dtpFechaNacimiento.getDate().getDay();
+                    GregorianCalendar cal = new GregorianCalendar();
+                    cal.setTime(d);
+                    String fecha = cal.get(GregorianCalendar.YEAR)+"-"+cal.get(GregorianCalendar.MONTH)+1+"-"+cal.get(GregorianCalendar.DAY_OF_MONTH);
                     cliente.setIdentificacion(this.txtIdentificacion.getText());
                     cliente.setNombreCompleto(this.txtNombreCompleto.getText());
                     cliente.setFechaNacimiento(fecha);

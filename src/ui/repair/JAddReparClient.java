@@ -7,13 +7,15 @@ package ui.repair;
 
 import datos.Cliente;
 import datos.Reparacion;
-import java.text.DateFormat;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import negocios.ClientesBL;
 import negocios.ReparacionesBL;
 import negocios.TiposCalzadoBL;
 import ui.Client.JClientes_ui;
+import ui.JAppmain_ui;
+import ui.jTipoCalzados;
 
 public class JAddReparClient extends javax.swing.JInternalFrame {
 
@@ -21,10 +23,13 @@ public class JAddReparClient extends javax.swing.JInternalFrame {
     private Reparacion reparacion = null;
     private final ReparacionesBL reparacionbl;
     private Cliente cliente = new Cliente();
+    private JDesktopPane dskMain = null;
+    private JAppmain_ui app = null;
 
-    public JAddReparClient(JClientes_ui aThis, int cliente_id) {
+    public JAddReparClient(JClientes_ui aThis, int cliente_id, JAppmain_ui app) {
         this.reparacionbl = null;
         this.clientes_ui = aThis;
+        this.app = app;
         cliente = ClientesBL.findById(cliente_id);
         initComponents();
         fillClient();
@@ -51,14 +56,15 @@ public class JAddReparClient extends javax.swing.JInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         cboTipoCalzado = new javax.swing.JComboBox<>();
         txtValor = new javax.swing.JFormattedTextField();
-        jToolBar1 = new javax.swing.JToolBar();
-        btnSave = new javax.swing.JButton();
-        jSeparator1 = new javax.swing.JToolBar.Separator();
-        btnClose = new javax.swing.JButton();
+        btnAddTipoCalzado = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         txtIdentificacion = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         txtNombreCompletos = new javax.swing.JTextField();
+        jToolBar1 = new javax.swing.JToolBar();
+        btnSave = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JToolBar.Separator();
+        btnClose = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
 
         utilDateModel1.setSelected(true);
@@ -87,6 +93,22 @@ public class JAddReparClient extends javax.swing.JInternalFrame {
         txtValor.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
         txtValor.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
+        btnAddTipoCalzado.setText("...");
+        btnAddTipoCalzado.setToolTipText("Agregar nuevo tipo de calzado");
+        btnAddTipoCalzado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddTipoCalzadoActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Identificación:");
+
+        txtIdentificacion.setEditable(false);
+
+        jLabel3.setText("Nombres Cliente");
+
+        txtNombreCompletos.setEditable(false);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -95,26 +117,47 @@ public class JAddReparClient extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(21, 21, 21)
-                        .addComponent(cboTipoCalzado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(21, 21, 21)
+                                .addComponent(cboTipoCalzado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5))
+                                .addGap(41, 41, 41)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAddTipoCalzado, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
-                        .addGap(41, 41, 41)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 19, Short.MAX_VALUE))))
+                            .addComponent(txtIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNombreCompletos))))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtNombreCompletos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(17, 17, 17)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(cboTipoCalzado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cboTipoCalzado)
+                    .addComponent(btnAddTipoCalzado, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
@@ -123,7 +166,7 @@ public class JAddReparClient extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addGap(26, 26, 26))
         );
 
         jToolBar1.setRollover(true);
@@ -156,14 +199,6 @@ public class JAddReparClient extends javax.swing.JInternalFrame {
         });
         jToolBar1.add(btnClose);
 
-        jLabel2.setText("Identificación:");
-
-        txtIdentificacion.setEditable(false);
-
-        jLabel3.setText("Nombres Cliente");
-
-        txtNombreCompletos.setEditable(false);
-
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel7.setText("Nueva Reparación");
 
@@ -174,27 +209,15 @@ public class JAddReparClient extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel2))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtNombreCompletos, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE)
                         .addGap(24, 24, 24))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel7)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -206,17 +229,9 @@ public class JAddReparClient extends javax.swing.JInternalFrame {
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtNombreCompletos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
@@ -233,9 +248,15 @@ public class JAddReparClient extends javax.swing.JInternalFrame {
                     TiposCalzadoBL.TiposCalzadoscbo tipo_calzado = new TiposCalzadoBL.TiposCalzadoscbo();
                     tipo_calzado = (TiposCalzadoBL.TiposCalzadoscbo) this.cboTipoCalzado.getSelectedItem();
                     reparacion.setTipoCalzadoId(tipo_calzado.getId());
+                    reparacion.setClienteID(cliente.getId());
+                    reparacion.setUsuariosId(app.user.getId());
+                    
 
+                    reparacionbl.create(reparacion);
+                    
                     clearFields();
-                    // this.reparaciones_ui.fillTable();
+                    JOptionPane.showMessageDialog(rootPane, "Se ha guardado la reparación");
+                    this.dispose();
 
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(rootPane, e.getLocalizedMessage());
@@ -251,8 +272,16 @@ public class JAddReparClient extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_btnCloseActionPerformed
 
+    private void btnAddTipoCalzadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddTipoCalzadoActionPerformed
+        
+        jTipoCalzados tipo = new jTipoCalzados();
+        clientes_ui.dskApp.add(tipo);
+        tipo.show();
+    }//GEN-LAST:event_btnAddTipoCalzadoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddTipoCalzado;
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnSave;
     private javax.swing.JComboBox<String> cboTipoCalzado;

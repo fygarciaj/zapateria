@@ -77,7 +77,8 @@ public class JAddClient extends javax.swing.JInternalFrame {
     };
 
     /**
-     * Creates new form JAddClient
+     * Crea un nuevo formulario para la creación de clientes.
+     * @param cliente_ui el parametro es la referencia al formulario principal de clientes.
      */
     public JAddClient(JClientes_ui cliente_ui) {
         // referencia al formulario principal de clientes

@@ -67,12 +67,17 @@ public class TiposCalzadoBL extends BaseBL {
 
     }
 
+    /**
+     * Crea un nuevo tipo de calzado
+     * 
+     * @param String nombreCalzado 
+     */
     public static void create(String nombreCalzado) {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = cxn.openDB();
-            String sqlQuery = "INSERT INTO tipos_zapatos(nombre_calzado) VALUES(?);";
+            String sqlQuery = "INSERT INTO tipos_calzados(nombre_calzado) VALUES(?);";
             java.sql.PreparedStatement stmt = con.prepareStatement(sqlQuery);
 
             stmt.setString(1, nombreCalzado);
@@ -146,21 +151,31 @@ public class TiposCalzadoBL extends BaseBL {
         }
     }
 
-    public DefaultTableModel listar() {
+    /** 
+     * Lista los datos de la tabla tipos_calzados
+     * 
+     * @return DefaultTableModel
+     */
+    public static DefaultTableModel listar() {
+        String[] columns = {"Id", "Tipo Calzado"};
+        DefaultTableModel model = new DefaultTableModel(null, columns) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                //all cells false
+                return false;
+            }
+        };
+
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = cxn.openDB();
 
             Statement st = con.createStatement();
-            String query = "SELECT * FROM " + tableName;
+            String query = "SELECT * FROM tipos_calzados";
             rs = st.executeQuery(query);
             ResultSetMetaData rsMd = rs.getMetaData();
 
             int countColumns = rsMd.getColumnCount();
-
-            for (int i = 0; i < countColumns; i++) {
-                model.addColumn(rsMd.getColumnLabel(i + 1));
-            }
 
             while (rs.next()) {
                 Object[] fila = new Object[countColumns];
@@ -173,6 +188,8 @@ public class TiposCalzadoBL extends BaseBL {
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
             LOG.log(Level.SEVERE, null, e);
+            e.printStackTrace();
+
             return model;
         }
 

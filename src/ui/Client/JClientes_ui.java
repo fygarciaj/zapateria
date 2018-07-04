@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import negocios.ClientesBL;
-import ui.repair.JAddRepar;
+import ui.JAppmain_ui;
 import ui.repair.JAddReparClient;
 
 /**
@@ -22,14 +22,16 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
 
     public static JDesktopPane dskApp = null;
     private int cliente_id = 0;
+    public static JAppmain_ui app = null;
 
     /**
      * Creates new form JClientes_ui
+     * @param app
      */
-    public JClientes_ui() {
+    public JClientes_ui(JAppmain_ui app) {
+        this.app = app;
         initComponents();
         disableButtons();
-        initTable();
         fillTable();
     }
 
@@ -50,10 +52,14 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
         btnDelete = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
         btnRefresh = new javax.swing.JButton();
+        jSeparator4 = new javax.swing.JToolBar.Separator();
+        jPanel3 = new javax.swing.JPanel();
+        btnListRepairsClient = new javax.swing.JButton();
+        btnNewRepair = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtBuscarCliente = new javax.swing.JTextField();
-        btnNewRepair = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblClients = new javax.swing.JTable();
@@ -120,7 +126,65 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
             }
         });
         jToolBar1.add(btnRefresh);
+        jToolBar1.add(jSeparator4);
 
+        jPanel3.setName("pReparaciones"); // NOI18N
+
+        btnListRepairsClient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/footprint_24.png"))); // NOI18N
+        btnListRepairsClient.setText("Lista");
+        btnListRepairsClient.setDefaultCapable(false);
+        btnListRepairsClient.setFocusable(false);
+        btnListRepairsClient.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+        btnListRepairsClient.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnListRepairsClient.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        btnListRepairsClient.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+
+        btnNewRepair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/shoe_add_24.png"))); // NOI18N
+        btnNewRepair.setText("Nueva");
+        btnNewRepair.setDefaultCapable(false);
+        btnNewRepair.setFocusPainted(false);
+        btnNewRepair.setFocusable(false);
+        btnNewRepair.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnNewRepair.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        btnNewRepair.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnNewRepair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewRepairActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Reparaciones");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnListRepairsClient)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnNewRepair, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addComponent(jLabel2)))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnListRepairsClient)
+                    .addComponent(btnNewRepair))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2))
+        );
+
+        jToolBar1.add(jPanel3);
+
+        jPanel2.setName("pBuscar"); // NOI18N
         jPanel2.setPreferredSize(new java.awt.Dimension(746, 30));
 
         jLabel1.setText("Buscar:");
@@ -131,22 +195,12 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
             }
         });
 
-        btnNewRepair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/shoe_add_24.png"))); // NOI18N
-        btnNewRepair.setText("Nueva Reparación");
-        btnNewRepair.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNewRepairActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnNewRepair)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 512, Short.MAX_VALUE)
+                .addContainerGap(514, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(txtBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -155,13 +209,10 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(4, 4, 4)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnNewRepair)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(13, 13, 13)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -199,7 +250,7 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
+                .addComponent(jScrollPane1)
                 .addContainerGap())
         );
 
@@ -216,7 +267,7 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(3, 3, 3)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -224,18 +275,32 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Evento para ejecutar el formulario de nuevo cliente
+     * pasa un parametro que es la instancia de su formulario padre
+     * @param evt 
+     */
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
 
         JAddClient addClient = new JAddClient(this);
-
         this.dskApp.add(addClient);
         addClient.show();
     }//GEN-LAST:event_btnNewActionPerformed
 
+    /**
+     * Evento para el boton de refrescar, actualiza el listado de los clientes
+     * 
+     * @param evt 
+     */
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         fillTable();
     }//GEN-LAST:event_btnRefreshActionPerformed
 
+    /**
+     * Evento del click en la tabla al seleccionar un cliente
+     * verifica si se ha seleccionado una fila y activa los botones correspondientes
+     * @param evt 
+     */
     private void tblClientsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientsMouseClicked
 
         int row = this.tblClients.getSelectedRow();
@@ -245,12 +310,14 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
         } else {
             cliente_id = (int) this.tblClients.getValueAt(row, 0);
             enabledButtons();
-            //txfNombre.setText(String.valueOf(table.getValueAt(row, 1)));
-            //JOptionPane.showMessageDialog(rootPane, "Se ha seleccionado el registro "+this.tblClients.getValueAt(row, 1));
         }
 
     }//GEN-LAST:event_tblClientsMouseClicked
 
+    /**
+     * Evento del boton de borrar un cliente.
+     * @param evt 
+     */
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         if (cliente_id > 0) {
             try {
@@ -267,6 +334,11 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
+    /**
+     * Evento para actualizar un cliente.
+     * 
+     * @param evt 
+     */
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
 
         if (cliente_id > 0) {
@@ -283,6 +355,12 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_btnEditActionPerformed
 
+    /**
+     * Evento del campo para buscar clientes, se ejecuta cada ves que se oprime una tecla 
+     * en el campo de busqueda.
+     * 
+     * @param evt 
+     */
     private void txtBuscarClienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarClienteKeyReleased
 
         if (this.txtBuscarCliente.getText().length() > 0) {
@@ -293,12 +371,17 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_txtBuscarClienteKeyReleased
 
+    /**
+     * Evento del boton nueva reparación ejecuta el formulario de reparación y 
+     * pasa los datos del cliente.
+     * @param evt 
+     */
     private void btnNewRepairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewRepairActionPerformed
 
         if (cliente_id != 0) {
             try {
                 Cliente cliente = ClientesBL.findById(cliente_id);
-                JAddReparClient repairClient = new JAddReparClient(this, cliente_id);
+                JAddReparClient repairClient = new JAddReparClient(this, cliente_id, this.app);
                 this.dskApp.add(repairClient);
                 repairClient.show();
 
@@ -313,16 +396,20 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnListRepairsClient;
     private javax.swing.JButton btnNew;
     private javax.swing.JButton btnNewRepair;
     private javax.swing.JButton btnRefresh;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
+    private javax.swing.JToolBar.Separator jSeparator4;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTable tblClients;
     private javax.swing.JTextField txtBuscarCliente;
@@ -351,6 +438,7 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, "Error al cargar la lista de clientes " + e.getMessage());
+            e.printStackTrace();
         }
 
     }
@@ -363,6 +451,7 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
         this.btnEdit.setEnabled(false);
         this.btnDelete.setEnabled(false);
         this.btnNewRepair.setEnabled(false);
+        btnListRepairsClient.setEnabled(false);
     }
 
     /**
@@ -372,11 +461,9 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
         this.btnEdit.setEnabled(true);
         this.btnDelete.setEnabled(true);
         this.btnNewRepair.setEnabled(true);
+        btnListRepairsClient.setEnabled(true);
     }
 
-    private void initTable() {
-
-    }
 
     /**
      * Busca un texto en la base de datos de los clientes por identificacion,

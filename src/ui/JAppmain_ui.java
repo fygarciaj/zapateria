@@ -5,7 +5,9 @@
  */
 package ui;
 
+import datos.Usuario;
 import java.awt.Dimension;
+import java.sql.Date;
 import ui.Client.JClientes_ui;
 import javax.swing.JOptionPane;
 import ui.repair.JReparaciones_ui;
@@ -18,13 +20,23 @@ import ui.mario_empleados.Empleado_ui;
  */
 public class JAppmain_ui extends javax.swing.JFrame {
 
+    public Usuario user = new Usuario();
+
     /**
-     * Creates new form appmain_ui
+     * Crea un nuevo formulario principal
      */
     public JAppmain_ui() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
-        dashboard();
+        //dashboard();
+    }
+
+    JAppmain_ui(Usuario usuario) {
+        initComponents();
+        this.user = usuario;
+        this.setExtendedState(MAXIMIZED_BOTH);
+        setStatusBar();
+        //dashboard();
     }
 
     /**
@@ -36,7 +48,10 @@ public class JAppmain_ui extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         dskMain = new javax.swing.JDesktopPane();
+        jPanel2 = new javax.swing.JPanel();
+        txtUser = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mnuClientes = new javax.swing.JMenuItem();
@@ -48,9 +63,22 @@ public class JAppmain_ui extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         mnuUsuarios = new javax.swing.JMenuItem();
         mnuRoles = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Aplicación para Zapaterías Calzaditos");
@@ -70,8 +98,11 @@ public class JAppmain_ui extends javax.swing.JFrame {
         );
         dskMainLayout.setVerticalGroup(
             dskMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 436, Short.MAX_VALUE)
+            .addGap(0, 413, Short.MAX_VALUE)
         );
+
+        txtUser.setText("Usuario: ?");
+        jPanel2.add(txtUser);
 
         jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/shoe_black_32.png"))); // NOI18N
         jMenu1.setText("Archivo");
@@ -148,6 +179,16 @@ public class JAppmain_ui extends javax.swing.JFrame {
         mnuRoles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/share_24.png"))); // NOI18N
         mnuRoles.setText("Roles");
         jMenu2.add(mnuRoles);
+        jMenu2.add(jSeparator3);
+
+        jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/shoe_24.png"))); // NOI18N
+        jMenuItem3.setText("Tipos de Calzado");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem3);
 
         jMenuBar1.add(jMenu2);
 
@@ -175,26 +216,29 @@ public class JAppmain_ui extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(dskMain)
-                .addGap(0, 0, 0))
+            .addComponent(dskMain)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, 0)
+            .addGroup(layout.createSequentialGroup()
                 .addComponent(dskMain)
-                .addGap(0, 0, 0))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Evento para el click del menu de clientes
+     *
+     * @param evt
+     */
     private void mnuClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mnuClientesMouseClicked
 
         try {
-            JClientes_ui cliente_ui = new JClientes_ui();
+            JClientes_ui cliente_ui = new JClientes_ui(this);
             this.dskMain.add(cliente_ui);
             cliente_ui.show();
         } catch (Exception e) {
@@ -203,10 +247,15 @@ public class JAppmain_ui extends javax.swing.JFrame {
 
     }//GEN-LAST:event_mnuClientesMouseClicked
 
+    /**
+     * Evento para el click en el menu de clientes
+     *
+     * @param evt
+     */
     private void mnuClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuClientesActionPerformed
 
         if (evt.getSource().equals(this.mnuClientes)) {
-            JClientes_ui cliente_ui = new JClientes_ui();
+            JClientes_ui cliente_ui = new JClientes_ui(this);
             cliente_ui.dskApp = this.dskMain;
             this.dskMain.add(cliente_ui);
             cliente_ui.show();
@@ -218,12 +267,25 @@ public class JAppmain_ui extends javax.swing.JFrame {
 
     }//GEN-LAST:event_mnuClientesActionPerformed
 
+    /**
+     * Evento del click en el menu de salir
+     *
+     * @param evt
+     */
+
     private void mnuSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSalirActionPerformed
         this.setVisible(false);
+        // Libera la memoria de este objeto formulario
         this.dispose();
+        // Vamonos... sale del aplicativo.
         System.exit(0);
     }//GEN-LAST:event_mnuSalirActionPerformed
 
+    /**
+     * Evento para el click en el menu de reparaciones
+     *
+     * @param evt
+     */
     private void mnuReparacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuReparacionesActionPerformed
         try {
             JReparaciones_ui repara_ui = new JReparaciones_ui();
@@ -235,6 +297,11 @@ public class JAppmain_ui extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuReparacionesActionPerformed
 
+    /**
+     * Evento para el click en en menu de tickets
+     *
+     * @param evt
+     */
     private void mnuTitcketesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuTitcketesActionPerformed
         try {
             Tickets_ui tickets_ui = new Tickets_ui();
@@ -246,6 +313,11 @@ public class JAppmain_ui extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuTitcketesActionPerformed
 
+    /**
+     * Evento para el click en el menu de usuarios
+     *
+     * @param evt
+     */
     private void mnuUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuUsuariosActionPerformed
         try {
             Empleado_ui empleado_ui = new Empleado_ui();
@@ -257,7 +329,11 @@ public class JAppmain_ui extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuUsuariosActionPerformed
 
-
+    /**
+     * Evento para el click en el menu de acerca de...
+     *
+     * @param evt
+     */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         try {
             JAbout about = new JAbout();
@@ -271,6 +347,24 @@ public class JAppmain_ui extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    /**
+     * Evento para el click en el menu de tipos de calzado.
+     *
+     * @param evt
+     */
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        try {
+            jTipoCalzados tiposcalzados = new jTipoCalzados();
+            this.dskMain.add(tiposcalzados);
+            tiposcalzados.show();
+        } catch (Exception e) {
+            // Pos normalmente no se hace esto porque hay que atrapar los errores bien.
+            e.printStackTrace();
+        }
+
+
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -316,19 +410,27 @@ public class JAppmain_ui extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JMenuItem mnuClientes;
     private javax.swing.JMenuItem mnuReparaciones;
     private javax.swing.JMenuItem mnuRoles;
     private javax.swing.JMenuItem mnuSalir;
     private javax.swing.JMenuItem mnuTitcketes;
     private javax.swing.JMenuItem mnuUsuarios;
+    private javax.swing.JLabel txtUser;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Crea un dashboard para mostrar información
+     */
     private void dashboard() {
         try {
-            JDashboard_ui dash = new JDashboard_ui(this.dskMain);
+            JDashboard_ui dash = new JDashboard_ui(this.dskMain, this);
             this.dskMain.add(dash);
             dash.setMaximum(true);
             dash.show();
@@ -336,5 +438,13 @@ public class JAppmain_ui extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
+    }
+
+    /**
+     * Crea una barra de estado
+     */
+    private void setStatusBar() {
+
+        txtUser.setText("Usuario: " + user.getNombreCompleto());
     }
 }

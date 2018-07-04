@@ -140,12 +140,6 @@ public class UsuariosBL {
         return usuario;
     }
 
-    /**
-     * Busca un registro por un campo diferente al id
-     */
-    public static void findByField() {
-
-    }
 
     /**
      * Busca un usuario por el nombre de usuario

@@ -16,11 +16,14 @@ import ui.Client.JClientes_ui;
 public class JDashboard_ui extends javax.swing.JInternalFrame {
 
     private JDesktopPane dskMain = null;
+    public JAppmain_ui app = null;
+
     /**
      * Creates new form JDashboard_ui
      */
-    public JDashboard_ui(JDesktopPane dskMain) {
+    public JDashboard_ui(JDesktopPane dskMain, JAppmain_ui app) {
         initComponents();
+        this.app = app;
         this.dskMain = dskMain;
     }
 
@@ -76,12 +79,11 @@ public class JDashboard_ui extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        JClientes_ui cliente = new JClientes_ui();
+        JClientes_ui cliente = new JClientes_ui(this.app);
         this.dskMain.add(cliente);
-        cliente.setVisible(true);
         cliente.show();
-               
-                
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
 

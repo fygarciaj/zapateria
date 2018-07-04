@@ -4,6 +4,8 @@
 package datos;
 
 /**
+ * Clase que representa el modelo de datos Tipo Calzados.
+ * 
  * @author REBOOTSYSTEM
  *
  */
@@ -31,7 +33,9 @@ public class TipoCalzado {
     public void setNombreCalzado(String NombreCalzado) {
         this.NombreCalzado = NombreCalzado;
     }
-    
-    
-    
+
+    @Override
+    public String toString() {
+        return NombreCalzado;
+    }
 }

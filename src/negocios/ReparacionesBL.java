@@ -56,6 +56,7 @@ public class ReparacionesBL extends BaseBL {
                         + "  `clientes_id` INT NOT NULL,\n"
                         + "  `usuarios_id` INT NOT NULL,\n"
                         + "  `tipos_calzados_id` INT NOT NULL,\n"
+                        + "  `estado` ENUM('En reparación','Terminado','Facturado') NOT NULL DEFAULT 'En reparación' COLLATE 'utf8_spanish2_ci',\n"
                         + "  PRIMARY KEY (`id`),\n"
                         + "  UNIQUE INDEX `id_UNIQUE` (`id` ASC),\n"
                         + "  INDEX `fk_reparaciones_clientes1_idx` (`clientes_id` ASC),\n"

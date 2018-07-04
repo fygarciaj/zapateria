@@ -5,12 +5,10 @@
  */
 package ui;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import datos.Usuario;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import negocios.Security;
+import negocios.UsuariosBL;
 
 /**
  *
@@ -168,11 +166,16 @@ public class JLogin_ui extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCloseActionPerformed
 
     private void btnLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseClicked
-        // TODO add your handling code here:
+        
+        
         if (Security.checkAcceso(this.txtUsername.getText(), String.valueOf(this.txtPassword.getPassword()))) {
             // JOptionPane.showMessageDialog(rootPane, "El usuario y la contraseña son correctos");
-
-            JAppmain_ui app = new JAppmain_ui();
+            Usuario usuario = new Usuario();
+            usuario = UsuariosBL.findByUserName(txtUsername.getText());
+            
+            // TODO: pasar el usuario para que pueda ser leido en todo el entorno
+            JAppmain_ui app = new JAppmain_ui(usuario);
+            /* Para agregarle un estilo a las ventanas */
 //            app.setDefaultLookAndFeelDecorated(true);
 //            try {
 //                //JDialog.setDefaultLookAndFeelDecorated(true);

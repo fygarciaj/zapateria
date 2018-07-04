@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui.jorge;
+package ui.ticket;
 
 public class Tickets_ui extends javax.swing.JInternalFrame {
 
@@ -33,10 +33,10 @@ public class Tickets_ui extends javax.swing.JInternalFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        lista_ventas1 = new ui.jorge.Lista_ventas();
-        crear_Ticket1 = new ui.jorge.Crear_Ticket();
-        editar_Ticket1 = new ui.jorge.Editar_Ticket();
-        anula_venta1 = new ui.jorge.Anula_venta();
+        lista_ventas1 = new ui.ticket.Lista_ventas();
+        crear_Ticket1 = new ui.ticket.Crear_Ticket();
+        editar_Ticket1 = new ui.ticket.Editar_Ticket();
+        anula_venta1 = new ui.ticket.Anula_venta();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -207,9 +207,9 @@ public class Tickets_ui extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private ui.jorge.Anula_venta anula_venta1;
-    private ui.jorge.Crear_Ticket crear_Ticket1;
-    private ui.jorge.Editar_Ticket editar_Ticket1;
+    private ui.ticket.Anula_venta anula_venta1;
+    private ui.ticket.Crear_Ticket crear_Ticket1;
+    private ui.ticket.Editar_Ticket editar_Ticket1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -217,6 +217,6 @@ public class Tickets_ui extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JSplitPane jSplitPane1;
-    private ui.jorge.Lista_ventas lista_ventas1;
+    private ui.ticket.Lista_ventas lista_ventas1;
     // End of variables declaration//GEN-END:variables
 }

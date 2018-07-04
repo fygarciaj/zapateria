@@ -6,12 +6,18 @@
 package ui.repair;
 
 import datos.Cliente;
+import datos.Reparacion;
+import datos.Ticket;
+import java.awt.Dimension;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import negocios.ClientesBL;
 import negocios.ReparacionesBL;
+import negocios.TicketsBL;
 import ui.JAppmain_ui;
+import ui.ticket.JPrintTicket;
 
 /**
  *
@@ -22,9 +28,15 @@ public class jListRepairClient extends javax.swing.JInternalFrame {
     private Cliente cliente = null;
     public JAppmain_ui app = null;
     private Integer clienteId;
+    private int reparacionId = 0;
+    private Reparacion reparacion = null;
+    private final Ticket ticket = new Ticket();
 
     /**
      * Creates new form jListRepairClient
+     *
+     * @param cliente
+     * @param app
      */
     public jListRepairClient(Cliente cliente, JAppmain_ui app) {
 
@@ -56,6 +68,8 @@ public class jListRepairClient extends javax.swing.JInternalFrame {
         btnChangeStatus = new javax.swing.JButton();
         btnCreateTicket = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
+        btnRefresh = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
         btnClose = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblRepairs = new javax.swing.JTable();
@@ -112,6 +126,11 @@ public class jListRepairClient extends javax.swing.JInternalFrame {
         btnChangeStatus.setFocusable(false);
         btnChangeStatus.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnChangeStatus.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnChangeStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChangeStatusActionPerformed(evt);
+            }
+        });
         jToolBar1.add(btnChangeStatus);
 
         btnCreateTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/invoice24.png"))); // NOI18N
@@ -119,8 +138,26 @@ public class jListRepairClient extends javax.swing.JInternalFrame {
         btnCreateTicket.setFocusable(false);
         btnCreateTicket.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnCreateTicket.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnCreateTicket.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateTicketActionPerformed(evt);
+            }
+        });
         jToolBar1.add(btnCreateTicket);
         jToolBar1.add(jSeparator1);
+
+        btnRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/refresh_24.png"))); // NOI18N
+        btnRefresh.setText("Actualizar");
+        btnRefresh.setFocusable(false);
+        btnRefresh.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnRefresh.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnRefresh);
+        jToolBar1.add(jSeparator2);
 
         btnClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/cancel_24.png"))); // NOI18N
         btnClose.setText("Cerrar");
@@ -207,22 +244,109 @@ public class jListRepairClient extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Seleccione una fila");
             disableButtons();
         } else {
-            clienteId = (int) this.tblRepairs.getValueAt(row, 0);
+            reparacionId = (int) this.tblRepairs.getValueAt(row, 0);
             enabledButtons();
         }
     }//GEN-LAST:event_tblRepairsMouseClicked
+
+    private void btnChangeStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeStatusActionPerformed
+        // Cambiar estado de la reparacion
+
+        // Si hay seleccionado una linea de las reparaciones muestre el formulario
+        if (reparacionId != 0) {
+            // Mostrar formulario de cambio de estado
+            reparacion = ReparacionesBL.findById(reparacionId);
+            String estado = reparacion.getEstado();
+
+            if (estado.equals("Facturado")) {
+                JOptionPane.showMessageDialog(rootPane, "No se puede cambiar el estado de una reparación facturada.\n"
+                        + " Solo puede anular el ticket y pasa a estado terminado para volver a facturar");
+            } else {
+                JRepairChangeStatus changeStatus = new JRepairChangeStatus(reparacion);
+                this.app.dskMain.add(changeStatus);
+                Dimension desktopSize = this.app.dskMain.getSize();
+                Dimension FrameSize = changeStatus.getSize();
+                changeStatus.setLocation((desktopSize.width - FrameSize.width) / 2, (desktopSize.height - FrameSize.height) / 2);
+                changeStatus.show();
+            }
+        }
+
+    }//GEN-LAST:event_btnChangeStatusActionPerformed
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        // actualiza el listado
+        fillTableRepairs();
+    }//GEN-LAST:event_btnRefreshActionPerformed
+
+    private void btnCreateTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateTicketActionPerformed
+
+        // Factura una reparacion
+        // Cuando esto pasa, el estado de la reparacion cambia a Facturado
+        // y se genera un ticket de la reparación
+        if (reparacionId != 0) {
+            reparacion = ReparacionesBL.findById(reparacionId);
+
+            String estado = reparacion.getEstado();
+
+            try {
+
+                if ("Facturado".equals(estado)) {
+                    int result = JOptionPane.showConfirmDialog(rootPane, "Ya existe un ticket para esta reparación, Desea Verlo?", "Ver Ticket", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                    if (result == 0) {
+                        JPrintTicket printTicket = new JPrintTicket(reparacion);
+                        this.app.dskMain.add(printTicket);
+                        Dimension desktopSize = this.app.dskMain.getSize();
+                        Dimension FrameSize = printTicket.getSize();
+                        printTicket.setLocation((desktopSize.width - FrameSize.width) / 2, (desktopSize.height - FrameSize.height) / 2);
+                        printTicket.show();
+                    }
+                } else {
+                    int result = JOptionPane.showConfirmDialog(rootPane, "Desea facturar la reparación al cliente?", "Generar Ticket", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                    if (result == 0) {
+
+                        // busca la información de la reparación
+                        String date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date());
+
+                        // Guarda los datos en el objeto ticket
+                        ticket.setFecha(date);
+                        ticket.setClienteID(cliente.getId());
+                        ticket.setUsuarioID(this.app.user.getId());
+                        ticket.setReparacionID(reparacionId);
+                        ticket.setValorTotal(reparacion.getValor());
+
+                        // Se crea el ticket
+                        TicketsBL.create(ticket);
+
+                        // Se actualiza el estado de la reparación
+                        // Tener en cuenta que este estado no puede ser cambiado
+                        ReparacionesBL.updateStatus("Facturado", reparacion.getId());
+
+                        fillTableRepairs();
+                        printTickets();
+                        disableButtons();
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }//GEN-LAST:event_btnCreateTicketActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChangeStatus;
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnCreateTicket;
+    private javax.swing.JButton btnRefresh;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTable tblRepairs;
     private javax.swing.JTextField txtIdentificacion;
@@ -235,7 +359,6 @@ public class jListRepairClient extends javax.swing.JInternalFrame {
     private void fillClient() {
         txtIdentificacion.setText(this.cliente.getIdentificacion());
         txtNombreCompletos.setText(cliente.getNombreCompleto());
-
     }
 
     /**
@@ -272,6 +395,11 @@ public class jListRepairClient extends javax.swing.JInternalFrame {
     private void enabledButtons() {
         btnChangeStatus.setEnabled(true);
         btnCreateTicket.setEnabled(true);
+    }
+
+    private void printTickets() {
+
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

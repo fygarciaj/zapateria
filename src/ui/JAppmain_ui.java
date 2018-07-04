@@ -7,11 +7,10 @@ package ui;
 
 import datos.Usuario;
 import java.awt.Dimension;
-import java.sql.Date;
 import ui.Client.JClientes_ui;
 import javax.swing.JOptionPane;
 import ui.repair.JReparaciones_ui;
-import ui.jorge.Tickets_ui;
+import ui.ticket.Tickets_ui;
 import ui.mario_empleados.Empleado_ui;
 
 /**
@@ -289,7 +288,7 @@ public class JAppmain_ui extends javax.swing.JFrame {
     private void mnuReparacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuReparacionesActionPerformed
         try {
             JReparaciones_ui repara_ui = new JReparaciones_ui();
-            repara_ui.dskApp = this.dskMain;
+            JReparaciones_ui.dskApp = this.dskMain;
             this.dskMain.add(repara_ui);
             repara_ui.show();
         } catch (Exception e) {
@@ -403,7 +402,7 @@ public class JAppmain_ui extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JDesktopPane dskMain;
+    public javax.swing.JDesktopPane dskMain;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;

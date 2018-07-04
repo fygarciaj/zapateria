@@ -156,13 +156,13 @@
             </Constraint>
           </Constraints>
           <SubComponents>
-            <Component class="ui.jorge.Lista_ventas" name="lista_ventas1">
+            <Component class="ui.ticket.Lista_ventas" name="lista_ventas1">
             </Component>
-            <Component class="ui.jorge.Crear_Ticket" name="crear_Ticket1">
+            <Component class="ui.ticket.Crear_Ticket" name="crear_Ticket1">
             </Component>
-            <Component class="ui.jorge.Editar_Ticket" name="editar_Ticket1">
+            <Component class="ui.ticket.Editar_Ticket" name="editar_Ticket1">
             </Component>
-            <Component class="ui.jorge.Anula_venta" name="anula_venta1">
+            <Component class="ui.ticket.Anula_venta" name="anula_venta1">
             </Component>
           </SubComponents>
           <LayoutCode>

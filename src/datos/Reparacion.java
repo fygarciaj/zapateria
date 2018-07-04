@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package datos;
 
@@ -11,6 +11,7 @@ public class Reparacion {
     private Integer ClienteID;
     private Integer UsuariosId;
     private Integer TipoCalzadoId;
+    private String Estado;
 
     public Reparacion() {
     }
@@ -69,6 +70,19 @@ public class Reparacion {
         this.UsuariosId = UsuariosId;
     }
 
+    public String getEstado() {
+        return Estado;
+    }
+
+    public void setEstado(String Estado) {
+        this.Estado = Estado;
+    }
     
-   
+    
+
+    @Override
+    public String toString() {
+        return DescripcionReparacion;
+    }
+
 }

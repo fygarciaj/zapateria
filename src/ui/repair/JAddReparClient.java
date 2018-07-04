@@ -7,6 +7,7 @@ package ui.repair;
 
 import datos.Cliente;
 import datos.Reparacion;
+import java.awt.Color;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
@@ -223,8 +224,14 @@ public class JAddReparClient extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Guarda la reparacion para el cliente
+     *
+     * @param evt
+     */
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
 
+     
         if (this.txtDescripcion.getText().length() > 0) {
             if (this.txtValor.getText().length() > 0) {
                 try {
@@ -236,10 +243,10 @@ public class JAddReparClient extends javax.swing.JInternalFrame {
                     reparacion.setTipoCalzadoId(tipo_calzado.getId());
                     reparacion.setClienteID(cliente.getId());
                     reparacion.setUsuariosId(app.user.getId());
-                    
+                    reparacion.setEstado("En reparación");
 
-                    reparacionbl.create(reparacion);
-                    
+                    ReparacionesBL.create(reparacion);
+
                     clearFields();
                     JOptionPane.showMessageDialog(rootPane, "Se ha guardado la reparación");
                     this.dispose();
@@ -249,7 +256,11 @@ public class JAddReparClient extends javax.swing.JInternalFrame {
                 }
 
             }
+            else
+                txtValor.setBackground(Color.red);
         }
+        else
+            txtDescripcion.setBackground(Color.red);
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
@@ -259,7 +270,7 @@ public class JAddReparClient extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnCloseActionPerformed
 
     private void btnAddTipoCalzadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddTipoCalzadoActionPerformed
-        
+
         jTipoCalzados tipo = new jTipoCalzados();
         clientes_ui.dskApp.add(tipo);
         tipo.show();

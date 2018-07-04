@@ -26,6 +26,7 @@ import javax.swing.DefaultComboBoxModel;
 public class ReparacionesBL extends BaseBL {
 
     private static final Logger LOG = Logger.getLogger(ClientesBL.class.getName());
+
     private Integer id = null;
     private static Connection con = null;
     private static ConexionDB cxn = null;
@@ -35,8 +36,8 @@ public class ReparacionesBL extends BaseBL {
     private static final String tableName = "Reparaciones";
 
     /**
-     * Crea un nuevo objeto reparaciones, verifica que la tabla exista, 
-     * si no existe crea auromaticamente la tabla.
+     * Crea un nuevo objeto reparaciones, verifica que la tabla exista, si no
+     * existe crea auromaticamente la tabla.
      */
     public ReparacionesBL() {
         cxn = new ConexionDB();
@@ -94,18 +95,19 @@ public class ReparacionesBL extends BaseBL {
 
     /**
      * Crea una reparación utilizando todos los parametros de la reparacion
+     *
      * @param descripcion_reparacion
      * @param valor
      * @param clientes_id
      * @param usuarios_id
-     * @param tipos_calzados_id 
+     * @param tipos_calzados_id
      */
-    public static void create(String descripcion_reparacion, Double valor, Integer clientes_id, Integer usuarios_id, Integer tipos_calzados_id) {
+    public static void create(String descripcion_reparacion, Double valor, Integer clientes_id, Integer usuarios_id, Integer tipos_calzados_id, String estado) {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = cxn.openDB();
-            String sqlQuery = "INSERT INTO reparaciones(descripcion_reparacion, valor, clientes_id, usuarios_id, tipos_calzados_id) VALUES(?,?,?,?,?);";
+            String sqlQuery = "INSERT INTO reparaciones(descripcion_reparacion, valor, clientes_id, usuarios_id, tipos_calzados_id, estado) VALUES(?,?,?,?,?,?);";
             java.sql.PreparedStatement stmt = con.prepareStatement(sqlQuery);
 
             stmt.setString(1, descripcion_reparacion);
@@ -113,6 +115,7 @@ public class ReparacionesBL extends BaseBL {
             stmt.setInt(3, clientes_id);
             stmt.setInt(4, usuarios_id);
             stmt.setInt(5, tipos_calzados_id);
+            stmt.setString(6, estado);
 
             stmt.executeUpdate();
 
@@ -125,14 +128,15 @@ public class ReparacionesBL extends BaseBL {
 
     /**
      * Crea una reparación
-     * @param reparacion 
+     *
+     * @param reparacion
      */
     public static void create(Reparacion reparacion) {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = cxn.openDB();
-            String sqlQuery = "INSERT INTO reparaciones(descripcion_reparacion, valor, clientes_id, usuarios_id, tipos_calzados_id) VALUES(?,?,?,?,?);";
+            String sqlQuery = "INSERT INTO reparaciones(descripcion_reparacion, valor, clientes_id, usuarios_id, tipos_calzados_id, estado) VALUES(?,?,?,?,?, ?);";
             java.sql.PreparedStatement stmt = con.prepareStatement(sqlQuery);
 
             stmt.setString(1, reparacion.getDescripcionReparacion());
@@ -140,6 +144,7 @@ public class ReparacionesBL extends BaseBL {
             stmt.setInt(3, reparacion.getClienteID());
             stmt.setInt(4, reparacion.getUsuariosId());
             stmt.setInt(5, reparacion.getTipoCalzadoId());
+            stmt.setString(6, reparacion.getEstado());
 
             stmt.executeUpdate();
 
@@ -154,7 +159,8 @@ public class ReparacionesBL extends BaseBL {
     /**
      * Busca un registro de reparacion por el id
      *
-     * @param Id
+     * @param id
+     * @return 
      */
     public static Reparacion findById(Integer id) {
         Reparacion reparacion = new Reparacion();
@@ -175,33 +181,32 @@ public class ReparacionesBL extends BaseBL {
                 reparacion.setUsuariosId(rst.getInt("usuarios_id"));
                 reparacion.setValor(rst.getDouble("valor"));
                 reparacion.setTipoCalzadoId(rst.getInt("tipos_calzados_id"));
+                reparacion.setEstado(rst.getString("estado"));
             }
 
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, "Ocurrio un error buscar el reparacion " + tableName);
             LOG.log(Level.SEVERE, null, e);
-            e.printStackTrace();
         }
 
         return reparacion;
     }
 
-
     /**
      * Acualiza una reparacion por el indice
-     * 
+     *
      * @param descripcion_reparacion
      * @param valor
      * @param reparacions_id
      * @param usuarios_id
      * @param tipos_calzados_id
-     * @param id 
+     * @param id
      */
     public void update(String descripcion_reparacion, Double valor, Integer reparacions_id, Integer usuarios_id, Integer tipos_calzados_id, Integer id) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = cxn.openDB();
-            String sqlQuery = "UPDATE usuarios SET descripcion_reparacion=?, valor=?, reparacions_id=?, usuarios_id=?, tipos_calzados_id=? WHERE id=?";
+            String sqlQuery = "UPDATE reparaciones SET descripcion_reparacion=?, valor=?, reparacions_id=?, usuarios_id=?, tipos_calzados_id=? WHERE id=?";
             stmt = con.prepareStatement(sqlQuery);
 
             stmt.setString(1, descripcion_reparacion);
@@ -222,13 +227,33 @@ public class ReparacionesBL extends BaseBL {
     }
 
     public static void update(Reparacion reparacion, Integer id) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = cxn.openDB();
+            String sqlQuery = "UPDATE reparaciones SET descripcion_reparacion=?, valor=?, clientes_id=?, usuarios_id=?, tipos_calzados_id=? WHERE id=?";
+            stmt = con.prepareStatement(sqlQuery);
 
+            stmt.setString(1, reparacion.getDescripcionReparacion());
+            stmt.setDouble(2, reparacion.getValor());
+            stmt.setInt(3, reparacion.getClienteID());
+            stmt.setInt(4, reparacion.getUsuariosId());
+            stmt.setInt(5, reparacion.getTipoCalzadoId());
+            stmt.setInt(6, id);
+
+            stmt.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Se ha modificado un registro en " + tableName);
+
+        } catch (ClassNotFoundException | SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un error al modificar " + tableName);
+            LOG.log(Level.SEVERE, null, e);
+        }
     }
 
     /**
-     * Elimina una reparacion por el indice 
-     * 
-     * @param Id 
+     * Elimina una reparacion por el indice
+     *
+     * @param Id
      */
     public static void delete(Integer Id) {
         if (Id != null) {
@@ -255,7 +280,7 @@ public class ReparacionesBL extends BaseBL {
 
     /**
      * Lista de todas las reparaciones
-     * 
+     *
      * @return DefaultTableModel
      */
     public static DefaultTableModel listar() {
@@ -299,7 +324,7 @@ public class ReparacionesBL extends BaseBL {
     public static DefaultTableModel listarReparacionesCliente(Integer id) {
 
         String[] columns = {"", "Tipo Calzado", "Descripción", "Valor", "Estado"};
-              DefaultTableModel model = new DefaultTableModel(null, columns) {
+        DefaultTableModel model = new DefaultTableModel(null, columns) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 //all cells false
@@ -394,6 +419,11 @@ public class ReparacionesBL extends BaseBL {
 
     }
 
+    /**
+     * Llena los datos del combobox de reparaciones
+     *
+     * @return
+     */
     public static DefaultComboBoxModel cboReparaciones() {
 
         DefaultComboBoxModel model = new DefaultComboBoxModel();
@@ -462,6 +492,35 @@ public class ReparacionesBL extends BaseBL {
         }
 
         return model;
+    }
+
+    /**
+     * Actualiza el estado de la reparacion
+     *
+     * @param Status
+     * @param id
+     */
+    public static void updateStatus(String Status, Integer id) {
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = ConexionDB.openDB();
+            String sqlQuery = "UPDATE reparaciones SET estado=? WHERE id=?";
+            stmt = con.prepareStatement(sqlQuery);
+
+            stmt.setString(1, Status);
+            stmt.setDouble(2, id);
+
+            stmt.executeUpdate();
+
+           // JOptionPane.showMessageDialog(null, "Se ha actualizado el estado de la reparación");
+
+        } catch (ClassNotFoundException | SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un error al modificar " + tableName);
+            LOG.log(Level.SEVERE, null, e);
+            e.printStackTrace();
+        }
+
     }
 
 }

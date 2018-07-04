@@ -13,7 +13,6 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -26,6 +25,7 @@ import javax.swing.table.DefaultTableModel;
 public class TicketsBL extends BaseBL {
 
     private static final Logger LOG = Logger.getLogger(ClientesBL.class.getName());
+
     private Integer id = null;
     private static Connection con = null;
     private static ConexionDB cxn = null;
@@ -102,19 +102,20 @@ public class TicketsBL extends BaseBL {
         }
 
     }
-    
-        public static void create(Ticket ticket) {
+
+    public static void create(Ticket ticket) {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = cxn.openDB();
-            String sqlQuery = "INSERT INTO tickets(fecha, valor_total, usuarios_id, clientes_id) VALUES(?,?,?,?);";
+            String sqlQuery = "INSERT INTO tickets(fecha, valor_total, usuarios_id, clientes_id, reparaciones_id) VALUES(?,?,?,?,?);";
             java.sql.PreparedStatement stmt = con.prepareStatement(sqlQuery);
 
             stmt.setString(1, ticket.getFecha());
             stmt.setDouble(2, ticket.getValorTotal());
             stmt.setInt(3, ticket.getUsuarioID());
             stmt.setInt(4, ticket.getClienteID());
+            stmt.setInt(5, ticket.getReparacionID());
 
             stmt.executeUpdate();
 
@@ -125,14 +126,38 @@ public class TicketsBL extends BaseBL {
 
     }
 
-
     /**
-     * Busca un registro por el id
+     * Busca un ticket por el id
      *
      * @param Id
      */
-    public static void findById(Integer Id) {
+    public static Ticket findById(Integer Id) {
+        Ticket ticket = new Ticket();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = ConexionDB.openDB();
+            String sqlQuery = "SELECT * FROM tickets WHERE id=?";
+            stmt = con.prepareStatement(sqlQuery);
 
+            stmt.setInt(1, Id);
+
+            ResultSet rst = stmt.executeQuery();
+
+            if (rst.next()) {
+                ticket.setId(rst.getInt("id"));
+                ticket.setFecha(rst.getString("fecha"));
+                ticket.setClienteID(rst.getInt("clientes_id"));
+                ticket.setUsuarioID(rst.getInt("usuarios_id"));
+                ticket.setValorTotal(rst.getDouble("valor"));
+                ticket.setReparacionID(rst.getInt("reparaciones_id"));
+            }
+
+        } catch (ClassNotFoundException | SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un error buscar el reparacion " + tableName);
+            LOG.log(Level.SEVERE, null, e);
+        }
+
+        return ticket;
     }
 
     /**
@@ -220,6 +245,41 @@ public class TicketsBL extends BaseBL {
         }
 
         return model;
+    }
+
+    /**
+     * Busca un ticket por el id de reparaciones
+     * 
+     * @param Id
+     * @return ticket
+     */
+    public static Ticket findByRepairId(Integer Id) {
+        Ticket ticket = new Ticket();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = ConexionDB.openDB();
+            String sqlQuery = "SELECT * FROM tickets WHERE reparaciones_id=?";
+            stmt = con.prepareStatement(sqlQuery);
+
+            stmt.setInt(1, Id);
+
+            ResultSet rst = stmt.executeQuery();
+
+            if (rst.next()) {
+                ticket.setId(rst.getInt("id"));
+                ticket.setFecha(rst.getString("fecha"));
+                ticket.setClienteID(rst.getInt("clientes_id"));
+                ticket.setUsuarioID(rst.getInt("usuarios_id"));
+                ticket.setValorTotal(rst.getDouble("valor_total"));
+                ticket.setReparacionID(rst.getInt("reparaciones_id"));
+            }
+
+        } catch (ClassNotFoundException | SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un error buscar el reparacion " + tableName);
+            LOG.log(Level.SEVERE, null, e);
+        }
+
+        return ticket;
     }
 
 }

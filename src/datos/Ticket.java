@@ -16,6 +16,7 @@ public class Ticket {
     private Double ValorTotal;
     private Integer UsuarioID;
     private Integer ClienteID;
+    private Integer ReparacionID;
 
     
     public Ticket() {
@@ -70,6 +71,14 @@ public class Ticket {
 
     public void setClienteID(Integer ClienteID) {
         this.ClienteID = ClienteID;
+    }
+
+    public Integer getReparacionID() {
+        return ReparacionID;
+    }
+
+    public void setReparacionID(Integer ReparacionID) {
+        this.ReparacionID = ReparacionID;
     }
 
 

@@ -13,6 +13,7 @@ import javax.swing.table.TableColumnModel;
 import negocios.ClientesBL;
 import ui.JAppmain_ui;
 import ui.repair.JAddReparClient;
+import ui.repair.jListRepairClient;
 
 /**
  *
@@ -26,6 +27,7 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form JClientes_ui
+     *
      * @param app
      */
     public JClientes_ui(JAppmain_ui app) {
@@ -138,6 +140,11 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
         btnListRepairsClient.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnListRepairsClient.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         btnListRepairsClient.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnListRepairsClient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnListRepairsClientActionPerformed(evt);
+            }
+        });
 
         btnNewRepair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/shoe_add_24.png"))); // NOI18N
         btnNewRepair.setText("Nueva");
@@ -276,9 +283,10 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Evento para ejecutar el formulario de nuevo cliente
-     * pasa un parametro que es la instancia de su formulario padre
-     * @param evt 
+     * Evento para ejecutar el formulario de nuevo cliente pasa un parametro que
+     * es la instancia de su formulario padre
+     *
+     * @param evt
      */
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
 
@@ -289,17 +297,18 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
 
     /**
      * Evento para el boton de refrescar, actualiza el listado de los clientes
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         fillTable();
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     /**
-     * Evento del click en la tabla al seleccionar un cliente
-     * verifica si se ha seleccionado una fila y activa los botones correspondientes
-     * @param evt 
+     * Evento del click en la tabla al seleccionar un cliente verifica si se ha
+     * seleccionado una fila y activa los botones correspondientes
+     *
+     * @param evt
      */
     private void tblClientsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientsMouseClicked
 
@@ -316,7 +325,8 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
 
     /**
      * Evento del boton de borrar un cliente.
-     * @param evt 
+     *
+     * @param evt
      */
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         if (cliente_id > 0) {
@@ -336,8 +346,8 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
 
     /**
      * Evento para actualizar un cliente.
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
 
@@ -356,10 +366,10 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEditActionPerformed
 
     /**
-     * Evento del campo para buscar clientes, se ejecuta cada ves que se oprime una tecla 
-     * en el campo de busqueda.
-     * 
-     * @param evt 
+     * Evento del campo para buscar clientes, se ejecuta cada ves que se oprime
+     * una tecla en el campo de busqueda.
+     *
+     * @param evt
      */
     private void txtBuscarClienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarClienteKeyReleased
 
@@ -372,9 +382,10 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtBuscarClienteKeyReleased
 
     /**
-     * Evento del boton nueva reparación ejecuta el formulario de reparación y 
+     * Evento del boton nueva reparación ejecuta el formulario de reparación y
      * pasa los datos del cliente.
-     * @param evt 
+     *
+     * @param evt
      */
     private void btnNewRepairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewRepairActionPerformed
 
@@ -391,6 +402,20 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
 
         }
     }//GEN-LAST:event_btnNewRepairActionPerformed
+
+    private void btnListRepairsClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListRepairsClientActionPerformed
+        try {
+            // Si hay un cliente seleccionado
+            if (this.cliente_id != 0) {
+                Cliente cliente = ClientesBL.findById(this.cliente_id);
+                jListRepairClient listRepair = new jListRepairClient(cliente, this.app);
+                this.dskApp.add(listRepair);
+                listRepair.show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnListRepairsClientActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -463,7 +488,6 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
         this.btnNewRepair.setEnabled(true);
         btnListRepairsClient.setEnabled(true);
     }
-
 
     /**
      * Busca un texto en la base de datos de los clientes por identificacion,

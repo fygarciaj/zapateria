@@ -26,8 +26,6 @@ import javax.swing.DefaultComboBoxModel;
 public class ReparacionesBL extends BaseBL {
 
     private static final Logger LOG = Logger.getLogger(ClientesBL.class.getName());
-
-
     private Integer id = null;
     private static Connection con = null;
     private static ConexionDB cxn = null;
@@ -36,6 +34,10 @@ public class ReparacionesBL extends BaseBL {
     DefaultTableModel model = new DefaultTableModel();
     private static final String tableName = "Reparaciones";
 
+    /**
+     * Crea un nuevo objeto reparaciones, verifica que la tabla exista, 
+     * si no existe crea auromaticamente la tabla.
+     */
     public ReparacionesBL() {
         cxn = new ConexionDB();
 
@@ -90,6 +92,14 @@ public class ReparacionesBL extends BaseBL {
         }
     }
 
+    /**
+     * Crea una reparación utilizando todos los parametros de la reparacion
+     * @param descripcion_reparacion
+     * @param valor
+     * @param clientes_id
+     * @param usuarios_id
+     * @param tipos_calzados_id 
+     */
     public static void create(String descripcion_reparacion, Double valor, Integer clientes_id, Integer usuarios_id, Integer tipos_calzados_id) {
 
         try {
@@ -113,6 +123,10 @@ public class ReparacionesBL extends BaseBL {
 
     }
 
+    /**
+     * Crea una reparación
+     * @param reparacion 
+     */
     public static void create(Reparacion reparacion) {
 
         try {
@@ -138,7 +152,7 @@ public class ReparacionesBL extends BaseBL {
     }
 
     /**
-     * Busca un registro por el id
+     * Busca un registro de reparacion por el id
      *
      * @param Id
      */
@@ -172,13 +186,17 @@ public class ReparacionesBL extends BaseBL {
         return reparacion;
     }
 
+
     /**
-     * Busca un registro por un campo diferente al id
+     * Acualiza una reparacion por el indice
+     * 
+     * @param descripcion_reparacion
+     * @param valor
+     * @param reparacions_id
+     * @param usuarios_id
+     * @param tipos_calzados_id
+     * @param id 
      */
-    public static void findByField() {
-
-    }
-
     public void update(String descripcion_reparacion, Double valor, Integer reparacions_id, Integer usuarios_id, Integer tipos_calzados_id, Integer id) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -207,6 +225,11 @@ public class ReparacionesBL extends BaseBL {
 
     }
 
+    /**
+     * Elimina una reparacion por el indice 
+     * 
+     * @param Id 
+     */
     public static void delete(Integer Id) {
         if (Id != null) {
             try {
@@ -230,6 +253,11 @@ public class ReparacionesBL extends BaseBL {
         }
     }
 
+    /**
+     * Lista de todas las reparaciones
+     * 
+     * @return DefaultTableModel
+     */
     public static DefaultTableModel listar() {
         String[] columns = {"Id", "Descripción", "Valor", "Tipo Calzado"};
         DefaultTableModel model = new DefaultTableModel(null, columns);
@@ -263,13 +291,68 @@ public class ReparacionesBL extends BaseBL {
     }
 
     /**
+     * Lista de las reparaciones por cliente
+     *
+     * @param id
+     * @return
+     */
+    public static DefaultTableModel listarReparacionesCliente(Integer id) {
+
+        String[] columns = {"", "Tipo Calzado", "Descripción", "Valor", "Estado"};
+              DefaultTableModel model = new DefaultTableModel(null, columns) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                //all cells false
+                return false;
+            }
+        };
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = cxn.openDB();
+
+            String query = "SELECT reparaciones.id, tipos_calzados.nombre_calzado, \n"
+                    + "reparaciones.descripcion_reparacion, reparaciones.valor, reparaciones.estado \n"
+                    + "FROM tipos_calzados "
+                    + "INNER JOIN reparaciones "
+                    + "ON tipos_calzados.id = reparaciones.tipos_calzados_id\n"
+                    + "WHERE (((reparaciones.clientes_id)=?));";
+            PreparedStatement st = con.prepareStatement(query);
+
+            st.setInt(1, id);
+
+            rs = st.executeQuery();
+
+            ResultSetMetaData rsMd = rs.getMetaData();
+
+            int countColumns = rsMd.getColumnCount();
+
+            while (rs.next()) {
+                Object[] fila = new Object[countColumns];
+                for (int i = 0; i < countColumns; i++) {
+                    fila[i] = rs.getObject(i + 1);
+                }
+                model.addRow(fila);
+            }
+
+        } catch (ClassNotFoundException | SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
+            LOG.log(Level.SEVERE, null, e);
+            return model;
+        }
+
+        return model;
+
+    }
+
+    /**
      * Clase para llenar los combos de reparaciones
      */
     public static class ReparacionesCBO {
-        
-            Integer id;
-            String descripcion_reparacion;
-            Double valor;
+
+        Integer id;
+        String descripcion_reparacion;
+        Double valor;
 
         public ReparacionesCBO() {
         }
@@ -308,17 +391,12 @@ public class ReparacionesBL extends BaseBL {
         public String toString() {
             return descripcion_reparacion;
         }
-            
-        
-            
-    
+
     }
-    
-    
+
     public static DefaultComboBoxModel cboReparaciones() {
 
         DefaultComboBoxModel model = new DefaultComboBoxModel();
-        
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -343,26 +421,25 @@ public class ReparacionesBL extends BaseBL {
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
             e.printStackTrace();
-            
+
             return model;
         }
 
         return model;
     }
-    
-        public static DefaultComboBoxModel cboReparaciones(Integer cliente_id) {
+
+    public static DefaultComboBoxModel cboReparaciones(Integer cliente_id) {
 
         DefaultComboBoxModel model = new DefaultComboBoxModel();
-        
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = cxn.openDB();
-            
+
             String sqlQuery = "SELECT id, descripcion_reparacion, valor FROM reparaciones WHERE clientes_id =?;";
             stmt = con.prepareStatement(sqlQuery);;
             stmt.setInt(1, cliente_id);
-            
+
             rs = stmt.executeQuery();
             ResultSetMetaData rsMd = rs.getMetaData();
 
@@ -380,11 +457,11 @@ public class ReparacionesBL extends BaseBL {
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
             e.printStackTrace();
-            
+
             return model;
         }
 
         return model;
     }
-    
+
 }

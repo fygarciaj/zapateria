@@ -6,6 +6,11 @@
 package ui.repair;
 
 import datos.Cliente;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import negocios.ClientesBL;
+import negocios.ReparacionesBL;
 import ui.JAppmain_ui;
 
 /**
@@ -14,14 +19,22 @@ import ui.JAppmain_ui;
  */
 public class jListRepairClient extends javax.swing.JInternalFrame {
 
-    
     private Cliente cliente = null;
+    public JAppmain_ui app = null;
+    private Integer clienteId;
+
     /**
      * Creates new form jListRepairClient
      */
     public jListRepairClient(Cliente cliente, JAppmain_ui app) {
-        
+
+        this.cliente = cliente;
+        this.app = app;
         initComponents();
+        // Llena los datos del cliente
+        fillClient();
+        fillTableRepairs();
+        disableButtons();
     }
 
     /**
@@ -40,6 +53,16 @@ public class jListRepairClient extends javax.swing.JInternalFrame {
         txtNombreCompletos = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jToolBar1 = new javax.swing.JToolBar();
+        btnChangeStatus = new javax.swing.JButton();
+        btnCreateTicket = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JToolBar.Separator();
+        btnClose = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblRepairs = new javax.swing.JTable();
+
+        setClosable(true);
+        setTitle("Reparaciones para el Cliente");
+        setToolTipText("");
 
         jLabel2.setText("Identificación:");
 
@@ -61,7 +84,7 @@ public class jListRepairClient extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNombreCompletos, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE))
+                    .addComponent(txtNombreCompletos))
                 .addGap(133, 133, 133))
         );
         jPanel1Layout.setVerticalGroup(
@@ -78,46 +101,177 @@ public class jListRepairClient extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Reparaciones para el Cliente");
+        jLabel1.setToolTipText("Listado de las reparaciones del cliente");
 
         jToolBar1.setRollover(true);
+
+        btnChangeStatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/shuffle24.png"))); // NOI18N
+        btnChangeStatus.setText("Cambiar Estado");
+        btnChangeStatus.setFocusable(false);
+        btnChangeStatus.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnChangeStatus.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(btnChangeStatus);
+
+        btnCreateTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/invoice24.png"))); // NOI18N
+        btnCreateTicket.setText("Ticketear");
+        btnCreateTicket.setFocusable(false);
+        btnCreateTicket.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnCreateTicket.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(btnCreateTicket);
+        jToolBar1.add(jSeparator1);
+
+        btnClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/cancel_24.png"))); // NOI18N
+        btnClose.setText("Cerrar");
+        btnClose.setToolTipText("Cierra el formulario");
+        btnClose.setFocusable(false);
+        btnClose.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnClose.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCloseActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnClose);
+
+        tblRepairs.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblRepairs.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblRepairsMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblRepairs);
+        if (tblRepairs.getColumnModel().getColumnCount() > 0) {
+            tblRepairs.getColumnModel().getColumn(0).setResizable(false);
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 646, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(253, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        // Cierra el formulario
+        this.dispose();
+    }//GEN-LAST:event_btnCloseActionPerformed
+
+    private void tblRepairsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRepairsMouseClicked
+        int row = this.tblRepairs.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(null, "Seleccione una fila");
+            disableButtons();
+        } else {
+            clienteId = (int) this.tblRepairs.getValueAt(row, 0);
+            enabledButtons();
+        }
+    }//GEN-LAST:event_tblRepairsMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnChangeStatus;
+    private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnCreateTicket;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JTable tblRepairs;
     private javax.swing.JTextField txtIdentificacion;
     private javax.swing.JTextField txtNombreCompletos;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * Llena los datos del cliente
+     */
+    private void fillClient() {
+        txtIdentificacion.setText(this.cliente.getIdentificacion());
+        txtNombreCompletos.setText(cliente.getNombreCompleto());
+
+    }
+
+    /**
+     * Llena la tabla con las reparaciones del cliente
+     */
+    private void fillTableRepairs() {
+        try {
+
+            DefaultTableModel modelRepairs;
+
+            modelRepairs = ReparacionesBL.listarReparacionesCliente(this.cliente.getId());
+            this.tblRepairs.setModel(modelRepairs);
+            TableColumnModel columnModel = tblRepairs.getColumnModel();
+
+            columnModel.getColumn(0).setWidth(0);
+            columnModel.getColumn(0).setPreferredWidth(0);
+            columnModel.getColumn(1).setPreferredWidth(150);
+            columnModel.getColumn(2).setPreferredWidth(200);
+            columnModel.getColumn(3).setPreferredWidth(50);
+            columnModel.getColumn(4).setPreferredWidth(50);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, "Error al cargar la lista de reparaciones " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void disableButtons() {
+        btnChangeStatus.setEnabled(false);
+        btnCreateTicket.setEnabled(false);
+
+    }
+
+    private void enabledButtons() {
+        btnChangeStatus.setEnabled(true);
+        btnCreateTicket.setEnabled(true);
+    }
+
 }

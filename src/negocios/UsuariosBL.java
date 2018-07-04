@@ -258,7 +258,7 @@ public class UsuariosBL {
         }
     }
 
-    public DefaultTableModel listar() {
+    public static DefaultTableModel listar() {
         
         String[] columns = {"Id", "Identificación", "Nombres Completos", "Edad", "Dirección", "Telefono", "Nombre Usuario"};
         DefaultTableModel model = new DefaultTableModel(null, columns);

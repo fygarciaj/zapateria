@@ -11,7 +11,7 @@ import ui.Client.JClientes_ui;
 import javax.swing.JOptionPane;
 import ui.repair.JReparaciones_ui;
 import ui.ticket.Tickets_ui;
-import ui.mario_empleados.Empleado_ui;
+import ui.empleados.Empleado_ui;
 
 /**
  *
@@ -48,9 +48,9 @@ public class JAppmain_ui extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        dskMain = new javax.swing.JDesktopPane();
         jPanel2 = new javax.swing.JPanel();
         txtUser = new javax.swing.JLabel();
+        dskMain = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mnuClientes = new javax.swing.JMenuItem();
@@ -85,6 +85,25 @@ public class JAppmain_ui extends javax.swing.JFrame {
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/res/shoe.png")).getImage());
         setPreferredSize(new java.awt.Dimension(1024, 768));
 
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+
+        txtUser.setText("Usuario: ?");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(txtUser)
+                .addGap(0, 673, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(txtUser)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         dskMain.setBackground(new java.awt.Color(255, 255, 255));
         dskMain.setAlignmentX(0.0F);
         dskMain.setAlignmentY(0.0F);
@@ -93,15 +112,12 @@ public class JAppmain_ui extends javax.swing.JFrame {
         dskMain.setLayout(dskMainLayout);
         dskMainLayout.setHorizontalGroup(
             dskMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 721, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         dskMainLayout.setVerticalGroup(
             dskMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 413, Short.MAX_VALUE)
+            .addGap(0, 435, Short.MAX_VALUE)
         );
-
-        txtUser.setText("Usuario: ?");
-        jPanel2.add(txtUser);
 
         jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/shoe_black_32.png"))); // NOI18N
         jMenu1.setText("Archivo");
@@ -215,15 +231,15 @@ public class JAppmain_ui extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(dskMain)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(dskMain)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(dskMain)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(dskMain))
         );
 
         pack();
@@ -319,8 +335,7 @@ public class JAppmain_ui extends javax.swing.JFrame {
      */
     private void mnuUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuUsuariosActionPerformed
         try {
-            Empleado_ui empleado_ui = new Empleado_ui();
-
+            Empleado_ui empleado_ui = new Empleado_ui(this);
             this.dskMain.add(empleado_ui);
             empleado_ui.show();
         } catch (Exception e) {

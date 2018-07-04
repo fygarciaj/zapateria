@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui.mario_empleados;
+package ui.empleados;
 
 public class Lista_empleados extends javax.swing.JPanel {
 

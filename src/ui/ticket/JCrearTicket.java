@@ -11,6 +11,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import negocios.ClientesBL;
 import negocios.ReparacionesBL;
+import negocios.TicketsBL;
 import ui.JAppmain_ui;
 
 /**
@@ -38,8 +39,8 @@ public class JCrearTicket extends javax.swing.JInternalFrame {
     }
 
     /**
-     * 
-     * @param app 
+     *
+     * @param app
      */
     JCrearTicket(JAppmain_ui app) {
         initComponents();
@@ -191,12 +192,27 @@ public class JCrearTicket extends javax.swing.JInternalFrame {
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // Guarda los cambios
 
-        Ticket ticket = new Ticket();
+        try {
+            Ticket ticket = new Ticket();
 
-        ticket.setFecha(dtDateTicket.getDateFormatString());
-        ticket.setClienteID(clienteID);
-        ticket.setReparacionID(reparacionID);
-        ticket.setUsuarioID(this.app.user.getId());
+            ticket.setFecha(dtDateTicket.getDateFormatString());
+            ticket.setClienteID(clienteID);
+            ticket.setReparacionID(reparacionID);
+            ticket.setUsuarioID(this.app.user.getId());
+            ticket.setEstado("Facturado");
+            ticket.setValorTotal(Double.parseDouble(txtValor.getText()));
+
+            //Crear el ticket
+            TicketsBL.create(ticket);
+            
+            // Se actualiza el estado de la reparación a facturado
+            ReparacionesBL.updateStatus("Facturado", reparacionID);
+            
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
     }//GEN-LAST:event_btnSaveActionPerformed
 

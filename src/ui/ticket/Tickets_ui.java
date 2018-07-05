@@ -153,7 +153,7 @@ public class Tickets_ui extends javax.swing.JInternalFrame {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         
         try {
-            JCrearTicket crearTicket = new JCrearTicket();
+            JCrearTicket crearTicket = new JCrearTicket(this.app);
             this.app.dskMain.add(crearTicket);
             
             Dimension desktopSize = this.app.dskMain.getSize();

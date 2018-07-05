@@ -151,7 +151,20 @@ public class Tickets_ui extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        
+        try {
+            JCrearTicket crearTicket = new JCrearTicket();
+            this.app.dskMain.add(crearTicket);
+            
+            Dimension desktopSize = this.app.dskMain.getSize();
+            Dimension FrameSize = crearTicket.getSize();
+            crearTicket.setLocation((desktopSize.width - FrameSize.width) / 2, (desktopSize.height - FrameSize.height) / 2);
 
+            crearTicket.show();
+            
+        } catch (Exception e) {
+        }
+        
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
@@ -161,7 +174,9 @@ public class Tickets_ui extends javax.swing.JInternalFrame {
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         if (ticketId != 0) {
-            JEditarTicket editTicket = new JEditarTicket();
+            
+            ticket = TicketsBL.findById(ticketId);
+            JEditarTicket editTicket = new JEditarTicket(ticket);
             this.app.dskMain.add(editTicket);
 
             Dimension desktopSize = this.app.dskMain.getSize();

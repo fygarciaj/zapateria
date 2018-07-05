@@ -11,26 +11,43 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import negocios.ClientesBL;
 import negocios.ReparacionesBL;
+import ui.JAppmain_ui;
 
 /**
  *
  * @author REBOOTSYSTEM
  */
-public class JEditarTicket extends javax.swing.JInternalFrame {
+public class JCrearTicket extends javax.swing.JInternalFrame {
 
+    // Declaración de variables 
     private Integer clienteID;
+    private Integer reparacionID;
     private String nombreCliente;
     private Ticket ticket;
+    private JAppmain_ui app;
 
     /**
-     * Creates new form JEditarTicket
+     *
      */
-    public JEditarTicket(Ticket ticket) {
+    public JCrearTicket() {
         initComponents();
         this.ticket = ticket;
         dtDateTicket.setDate(new Date());
         fillComboClient();
         cboReparacion.setEnabled(false);
+    }
+
+    /**
+     * 
+     * @param app 
+     */
+    JCrearTicket(JAppmain_ui app) {
+        initComponents();
+        this.ticket = ticket;
+        dtDateTicket.setDate(new Date());
+        fillComboClient();
+        cboReparacion.setEnabled(false);
+        this.app = app;
     }
 
     /**
@@ -56,7 +73,8 @@ public class JEditarTicket extends javax.swing.JInternalFrame {
         cboReparacion = new javax.swing.JComboBox<>();
 
         setClosable(true);
-        setTitle("Editar ticket");
+        setTitle("Crear Ticket");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/res/invoice24add.png"))); // NOI18N
 
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
@@ -82,7 +100,7 @@ public class JEditarTicket extends javax.swing.JInternalFrame {
         jLabel3.setText("Reparación");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel7.setText("Editar Ticket");
+        jLabel7.setText("Crear Ticket");
         jLabel7.setOpaque(true);
 
         dtDateTicket.setDateFormatString("yyyy-MM-dd");
@@ -90,6 +108,12 @@ public class JEditarTicket extends javax.swing.JInternalFrame {
         cboCliente.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cboClienteItemStateChanged(evt);
+            }
+        });
+
+        cboReparacion.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cboReparacionItemStateChanged(evt);
             }
         });
 
@@ -164,13 +188,16 @@ public class JEditarTicket extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    // Guarda los datos del ticket
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // Guarda los cambios
-        
+
         Ticket ticket = new Ticket();
-        
-        
+
+        ticket.setFecha(dtDateTicket.getDateFormatString());
+        ticket.setClienteID(clienteID);
+        ticket.setReparacionID(reparacionID);
+        ticket.setUsuarioID(this.app.user.getId());
+
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void cboClienteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboClienteItemStateChanged
@@ -182,6 +209,10 @@ public class JEditarTicket extends javax.swing.JInternalFrame {
         fillComboRepairs();
         cboReparacion.setEnabled(true);
     }//GEN-LAST:event_cboClienteItemStateChanged
+
+    private void cboReparacionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboReparacionItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboReparacionItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

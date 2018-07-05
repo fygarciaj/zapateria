@@ -160,7 +160,7 @@ public class ReparacionesBL extends BaseBL {
      * Busca un registro de reparacion por el id
      *
      * @param id
-     * @return 
+     * @return
      */
     public static Reparacion findById(Integer id) {
         Reparacion reparacion = new Reparacion();
@@ -467,7 +467,11 @@ public class ReparacionesBL extends BaseBL {
             Class.forName("com.mysql.jdbc.Driver");
             con = cxn.openDB();
 
-            String sqlQuery = "SELECT id, descripcion_reparacion, valor FROM reparaciones WHERE clientes_id =?;";
+            String sqlQuery = "SELECT reparaciones.id, reparaciones.descripcion_reparacion, "
+                    + "reparaciones.valor, reparaciones.clientes_id, reparaciones.usuarios_id, reparaciones.tipos_calzados_id, reparaciones.estado\n"
+                    + "FROM reparaciones\n"
+                    + "WHERE (((reparaciones.clientes_id)=? ) "
+                    + "AND (Not (reparaciones.estado)=\"Facturado\"));";
             stmt = con.prepareStatement(sqlQuery);;
             stmt.setInt(1, cliente_id);
 
@@ -514,8 +518,7 @@ public class ReparacionesBL extends BaseBL {
 
             stmt.executeUpdate();
 
-           // JOptionPane.showMessageDialog(null, "Se ha actualizado el estado de la reparación");
-
+            // JOptionPane.showMessageDialog(null, "Se ha actualizado el estado de la reparación");
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, "Ocurrio un error al modificar " + tableName);
             LOG.log(Level.SEVERE, null, e);

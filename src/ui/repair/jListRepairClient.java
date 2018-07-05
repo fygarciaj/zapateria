@@ -399,7 +399,17 @@ public class jListRepairClient extends javax.swing.JInternalFrame {
 
     private void printTickets() {
 
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            JPrintTicket printTicket = new JPrintTicket(reparacion);
+            this.app.dskMain.add(printTicket);
+            Dimension desktopSize = this.app.dskMain.getSize();
+            Dimension FrameSize = printTicket.getSize();
+            printTicket.setLocation((desktopSize.width - FrameSize.width) / 2, (desktopSize.height - FrameSize.height) / 2);
+            printTicket.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

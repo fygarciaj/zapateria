@@ -17,6 +17,7 @@ public class Ticket {
     private Integer UsuarioID;
     private Integer ClienteID;
     private Integer ReparacionID;
+    private String Estado;
 
     
     public Ticket() {
@@ -24,6 +25,8 @@ public class Ticket {
         this.Fecha = null;
         this.UsuarioID = null;
         this.ClienteID = null;
+        this.Estado = null;
+        this.ReparacionID = null;
     }
 
     public Ticket(String Fecha, Double ValorTotal, Integer UsuarioID, Integer ClienteID) {
@@ -79,6 +82,14 @@ public class Ticket {
 
     public void setReparacionID(Integer ReparacionID) {
         this.ReparacionID = ReparacionID;
+    }
+
+    public String getEstado() {
+        return Estado;
+    }
+
+    public void setEstado(String Estado) {
+        this.Estado = Estado;
     }
 
 

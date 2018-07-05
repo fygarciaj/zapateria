@@ -214,7 +214,7 @@ public class TicketsBL extends BaseBL {
     }
 
     public static DefaultTableModel listar() {
-        String[] columns = {"Id", "Fecha", "Cliente", "Valor"};
+        String[] columns = {"Id", "Fecha", "Cliente", "Reparación", "Tipo de Calzado", "Valor"};
         DefaultTableModel model = new DefaultTableModel(null, columns);
 
         try {
@@ -222,8 +222,11 @@ public class TicketsBL extends BaseBL {
             con = cxn.openDB();
 
             Statement st = con.createStatement();
-            String query = "SELECT tickets.id, tickets.fecha, clientes.nombre_completo, tickets.valor_total\n"
-                    + "FROM tickets INNER JOIN clientes ON tickets.clientes_id = clientes.id;";
+            String query = "SELECT tickets.id, tickets.fecha, clientes.nombre_completo, reparaciones.descripcion_reparacion,\n"
+                    + " tipos_calzados.nombre_calzado, tickets.valor_total\n"
+                    + "FROM tipos_calzados "
+                    + "INNER JOIN (reparaciones INNER JOIN (clientes INNER JOIN tickets ON clientes.id = tickets.clientes_id) "
+                    + "ON reparaciones.id = tickets.reparaciones_id) ON tipos_calzados.id = reparaciones.tipos_calzados_id;";
 
             rs = st.executeQuery(query);
             ResultSetMetaData rsMd = rs.getMetaData();
@@ -249,7 +252,7 @@ public class TicketsBL extends BaseBL {
 
     /**
      * Busca un ticket por el id de reparaciones
-     * 
+     *
      * @param Id
      * @return ticket
      */

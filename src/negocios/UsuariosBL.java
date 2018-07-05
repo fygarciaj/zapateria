@@ -65,6 +65,7 @@ public class UsuariosBL {
                 int Result = stmt.executeUpdate(sql);
                 
                // cxn.closeDB();
+               
                 
             } catch (ClassNotFoundException | SQLException e) {
                 JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());

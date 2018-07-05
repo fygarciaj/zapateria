@@ -319,7 +319,7 @@ public class JAppmain_ui extends javax.swing.JFrame {
      */
     private void mnuTitcketesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuTitcketesActionPerformed
         try {
-            Tickets_ui tickets_ui = new Tickets_ui();
+            Tickets_ui tickets_ui = new Tickets_ui(this);
 
             this.dskMain.add(tickets_ui);
             tickets_ui.show();

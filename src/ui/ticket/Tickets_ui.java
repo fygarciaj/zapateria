@@ -5,18 +5,35 @@
  */
 package ui.ticket;
 
+import datos.Ticket;
+import java.awt.Dimension;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import negocios.TicketsBL;
+import ui.JAppmain_ui;
+
 public class Tickets_ui extends javax.swing.JInternalFrame {
+
+    private Ticket ticket = null;
+    private JAppmain_ui app = null;
+    private Integer ticketId;
 
     /**
      * Creates new form Empleados_ui
      */
-    public Tickets_ui() {
+    public Tickets_ui(JAppmain_ui app) {
+        this.app = app;
         initComponents();
-        this.anula_venta1.setVisible(false);
-        this.crear_Ticket1.setVisible(false);
-        this.editar_Ticket1.setVisible(false);
+        disableButtons();
+        llenarLista();
     }
+    public Tickets_ui() {
 
+        initComponents();
+        disableButtons();
+        llenarLista();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,17 +43,14 @@ public class Tickets_ui extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jSplitPane1 = new javax.swing.JSplitPane();
-        jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
-        lista_ventas1 = new ui.ticket.Lista_ventas();
-        crear_Ticket1 = new ui.ticket.Crear_Ticket();
-        editar_Ticket1 = new ui.ticket.Editar_Ticket();
-        anula_venta1 = new ui.ticket.Anula_venta();
+        jToolBar1 = new javax.swing.JToolBar();
+        btnAdd = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        btnNulling = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JToolBar.Separator();
+        btnRefresh = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblTickets = new javax.swing.JTable();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -44,131 +58,135 @@ public class Tickets_ui extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setTitle("Ventas por Tickets por Jorge Marquez");
-        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/res/receipt_24.png"))); // NOI18N
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/res/invoice24.png"))); // NOI18N
 
-        jButton1.setBackground(new java.awt.Color(204, 255, 204));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/receipt_24.png"))); // NOI18N
-        jButton1.setText("Crear Ticket");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jToolBar1.setFloatable(false);
+        jToolBar1.setRollover(true);
+
+        btnAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/invoice24add.png"))); // NOI18N
+        btnAdd.setText("Crear Ticket");
+        btnAdd.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAdd.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        btnAdd.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnAddActionPerformed(evt);
             }
         });
+        jToolBar1.add(btnAdd);
 
-        jButton2.setBackground(new java.awt.Color(153, 255, 255));
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/contract_24.png"))); // NOI18N
-        jButton2.setText("Editar Ticket");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/invoice24edit.png"))); // NOI18N
+        btnEdit.setText("Editar Ticket");
+        btnEdit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEdit.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        btnEdit.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnEditActionPerformed(evt);
             }
         });
+        jToolBar1.add(btnEdit);
 
-        jButton3.setBackground(new java.awt.Color(255, 51, 51));
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/anular_ticket_24.png"))); // NOI18N
-        jButton3.setText("Anular Venta");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnNulling.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/invoice24del.png"))); // NOI18N
+        btnNulling.setText("Anular Venta");
+        btnNulling.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnNulling.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        btnNulling.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnNulling.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnNullingActionPerformed(evt);
             }
         });
+        jToolBar1.add(btnNulling);
+        jToolBar1.add(jSeparator1);
 
-        jButton4.setBackground(new java.awt.Color(255, 255, 102));
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/checklist_24.png"))); // NOI18N
-        jButton4.setText("Lista de Ventas");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/refresh_24.png"))); // NOI18N
+        btnRefresh.setText("Actualizar");
+        btnRefresh.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnRefresh.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        btnRefresh.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnRefreshActionPerformed(evt);
             }
         });
+        jToolBar1.add(btnRefresh);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton4)
-                .addContainerGap(375, Short.MAX_VALUE))
-        );
+        tblTickets.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        jSplitPane1.setLeftComponent(jPanel1);
+            },
+            new String [] {
 
-        jPanel2.setLayout(new javax.swing.OverlayLayout(jPanel2));
-        jPanel2.add(lista_ventas1);
-        jPanel2.add(crear_Ticket1);
-        jPanel2.add(editar_Ticket1);
-        jPanel2.add(anula_venta1);
-
-        jSplitPane1.setRightComponent(jPanel2);
+            }
+        ));
+        tblTickets.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tblTickets.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblTicketsMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tblTickets);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 782, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 887, Short.MAX_VALUE)
+                .addComponent(jScrollPane2)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jSplitPane1)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        this.anula_venta1.setVisible(false);
-        this.lista_ventas1.setVisible(false);
-        this.editar_Ticket1.setVisible(false);
-        this.crear_Ticket1.setVisible(true);
-        
-              
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        this.anula_venta1.setVisible(false);
-        this.crear_Ticket1.setVisible(false);
-        this.editar_Ticket1.setVisible(false);
-        this.lista_ventas1.setVisible(true);
-        
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_btnAddActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       this.anula_venta1.setVisible(false);
-        this.crear_Ticket1.setVisible(false);
-        this.editar_Ticket1.setVisible(true);
-        this.lista_ventas1.setVisible(false);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        // refresca la lista de tickets
+        llenarLista();
+    }//GEN-LAST:event_btnRefreshActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        this.anula_venta1.setVisible(true);
-        this.crear_Ticket1.setVisible(false);
-        this.editar_Ticket1.setVisible(false);
-        this.lista_ventas1.setVisible(false);
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        if (ticketId != 0) {
+            JEditarTicket editTicket = new JEditarTicket();
+            this.app.dskMain.add(editTicket);
+
+            Dimension desktopSize = this.app.dskMain.getSize();
+            Dimension FrameSize = editTicket.getSize();
+            editTicket.setLocation((desktopSize.width - FrameSize.width) / 2, (desktopSize.height - FrameSize.height) / 2);
+
+            editTicket.show();
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnNullingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNullingActionPerformed
+
+    }//GEN-LAST:event_btnNullingActionPerformed
+
+    private void tblTicketsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTicketsMouseClicked
+
+        int row = this.tblTickets.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(null, "Seleccione una fila");
+            disableButtons();
+        } else {
+            ticketId = (int) this.tblTickets.getValueAt(row, 0);
+            enabledButtons();
+        }
+    }//GEN-LAST:event_tblTicketsMouseClicked
 
     /**
      * @param args the command line arguments
@@ -207,16 +225,53 @@ public class Tickets_ui extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private ui.ticket.Anula_venta anula_venta1;
-    private ui.ticket.Crear_Ticket crear_Ticket1;
-    private ui.ticket.Editar_Ticket editar_Ticket1;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JSplitPane jSplitPane1;
-    private ui.ticket.Lista_ventas lista_ventas1;
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnNulling;
+    private javax.swing.JButton btnRefresh;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JToolBar.Separator jSeparator1;
+    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JTable tblTickets;
     // End of variables declaration//GEN-END:variables
+
+    private void llenarLista() {
+
+        TicketsBL lista = new TicketsBL();
+
+        try {
+            DefaultTableModel modelTickets;
+
+            modelTickets = TicketsBL.listar();
+            this.tblTickets.setModel(modelTickets);
+            // Se configuran el ancho de las columnas
+            TableColumnModel columnModel = tblTickets.getColumnModel();
+
+            columnModel.getColumn(0).setPreferredWidth(30);
+            columnModel.getColumn(1).setPreferredWidth(200);
+            columnModel.getColumn(2).setPreferredWidth(200);
+            columnModel.getColumn(3).setPreferredWidth(250);
+            columnModel.getColumn(4).setPreferredWidth(250);
+            columnModel.getColumn(5).setPreferredWidth(250);
+            
+            disableButtons();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar la lista de tickets " + e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
+
+    private void disableButtons() {
+        btnEdit.setEnabled(false);
+        btnNulling.setEnabled(false);
+    }
+
+    private void enabledButtons() {
+        btnEdit.setEnabled(true);
+        btnNulling.setEnabled(true);
+
+    }
+
 }

@@ -458,6 +458,7 @@ public class ReparacionesBL extends BaseBL {
         return model;
     }
 
+    // para llenar los combobox de reparaciones
     public static DefaultComboBoxModel cboReparaciones(Integer cliente_id) {
 
         DefaultComboBoxModel model = new DefaultComboBoxModel();

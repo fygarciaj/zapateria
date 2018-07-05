@@ -16,16 +16,12 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="jLabel7" min="-2" pref="149" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="btnSaveUser" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -40,7 +36,7 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Component id="txtPassword" min="-2" pref="140" max="-2" attributes="0"/>
+                              <Component id="txtPassword" min="-2" pref="121" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -53,6 +49,10 @@
                           <Component id="txtIdentificacion" max="32767" attributes="0"/>
                           <Component id="txtNombresCompletos" pref="380" max="32767" attributes="0"/>
                       </Group>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="btnSaveUser" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -183,18 +183,12 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel9">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Contrase&#xf1;a:"/>
+        <Property name="text" type="java.lang.String" value="Confirmar Contrase&#xf1;a:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JPasswordField" name="txtPassword">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jPasswordField1"/>
-      </Properties>
+    <Component class="javax.swing.JTextField" name="txtPassword">
     </Component>
-    <Component class="javax.swing.JPasswordField" name="txtPasswordConfirm">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jPasswordField2"/>
-      </Properties>
+    <Component class="javax.swing.JTextField" name="txtPasswordConfirm">
     </Component>
   </SubComponents>
 </Form>

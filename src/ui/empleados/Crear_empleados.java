@@ -5,7 +5,9 @@
  */
 package ui.empleados;
 
+import datos.Usuario;
 import javax.swing.JOptionPane;
+import negocios.UsuariosBL;
 
 public class Crear_empleados extends javax.swing.JPanel {
 
@@ -41,8 +43,8 @@ public class Crear_empleados extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        txtPassword = new javax.swing.JPasswordField();
-        txtPasswordConfirm = new javax.swing.JPasswordField();
+        txtPassword = new javax.swing.JTextField();
+        txtPasswordConfirm = new javax.swing.JTextField();
 
         jLabel1.setText("Identificación:");
 
@@ -72,11 +74,7 @@ public class Crear_empleados extends javax.swing.JPanel {
 
         jLabel8.setText("Contraseña:");
 
-        jLabel9.setText("Contraseña:");
-
-        txtPassword.setText("jPasswordField1");
-
-        txtPasswordConfirm.setText("jPasswordField2");
+        jLabel9.setText("Confirmar Contraseña:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -88,9 +86,6 @@ public class Crear_empleados extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnSaveUser))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -103,7 +98,7 @@ public class Crear_empleados extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel9)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -113,7 +108,10 @@ public class Crear_empleados extends javax.swing.JPanel {
                             .addComponent(txtDireccion)
                             .addComponent(txtEdad)
                             .addComponent(txtIdentificacion)
-                            .addComponent(txtNombresCompletos, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE))))
+                            .addComponent(txtNombresCompletos, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnSaveUser)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -159,6 +157,9 @@ public class Crear_empleados extends javax.swing.JPanel {
 
     private void btnSaveUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveUserActionPerformed
 
+        String pass, passConfirm;
+        pass = txtPassword.getText().toString();
+        passConfirm = txtPasswordConfirm.getText().toString();
         // Si hay algo en la identificacion
         if (txtIdentificacion.getText().length() > 0) {
             // Si hay algo en el nombre completo
@@ -166,21 +167,38 @@ public class Crear_empleados extends javax.swing.JPanel {
                 // Si ha ingresado el nombre de usuario
                 if (txtUsername.getText().length() > 0) {
                     // Si la contraseña y la confirmacion son iguales
-                    if (txtPassword.getPassword().equals(txtPasswordConfirm.getPassword())) {
-                        
-                        
-                        
-                        
+                    if (pass == null ? passConfirm == null : pass.equals(passConfirm)) {
+
+                        Usuario user = new Usuario();
+                        user.setIdentificacion(txtIdentificacion.getText());
+                        user.setNombreCompleto(txtNombresCompletos.getText());
+                        user.setEdad(Integer.parseInt(txtEdad.getText()));
+                        user.setTelefono(txtTelefono.getText());
+                        user.setDireccion(txtDireccion.getText());
+                        user.setNombreUsuario(txtUsername.getText());
+
+                        UsuariosBL.create(user);
+
+                        JOptionPane.showMessageDialog(this, "Se ha creado el usuario");
+
                         
                     } else {
                         JOptionPane.showMessageDialog(txtPassword, "La contraseña y la confirmación no son iguales");
+                        txtPassword.requestFocus();
+                        txtPassword.selectAll();
+                        txtPasswordConfirm.selectAll();
                     }
-                }
-                else
-                {
+                } else {
                     JOptionPane.showMessageDialog(txtUsername, "Debe indicar el nombre del usuario");
+                    txtUsername.requestFocus();
                 }
+            } else {
+                JOptionPane.showMessageDialog(txtNombresCompletos, "Debe indicar el nombre completo del usuario");
+                txtNombresCompletos.requestFocus();
             }
+        } else {
+            JOptionPane.showMessageDialog(txtIdentificacion, "Debe indicar el numero del documento de identidad");
+            txtIdentificacion.requestFocus();
         }
     }//GEN-LAST:event_btnSaveUserActionPerformed
 
@@ -200,8 +218,8 @@ public class Crear_empleados extends javax.swing.JPanel {
     private javax.swing.JTextField txtEdad;
     private javax.swing.JTextField txtIdentificacion;
     private javax.swing.JTextField txtNombresCompletos;
-    private javax.swing.JPasswordField txtPassword;
-    private javax.swing.JPasswordField txtPasswordConfirm;
+    private javax.swing.JTextField txtPassword;
+    private javax.swing.JTextField txtPasswordConfirm;
     private javax.swing.JTextField txtTelefono;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables

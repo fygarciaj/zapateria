@@ -26,6 +26,7 @@ import utils.BCrypt;
 public class UsuariosBL {
 
     private static final Logger LOG = Logger.getLogger(ClientesBL.class.getName());
+
     private Integer id = null;
     private static Connection con = null;
     private static ConexionDB cxn = null;
@@ -102,6 +103,40 @@ public class UsuariosBL {
 
     }
 
+    /**
+     * Crea un nuevo usuario
+     * @param user
+     * @return
+     */
+    public static void create(Usuario user) {
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = cxn.openDB();
+            String sqlQuery = "INSERT INTO usuarios(identificacion, nombre_completo, edad, direccion, telefono, nombre_usuario, password) VALUES(?,?,?,?,?,?,?);";
+            java.sql.PreparedStatement stmt = con.prepareStatement(sqlQuery);
+
+            String hashed = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+            
+            stmt.setString(1, user.getIdentificacion());
+            stmt.setString(2, user.getNombreCompleto());
+            stmt.setInt(3, user.getEdad());
+            stmt.setString(4, user.getDireccion());
+            stmt.setString(5, user.getTelefono());
+            stmt.setString(6, user.getNombreUsuario());
+            stmt.setString(7, hashed);
+
+            int Result = stmt.executeUpdate();
+            // cxn.closeDB();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
+            LOG.log(Level.SEVERE, null, e);
+        }
+
+    }
+    
+    
     /**
      * Busca un usuario por el id
      *
@@ -238,12 +273,11 @@ public class UsuariosBL {
         if (Id != null) {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
-                con = cxn.openDB();
-                String sqlQuery = "DELETE FROM ? WHERE id=?";
+                con = ConexionDB.openDB();
+                String sqlQuery = "DELETE FROM usuarios WHERE id=?";
                 stmt = con.prepareStatement(sqlQuery);
 
-                stmt.setString(1, tableName);
-                stmt.setInt(2, Id);
+                stmt.setInt(1, Id);
 
                 stmt.executeUpdate();
 

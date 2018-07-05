@@ -5,11 +5,15 @@
  */
 package ui.empleados;
 
+import datos.Cliente;
+import datos.Usuario;
 import java.awt.Dimension;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import negocios.ClientesBL;
 import negocios.UsuariosBL;
+import ui.Client.JEditClient;
 import ui.JAppmain_ui;
 
 /**
@@ -19,6 +23,8 @@ import ui.JAppmain_ui;
 public class Empleado_ui extends javax.swing.JInternalFrame {
 
     private JAppmain_ui app = null;
+    private Usuario user = null;
+    private Integer userId;
 
     /**
      * Creates new form
@@ -55,7 +61,6 @@ public class Empleado_ui extends javax.swing.JInternalFrame {
         jSeparator1 = new javax.swing.JToolBar.Separator();
         jButton9 = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
-        jButton8 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUsers = new javax.swing.JTable();
 
@@ -98,6 +103,11 @@ public class Empleado_ui extends javax.swing.JInternalFrame {
         btnDelete.setFocusable(false);
         btnDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnDelete.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
         jToolBar1.add(btnDelete);
         jToolBar1.add(jSeparator1);
 
@@ -108,17 +118,6 @@ public class Empleado_ui extends javax.swing.JInternalFrame {
         jButton9.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton9);
         jToolBar1.add(jSeparator2);
-
-        jButton8.setText("Lista de Empleados");
-        jButton8.setFocusable(false);
-        jButton8.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton8.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(jButton8);
 
         tblUsers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -132,6 +131,11 @@ public class Empleado_ui extends javax.swing.JInternalFrame {
             }
         ));
         tblUsers.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tblUsers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblUsersMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblUsers);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -171,9 +175,34 @@ public class Empleado_ui extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEditActionPerformed
 
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton8ActionPerformed
+    private void tblUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUsersMouseClicked
+
+        int row = this.tblUsers.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(null, "Seleccione una fila");
+            disableButtons();
+        } else {
+            userId = (int) this.tblUsers.getValueAt(row, 0);
+            enableButtons();
+        }
+
+    }//GEN-LAST:event_tblUsersMouseClicked
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        if (userId > 0) {
+            try {
+                int result = JOptionPane.showConfirmDialog(rootPane, "Desea borrar el Usuario?", "Borrar Usuario", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                if (result == 0) {
+                    UsuariosBL.delete(userId);
+                    fillTableUsers();
+                    disableButtons();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -215,7 +244,6 @@ public class Empleado_ui extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnNew;
-    private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator1;
@@ -251,6 +279,11 @@ public class Empleado_ui extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(rootPane, "Error al cargar la lista de clientes " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private void enableButtons() {
+        btnEdit.setEnabled(true);
+        btnDelete.setEnabled(true);
     }
 
 }

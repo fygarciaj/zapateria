@@ -6,12 +6,13 @@
 package datos;
 
 import java.util.List;
+import negocios.UsuariosBL;
 
 /**
  *
  * @author REBOOTSYSTEM
  */
-public class Usuario {
+public class Usuario extends UsuariosBL {
 
     private static int Id;
     private String Identificacion;

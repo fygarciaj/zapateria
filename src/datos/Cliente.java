@@ -1,5 +1,7 @@
-/**
- * 
+/**aqui se establecen los get y set de los datos de la clase cliente
+ * Clase Cliente
+ *
+ * Contiene informacion de cada Cliente
  */
 package datos;
 
@@ -8,7 +10,7 @@ package datos;
  *
  */
 public class Cliente {
-
+//declaracion de variables
     private Integer Id;
     private String Identificacion;
     private String NombreCompleto;
@@ -20,73 +22,97 @@ public class Cliente {
     }
     
 
-    /**
-     * @return the Id
+     /**
+     * Devuelve el Id de un cliente
+     * @return Id del cliente
      */
     public Integer getId() {
         return Id;
     }
-
+/**
+     * Modifica el Id de un empleado
+     * @param Id
+     */
     public void setId(Integer Id) {
         this.Id = Id;
     }
 
-    
+    /**
+     * Devuelve la Identificacion de un cliente
+     * @return Identificacion del cliente
+     */
     public String getIdentificacion() {
         return Identificacion;
     }
-
+    /**
+     * Modifica el Identificacion de un empleado
+     * @param Identificacion
+     */
     public void setIdentificacion(String Identificacion) {
         this.Identificacion = Identificacion;
     }
 
     
-    /**
-     * @return the NombreCompleto
+     /**
+     * Devuelve el NombreCompleto de un cliente
+     * @return NombreCompleto del cliente
      */
     public String getNombreCompleto() {
         return NombreCompleto;
     }
 
     /**
-     * @param NombreCompleto the NombreCompleto to set
+     * Modifica el NombreCompleto de un empleado
+     * @param NombreCompleto
      */
     public void setNombreCompleto(String NombreCompleto) {
         this.NombreCompleto = NombreCompleto;
     }
 
+    /**
+     * Devuelve la FechaNacimiento de un cliente
+     * @return FechaNacimiento del cliente
+     */
     public String getFechaNacimiento() {
         return FechaNacimiento;
     }
-
+     /**
+     * Modifica la FechaNacimiento de un empleado
+     * @param FechaNacimiento
+     */
     public void setFechaNacimiento(String FechaNacimiento) {
         this.FechaNacimiento = FechaNacimiento;
     }
 
 
     /**
-     * @return the Telefono
+     * Devuelve  Telefono de un cliente
+     * @return Telefono del cliente
      */
     public String getTelefono() {
         return Telefono;
     }
 
-    /**
-     * @param Telefono the Telefono to set
+    
+     /**
+     * Modifica el Telefono de un empleado
+     * @param Telefono
      */
     public void setTelefono(String Telefono) {
         this.Telefono = Telefono;
     }
 
     /**
-     * @return the Direccion
+     * Devuelve  Direccion de un cliente
+     * @return Direccion del cliente
      */
     public String getDireccion() {
         return Direccion;
     }
 
     /**
-     * @param Direccion the Direccion to set
+     * Modifica el Telefono de un empleado
+     * @param Direccion
      */
     public void setDireccion(String Direccion) {
         this.Direccion = Direccion;

@@ -27,6 +27,7 @@ public class JEditarTicket extends javax.swing.JInternalFrame {
         initComponents();
         dtDateTicket.setDate(new Date());
         fillComboClient();
+        cboReparacion.setEnabled(false);
     }
 
     /**
@@ -88,8 +89,6 @@ public class JEditarTicket extends javax.swing.JInternalFrame {
                 cboClienteItemStateChanged(evt);
             }
         });
-
-        cboReparacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -173,7 +172,7 @@ public class JEditarTicket extends javax.swing.JInternalFrame {
         this.nombreCliente = cbo.getNombre_completo();
 
         fillComboRepairs();
-
+        cboReparacion.setEnabled(true);
     }//GEN-LAST:event_cboClienteItemStateChanged
 
 

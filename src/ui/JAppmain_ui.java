@@ -7,11 +7,11 @@ package ui;
 
 import datos.Usuario;
 import java.awt.Dimension;
-import ui.Client.JClientes_ui;
 import javax.swing.JOptionPane;
+import ui.Client.JClientes_ui;
+import ui.empleados.Empleado_ui;
 import ui.repair.JReparaciones_ui;
 import ui.ticket.Tickets_ui;
-import ui.empleados.Empleado_ui;
 
 /**
  *
@@ -304,8 +304,7 @@ public class JAppmain_ui extends javax.swing.JFrame {
      */
     private void mnuReparacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuReparacionesActionPerformed
         try {
-            JReparaciones_ui repara_ui = new JReparaciones_ui();
-            JReparaciones_ui.dskApp = this.dskMain;
+            JReparaciones_ui repara_ui = new JReparaciones_ui(this);
             this.dskMain.add(repara_ui);
             repara_ui.show();
         } catch (Exception e) {

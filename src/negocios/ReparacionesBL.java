@@ -6,6 +6,7 @@
 package negocios;
 
 import conexion.ConexionDB;
+import datos.Reparacion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,10 +15,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import datos.Reparacion;
-import javax.swing.DefaultComboBoxModel;
 
 /**
  *
@@ -284,15 +284,26 @@ public class ReparacionesBL extends BaseBL {
      * @return DefaultTableModel
      */
     public static DefaultTableModel listar() {
-        String[] columns = {"Id", "Descripción", "Valor", "Tipo Calzado"};
-        DefaultTableModel model = new DefaultTableModel(null, columns);
+        String[] columns = {"Id", "Tipo de Calzado", "Descripción", "Identificacion Cliente", "Nombre Cliente", "Valor", "Estado"};
+        DefaultTableModel model = new DefaultTableModel(null, columns) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                //all cells false
+                return false;
+            }
+        };
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = cxn.openDB();
 
             Statement st = con.createStatement();
-            String query = "SELECT * FROM " + tableName;
+            String query = "SELECT reparaciones.id, tipos_calzados.nombre_calzado, reparaciones.descripcion_reparacion, \n"
+                    + "clientes.identificacion, clientes.nombre_completo, concat(\"$\", format(reparaciones.valor,2)), reparaciones.estado \n"
+                    + "FROM tipos_calzados \n"
+                    + "INNER JOIN (clientes INNER JOIN reparaciones ON clientes.id = reparaciones.clientes_id) \n"
+                    + "ON tipos_calzados.id = reparaciones.tipos_calzados_id;";
+
             rs = st.executeQuery(query);
             ResultSetMetaData rsMd = rs.getMetaData();
 

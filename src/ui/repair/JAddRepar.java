@@ -7,13 +7,12 @@ package ui.repair;
 
 import datos.Reparacion;
 import java.text.DateFormat;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import negocios.ClientesBL;
 import negocios.ReparacionesBL;
+import negocios.TiposCalzadoBL;
 
-/**
- *
- * @author REBOOTSYSTEM
- */
 public class JAddRepar extends javax.swing.JInternalFrame {
 
     private final JReparaciones_ui reparaciones_ui;
@@ -21,17 +20,21 @@ public class JAddRepar extends javax.swing.JInternalFrame {
     private final ReparacionesBL reparacionbl;
 
     DateFormat df = DateFormat.getDateInstance();
-    
-    
+    private Integer clienteId;
+    private Integer tipoCalzadoId;
+    private String nombreCliente;
+
     /**
      * Creates new form JAddClient
+     *
      * @param reparacion_ui
      */
     public JAddRepar(JReparaciones_ui reparacion_ui) {
         this.reparacionbl = null;
         this.reparaciones_ui = reparacion_ui;
         initComponents();
-        
+        llenarComboClientes();
+        llenarComboTiposCalzado();
     }
 
     /**
@@ -45,7 +48,6 @@ public class JAddRepar extends javax.swing.JInternalFrame {
 
         utilDateModel1 = new org.jdatepicker.UtilDateModel();
         sqlDateModel1 = new org.jdatepicker.SqlDateModel();
-        jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -54,6 +56,8 @@ public class JAddRepar extends javax.swing.JInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         cboTipoCalzado = new javax.swing.JComboBox<>();
         txtValor = new javax.swing.JFormattedTextField();
+        cboCliente = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
         jToolBar1 = new javax.swing.JToolBar();
         btnSave = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
@@ -64,8 +68,7 @@ public class JAddRepar extends javax.swing.JInternalFrame {
         sqlDateModel1.setSelected(true);
 
         setTitle("Registro de reparacion");
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons8-martillo-64.png"))); // NOI18N
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/res/shoe_add_24.png"))); // NOI18N
 
         jLabel4.setLabelFor(txtDescripcion);
         jLabel4.setText("Descripción");
@@ -80,9 +83,21 @@ public class JAddRepar extends javax.swing.JInternalFrame {
         jLabel6.setLabelFor(cboTipoCalzado);
         jLabel6.setText("Tipo de calzado");
 
-        cboTipoCalzado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboTipoCalzado.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cboTipoCalzadoItemStateChanged(evt);
+            }
+        });
 
         txtValor.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
+
+        cboCliente.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cboClienteItemStateChanged(evt);
+            }
+        });
+
+        jLabel2.setText("Cliente");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -93,19 +108,24 @@ public class JAddRepar extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
                     .addComponent(jLabel6)
-                    .addComponent(jLabel5))
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel2))
                 .addGap(21, 21, 21)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)
-                        .addComponent(cboTipoCalzado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)
+                    .addComponent(cboTipoCalzado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboCliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 19, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(45, 45, 45)
+                .addGap(14, 14, 14)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cboCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(cboTipoCalzado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -119,10 +139,10 @@ public class JAddRepar extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
-        jToolBar1.setRollover(true);
+        jToolBar1.setFloatable(false);
 
         btnSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/diskette_24.png"))); // NOI18N
         btnSave.setText("Guardar");
@@ -158,26 +178,17 @@ public class JAddRepar extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(10, 10, 10))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(31, Short.MAX_VALUE))))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -185,25 +196,40 @@ public class JAddRepar extends javax.swing.JInternalFrame {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
 
-        if (this.txtDescripcion.getText().length() > 0) {
-            if (this.txtValor.getText().length() > 0) {
-                try {
-                    reparacion = new Reparacion();
-                    reparacion.setDescripcionReparacion(this.txtDescripcion.getText());
-                    reparacion.setValor(Double.parseDouble(this.txtValor.getText()));
-                    reparacion.setTipoCalzadoId(Integer.parseInt(this.cboTipoCalzado.getSelectedItem().toString()));
-                                      
-                  //  reparacionbl.create(reparacion);
+        if (clienteId != null) {
+            if (tipoCalzadoId != null) {
+                if (this.txtDescripcion.getText().length() > 0) {
+                    if (this.txtValor.getText().length() > 0) {
+                        try {
+                            reparacion = new Reparacion();
+                            reparacion.setDescripcionReparacion(this.txtDescripcion.getText());
+                            reparacion.setValor(Double.parseDouble(this.txtValor.getText()));
+                            reparacion.setTipoCalzadoId(tipoCalzadoId);
+                            reparacion.setClienteID(clienteId);
+                            reparacion.setEstado("En reparación");
+                            reparacion.setUsuariosId(1);
 
-                    clearFields();
-                    this.reparaciones_ui.fillTable();
-                    
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(rootPane, e.getLocalizedMessage());
+                            //  reparacionbl.create(reparacion);
+                            ReparacionesBL.create(reparacion);
+
+                            clearFields();
+                            this.reparaciones_ui.fillTable();
+
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(rootPane, e.getLocalizedMessage());
+                        }
+
+                    }
                 }
-
+            } else {
+                JOptionPane.showMessageDialog(cboTipoCalzado, "Debe seleccionar el tipo de calzado");
+                cboTipoCalzado.requestFocus();
             }
+        } else {
+            JOptionPane.showMessageDialog(cboCliente, "Debe seleccionar un ciente");
+            cboCliente.requestFocus();
         }
+
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
@@ -212,12 +238,30 @@ public class JAddRepar extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_btnCloseActionPerformed
 
+    private void cboClienteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboClienteItemStateChanged
+
+        ClientesBL.ClientesCbo cbo = (ClientesBL.ClientesCbo) cboCliente.getSelectedItem();
+
+        this.clienteId = cbo.getId();
+        this.nombreCliente = cbo.getNombre_completo();
+
+    }//GEN-LAST:event_cboClienteItemStateChanged
+
+    private void cboTipoCalzadoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboTipoCalzadoItemStateChanged
+        
+        TiposCalzadoBL.TiposCalzadoscbo cbo = (TiposCalzadoBL.TiposCalzadoscbo) cboTipoCalzado.getSelectedItem();
+        
+        this.tipoCalzadoId = cbo.getId();
+        
+    }//GEN-LAST:event_cboTipoCalzadoItemStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnSave;
+    private javax.swing.JComboBox<String> cboCliente;
     private javax.swing.JComboBox<String> cboTipoCalzado;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -231,10 +275,40 @@ public class JAddRepar extends javax.swing.JInternalFrame {
     private org.jdatepicker.UtilDateModel utilDateModel1;
     // End of variables declaration//GEN-END:variables
 
-    private void clearFields() {       
-        
+    private void clearFields() {
+
         this.txtDescripcion.setText("");
-      
+
+    }
+
+    private void llenarComboClientes() {
+        this.cboCliente.removeAllItems();
+        try {
+            DefaultComboBoxModel modelClientes;
+
+            modelClientes = ClientesBL.cboClientes();
+            this.cboCliente.setModel(modelClientes);
+            //disableButtons();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar la lista de clientes " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void llenarComboTiposCalzado() {
+        this.cboTipoCalzado.removeAllItems();
+        try {
+            DefaultComboBoxModel modelTiposCalzado;
+
+            modelTiposCalzado = TiposCalzadoBL.cboTiposCalzado();
+            this.cboTipoCalzado.setModel(modelTiposCalzado);
+            //disableButtons();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar la lista de clientes " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
 }

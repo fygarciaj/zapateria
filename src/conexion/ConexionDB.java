@@ -8,8 +8,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -37,9 +35,9 @@ public class ConexionDB {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 // Esta cadena esta configurada para utilizar con el profiler
-                //cnx = DriverManager.getConnection("jdbc:mysql://localhost:4040/zapateria", "root", "");
+                cnx = DriverManager.getConnection("jdbc:mysql://localhost:4040/zapateria", "root", "");
                 //Esta cadena esta configurada para conectar directo a mysql
-                cnx = DriverManager.getConnection("jdbc:mysql://localhost:3306/zapateria", "root", "");
+                //cnx = DriverManager.getConnection("jdbc:mysql://localhost:3306/zapateria", "root", "");
 
             } catch (SQLException ex) {
                 throw new SQLException(ex);

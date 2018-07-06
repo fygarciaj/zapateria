@@ -208,7 +208,13 @@ public class TicketsBL extends BaseBL {
 
     public static DefaultTableModel listar() {
         String[] columns = {"Id", "Fecha", "Cliente", "Reparación", "Tipo de Calzado", "Valor"};
-        DefaultTableModel model = new DefaultTableModel(null, columns);
+        DefaultTableModel model = new DefaultTableModel(null, columns) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                //all cells false
+                return false;
+            }
+        };
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -285,7 +291,6 @@ public class TicketsBL extends BaseBL {
             String sqlQuery = "UPDATE tickets SET estado=\"Anulado\" WHERE id=?";
             stmt = con.prepareStatement(sqlQuery);
 
-           
             stmt.setInt(1, Id);
 
             stmt.executeUpdate();

@@ -32,6 +32,11 @@ public class JCrear_empleado extends javax.swing.JInternalFrame {
         setClosable(true);
         setTitle("Crear Nuevo Empleado");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/res/bossadd24.png"))); // NOI18N
+        try {
+            setSelected(true);
+        } catch (java.beans.PropertyVetoException e1) {
+            e1.printStackTrace();
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

@@ -1,5 +1,5 @@
 /**
- *
+ * Clase que permite hacer la conexion a la base de datos
  */
 package conexion;
 
@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
 public class ConexionDB {
 
     private static Connection cnx = null;
-    private Statement stmt = null;
+    private final Statement stmt = null;
     private ResultSet rs = null;
 
     public ConexionDB() {
@@ -35,9 +35,9 @@ public class ConexionDB {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 // Esta cadena esta configurada para utilizar con el profiler
-                cnx = DriverManager.getConnection("jdbc:mysql://localhost:4040/zapateria", "root", "");
+                //cnx = DriverManager.getConnection("jdbc:mysql://localhost:4040/zapateria", "root", "");
                 //Esta cadena esta configurada para conectar directo a mysql
-                //cnx = DriverManager.getConnection("jdbc:mysql://localhost:3306/zapateria", "root", "");
+                cnx = DriverManager.getConnection("jdbc:mysql://localhost:3306/zapateria", "root", "");
 
             } catch (SQLException ex) {
                 throw new SQLException(ex);

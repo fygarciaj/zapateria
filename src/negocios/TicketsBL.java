@@ -148,7 +148,7 @@ public class TicketsBL extends BaseBL {
                 ticket.setFecha(rst.getString("fecha"));
                 ticket.setClienteID(rst.getInt("clientes_id"));
                 ticket.setUsuarioID(rst.getInt("usuarios_id"));
-                ticket.setValorTotal(rst.getDouble("valor"));
+                ticket.setValorTotal(rst.getDouble("valor_total"));
                 ticket.setReparacionID(rst.getInt("reparaciones_id"));
             }
 
@@ -158,13 +158,6 @@ public class TicketsBL extends BaseBL {
         }
 
         return ticket;
-    }
-
-    /**
-     * Busca un registro por un campo diferente al id
-     */
-    public static void findByField() {
-
     }
 
     public void update(String fecha, Double valor_total, Integer usuarios_id, Integer clientes_id, Integer id) {
@@ -283,6 +276,27 @@ public class TicketsBL extends BaseBL {
         }
 
         return ticket;
+    }
+
+    public static void cancelTicket(Integer Id) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = cxn.openDB();
+            String sqlQuery = "UPDATE tickets SET estado=\"Anulado\" WHERE id=?";
+            stmt = con.prepareStatement(sqlQuery);
+
+           
+            stmt.setInt(1, Id);
+
+            stmt.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Se ha modificado un registro en " + tableName);
+
+        } catch (ClassNotFoundException | SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un error al modificar " + tableName);
+            LOG.log(Level.SEVERE, null, e);
+        }
+
     }
 
 }

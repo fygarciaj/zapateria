@@ -514,7 +514,8 @@ public class ReparacionesBL extends BaseBL {
             stmt = con.prepareStatement(sqlQuery);
 
             stmt.setString(1, Status);
-            stmt.setDouble(2, id);
+            // El tipo era entero
+            stmt.setInt(2, id);
 
             stmt.executeUpdate();
 

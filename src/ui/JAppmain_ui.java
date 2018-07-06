@@ -36,6 +36,7 @@ public class JAppmain_ui extends javax.swing.JFrame {
         this.setExtendedState(MAXIMIZED_BOTH);
         setStatusBar();
         //dashboard();
+        this.jMenuItem2.setVisible(false);
     }
 
     /**
@@ -369,9 +370,14 @@ public class JAppmain_ui extends javax.swing.JFrame {
      */
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         try {
-            jTipoCalzados tiposcalzados = new jTipoCalzados();
-            this.dskMain.add(tiposcalzados);
-            tiposcalzados.show();
+            jTipoCalzados tiposCalzados = new jTipoCalzados();
+            this.dskMain.add(tiposCalzados);
+
+            Dimension desktopSize = this.dskMain.getSize();
+            Dimension FrameSize = tiposCalzados.getSize();
+            tiposCalzados.setLocation((desktopSize.width - FrameSize.width) / 2, (desktopSize.height - FrameSize.height) / 2);
+            
+            tiposCalzados.show();
         } catch (Exception e) {
             // Pos normalmente no se hace esto porque hay que atrapar los errores bien.
             e.printStackTrace();

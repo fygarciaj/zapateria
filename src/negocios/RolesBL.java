@@ -18,8 +18,8 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
+/**a continuacion se extiende la clase RolesBL a la clase BaseBL
+ * para heredar sus atributos
  * @author REBOOTSYSTEM
  */
 public class RolesBL extends BaseBL {

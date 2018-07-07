@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * aqui se establece la clase BaseBL
  */
 package negocios;
 
@@ -16,11 +14,14 @@ import javax.swing.JOptionPane;
 import jdk.nashorn.internal.codegen.CompilerConstants;
 
 /**
- *
+ *se crea la clase BaseBL
  * @author REBOOTSYSTEM
+ * comentado por Ervin
  */
 public class BaseBL {
-
+/** 
+ * 
+ */
     private static Connection con = null;
     private static ConexionDB cxn = null;
     private static PreparedStatement stmt = null;

@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * aqui se extiende la clase ClientesBL a la clase BaseBL 
+y se establecen los metodos privados del objeto cliente.
  */
 package negocios;
 
@@ -21,13 +20,14 @@ import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 
 /**
- *
+ * comentado por Ervin
  * @author REBOOTSYSTEM
  */
 public class ClientesBL extends BaseBL {
 
     private static final Logger LOG = Logger.getLogger(ClientesBL.class.getName());
-
+// metodos privados del objeto cliente para crear tabla
+ 
     private Integer id = null;
     private String identificacion = null;
     private String nombreCompleto = null;
@@ -80,7 +80,7 @@ public class ClientesBL extends BaseBL {
             System.out.println("Se ha creado la tabla");
         }
     }
-
+   //se crea tabla mediante la concatenacion de los atributos del objeto 
     public static void create(String identificacion, String nombreCompleto, String fechaNacimiento, String telefono, String direccion) {
 
         try {
@@ -96,9 +96,10 @@ public class ClientesBL extends BaseBL {
             stmt.setString(5, direccion);
 
             stmt.executeUpdate();
-
+            
             JOptionPane.showMessageDialog(null, "Se ha guardado el cliente");
-
+            
+// muestra un mensaje en pantalla que indica que se ha guardado los datos del cliente
         } catch (ClassNotFoundException | SQLException e) {
 
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
@@ -107,7 +108,7 @@ public class ClientesBL extends BaseBL {
         }
 
     }
-
+// se establecen exepciones para los recsultados 
     public static void create(Cliente cliente) {
         try {
             Class.forName("com.mysql.jdbc.Driver");

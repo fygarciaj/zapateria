@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * aqui se declara la clase Security con la cual se restringe el acceso a la aplicacion
  */
 package negocios;
 
@@ -11,12 +9,12 @@ import datos.Usuario;
 /**
  *
  * @author REBOOTSYSTEM
- */
+ */ 
 public class Security {
 
     public Security() {
     }
-
+//se establece el metodo condicional y las restricciones para el usuario y pasword
     public static Boolean checkAcceso(String username, String password) {
         boolean result = false;
         if ((username.length() > 0) || (password.length() > 0)) {

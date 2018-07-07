@@ -13,8 +13,10 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ *se establece la clase PermisosRolesBL y se extiende a la clase BaseBL 
+ * para heredar sus atributos
  * @author REBOOTSYSTEM
+ * 
  */
 public class PermisosRolesBL extends BaseBL {
 

@@ -18,12 +18,11 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ *se crea la clase RolesUsuariosBL y se declaran las variables 
  * @author REBOOTSYSTEM
  */
 public class RolesUsuariosBL {
-
-    private static final Logger LOG = Logger.getLogger(PermisosBL.class.getName());
+    
     private Integer id = null;
     private Integer roles_id = null;
     private Integer permisos_id = null;
@@ -66,8 +65,7 @@ public class RolesUsuariosBL {
 
             } catch (ClassNotFoundException | SQLException e) {
                 JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
-                LOG.log(Level.SEVERE, null, e);
-                System.exit(0);
+                              System.exit(0);
             }
             System.out.println("Se ha creado la tabla " + tableName);
         }
@@ -88,7 +86,7 @@ public class RolesUsuariosBL {
 
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
-            LOG.log(Level.SEVERE, null, e);
+           
         }
 
     }
@@ -126,7 +124,7 @@ public class RolesUsuariosBL {
 
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, "Ocurrio un error al modificar " + tableName);
-            LOG.log(Level.SEVERE, null, e);
+        
         }
     }
 
@@ -147,7 +145,7 @@ public class RolesUsuariosBL {
 
             } catch (ClassNotFoundException | SQLException e) {
                 JOptionPane.showMessageDialog(null, "Ocurrio un error al eliminar " + tableName + " " + e.getClass().getName() + ": " + e.getMessage() + "]");
-                LOG.log(Level.SEVERE, null, e);
+            
             }
 
         }
@@ -179,7 +177,7 @@ public class RolesUsuariosBL {
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
-            LOG.log(Level.SEVERE, null, e);
+         
             return model;
         }
 

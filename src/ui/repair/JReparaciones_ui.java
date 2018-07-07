@@ -6,20 +6,26 @@
 package ui.repair;
 
 import datos.Reparacion;
-import javax.swing.JDesktopPane;
+import java.awt.Dimension;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import negocios.ReparacionesBL;
+import ui.JAppmain_ui;
 
 public final class JReparaciones_ui extends javax.swing.JInternalFrame {
 
-    public static JDesktopPane dskApp = null;
-    private int reparacion_id = 0;
+    private JAppmain_ui app;
+    private int reparacionId = 0;
+    private Reparacion reparacion;
 
     /**
      * Creates new form
      */
-    public JReparaciones_ui() {
+    public JReparaciones_ui(JAppmain_ui app) {
+        this.app = app;
         initComponents();
         disableButtons();
         fillTable();
@@ -48,8 +54,10 @@ public final class JReparaciones_ui extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setIconifiable(true);
+        setMaximizable(true);
         setTitle("Reparaciones por Ervin Arsuza");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons8-martillo-64.png"))); // NOI18N
+        setOpaque(true);
 
         jToolBar1.setRollover(true);
 
@@ -58,6 +66,7 @@ public final class JReparaciones_ui extends javax.swing.JInternalFrame {
         btnNew.setToolTipText("Crea un nuevo cliente");
         btnNew.setFocusable(false);
         btnNew.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnNew.setOpaque(false);
         btnNew.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -72,6 +81,7 @@ public final class JReparaciones_ui extends javax.swing.JInternalFrame {
         btnEdit.setToolTipText("Edita una reparacion");
         btnEdit.setFocusable(false);
         btnEdit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEdit.setOpaque(false);
         btnEdit.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -86,6 +96,7 @@ public final class JReparaciones_ui extends javax.swing.JInternalFrame {
         btnDelete.setToolTipText("Elimina una reparacion");
         btnDelete.setFocusable(false);
         btnDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnDelete.setOpaque(false);
         btnDelete.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -99,6 +110,7 @@ public final class JReparaciones_ui extends javax.swing.JInternalFrame {
         btnRefresh.setText("Actualizar");
         btnRefresh.setFocusable(false);
         btnRefresh.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnRefresh.setOpaque(false);
         btnRefresh.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,6 +121,7 @@ public final class JReparaciones_ui extends javax.swing.JInternalFrame {
 
         tblRegistros.setEditingColumn(0);
         tblRegistros.setEditingRow(0);
+        tblRegistros.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblRegistros.getTableHeader().setReorderingAllowed(false);
         tblRegistros.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -121,10 +134,7 @@ public final class JReparaciones_ui extends javax.swing.JInternalFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 766, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 786, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -157,9 +167,18 @@ public final class JReparaciones_ui extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
-        JAddRepar add_repar = new JAddRepar(this);
-        this.dskApp.add(add_repar);
-        add_repar.show();
+        try {
+            JAddRepar add_repar = new JAddRepar(this);
+            // Centrado de formulario
+            Dimension desktopSize = this.app.dskMain.getSize();
+            Dimension FrameSize = add_repar.getSize();
+            add_repar.setLocation((desktopSize.width - FrameSize.width) / 2, (desktopSize.height - FrameSize.height) / 2);
+            this.app.dskMain.add(add_repar);
+            add_repar.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }//GEN-LAST:event_btnNewActionPerformed
 
     private void tblRegistrosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRegistrosMouseClicked
@@ -169,22 +188,34 @@ public final class JReparaciones_ui extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Seleccione una fila");
             disableButtons();
         } else {
-            reparacion_id = (int) this.tblRegistros.getValueAt(row, 0);
-            enabledButtons();
+            reparacionId = (int) this.tblRegistros.getValueAt(row, 0);
+            reparacion = ReparacionesBL.findById(reparacionId);
+            // Si la reparacion ya tiene un ticket facturado no se puede ni editar ni borrar por eso se desactivan los botones
+            if (!"Facturado".equals(reparacion.getEstado())) {
+                enabledButtons();
+            } else {
+                disableButtons();
+            }
+
         }
 
     }//GEN-LAST:event_tblRegistrosMouseClicked
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        if (reparacion_id > 0) {
+        if (reparacionId > 0) {
             try {
-                int result = JOptionPane.showConfirmDialog(rootPane, "Desea borrar el registro?", "Borrar Registro", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-                if (result == 0) {
-                    ReparacionesBL.delete(reparacion_id);
-                    fillTable();
-                    disableButtons();
+                reparacion = ReparacionesBL.findById(reparacionId);
+                // Si la reparacion ya tiene un ticket facturado no se puede borrar
+                if ("Facturado".equals(reparacion.getEstado())) {
+                    JOptionPane.showMessageDialog(rootPane, "No es posible borrar esta reparación ya que \n tiene un ticket facturado.");
+                } else {
+                    int result = JOptionPane.showConfirmDialog(rootPane, "Desea borrar el registro?", "Borrar Registro", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                    if (result == 0) {
+                        ReparacionesBL.delete(reparacionId);
+                        fillTable();
+                        disableButtons();
+                    }
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -193,13 +224,18 @@ public final class JReparaciones_ui extends javax.swing.JInternalFrame {
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
 
-        if (reparacion_id > 0) {
+        if (reparacionId > 0) {
             try {
-                Reparacion reparacion = ReparacionesBL.findById(reparacion_id);
-                JEditRepar edit_repar = new JEditRepar(this, reparacion);
+                reparacion = ReparacionesBL.findById(reparacionId);
+                // Si la reparacion ya tiene un ticket facturado no se puede borrar
+                if ("Facturado".equals(reparacion.getEstado())) {
+                    JOptionPane.showMessageDialog(rootPane, "No es posible editar esta reparación ya que \n tiene un ticket facturado.");
+                } else {
+                    JEditRepar edit_repar = new JEditRepar(this, reparacion);
 
-                this.dskApp.add(edit_repar);
-                edit_repar.show();
+                    this.app.dskMain.add(edit_repar);
+                    edit_repar.show();
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -238,6 +274,20 @@ public final class JReparaciones_ui extends javax.swing.JInternalFrame {
 
             modelReparaciones = ReparacionesBL.listar();
             this.tblRegistros.setModel(modelReparaciones);
+
+            TableColumnModel columnModel = tblRegistros.getColumnModel();
+            DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
+            tcr.setHorizontalAlignment(SwingConstants.RIGHT);
+
+            columnModel.getColumn(0).setPreferredWidth(30);
+            columnModel.getColumn(1).setPreferredWidth(150);
+            columnModel.getColumn(2).setPreferredWidth(200);
+            columnModel.getColumn(3).setPreferredWidth(250);
+            columnModel.getColumn(4).setPreferredWidth(250);
+            columnModel.getColumn(5).setPreferredWidth(100);
+            columnModel.getColumn(5).setCellRenderer(tcr);
+            columnModel.getColumn(6).setPreferredWidth(250);
+
             disableButtons();
 
         } catch (Exception e) {

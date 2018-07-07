@@ -6,6 +6,7 @@
 package negocios;
 
 import conexion.ConexionDB;
+import datos.Usuario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,7 +17,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import datos.Usuario;
 import utils.BCrypt;
 
 /**
@@ -247,7 +247,11 @@ public class UsuariosBL {
         
     }
     
-    
+    /**
+     * Actualiza la contraseña del usuario
+     * @param password
+     * @param id 
+     */
     public static void updatePassword(String password, Integer id) {
 
         try {
@@ -262,7 +266,7 @@ public class UsuariosBL {
             stmt.executeUpdate();
             //con.close();
 
-            JOptionPane.showMessageDialog(null, "Se ha modificado un registro en " + tableName);
+            JOptionPane.showMessageDialog(null, "Se ha actualizado la contraseña al usuario");
 
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, "Ocurrio un error al modificar " + tableName);

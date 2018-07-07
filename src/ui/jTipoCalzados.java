@@ -23,7 +23,10 @@ public class jTipoCalzados extends javax.swing.JInternalFrame {
      */
     public jTipoCalzados() {
         initComponents();
+        // llenar los datos de la tabla
         fillTable();
+        // Desactivar los botones
+        disableButtons();
     }
 
     /**
@@ -42,6 +45,7 @@ public class jTipoCalzados extends javax.swing.JInternalFrame {
         btnAdd = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblTiposCalzados = new javax.swing.JTable();
+        btnDelete = new javax.swing.JButton();
 
         pmnuDelete.setText("Eliminar");
         pmnuDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -81,6 +85,8 @@ public class jTipoCalzados extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(tblTiposCalzados);
 
+        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/rubber_24.png"))); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -94,7 +100,10 @@ public class jTipoCalzados extends javax.swing.JInternalFrame {
                         .addComponent(txtTipoCalzado, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAdd))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -106,8 +115,10 @@ public class jTipoCalzados extends javax.swing.JInternalFrame {
                     .addComponent(txtTipoCalzado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAdd))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDelete))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
@@ -125,10 +136,13 @@ public class jTipoCalzados extends javax.swing.JInternalFrame {
         if (txtTipoCalzado.getText().length() > 0) // pues verificamos que tenga algo en el campo.
         {
             try {
-                TiposCalzadoBL tipo = new TiposCalzadoBL();
-                tipo.create(txtTipoCalzado.getText());
+                // Crear un tipo de calzado               
+                TiposCalzadoBL.create(txtTipoCalzado.getText());
+                // Llena los datos de la tabla
                 fillTable();
-
+                // Desactiva los botones
+                disableButtons();
+                
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(rootPane, "Error al crear un tipo de calzado " + e.getMessage());
                 e.printStackTrace();
@@ -141,17 +155,29 @@ public class jTipoCalzados extends javax.swing.JInternalFrame {
 
     private void pmnuDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pmnuDeleteActionPerformed
 
+        if (tipoCalzadoId > 0) {
+            try {
+                // Borrar un tipo de calzado
+                TiposCalzadoBL.delete(tipoCalzadoId);
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+        }
     }//GEN-LAST:event_pmnuDeleteActionPerformed
 
     private void tblTiposCalzadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTiposCalzadosMouseClicked
         if (evt.isPopupTrigger()) {
-            //int row = this.tblTiposCalzados.getSelectedRow();
-            int row = tblTiposCalzados.rowAtPoint(evt.getPoint());
+            int row = this.tblTiposCalzados.getSelectedRow();
+            //int row = tblTiposCalzados.rowAtPoint(evt.getPoint());
             if (row == -1) {
                 JOptionPane.showMessageDialog(null, "Seleccione una fila");
 
             } else {
+                // Se apunta el id al tipo
                 tipoCalzadoId = (int) this.tblTiposCalzados.getValueAt(row, 0);
+                enabledButtons();
             }
 
             // if pointer is over a selected row, show popup
@@ -164,6 +190,7 @@ public class jTipoCalzados extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnDelete;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuItem pmnuDelete;
@@ -191,5 +218,14 @@ public class jTipoCalzados extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(rootPane, "Error al cargar la lista de tipos de calzados " + e.getMessage());
         }
 
+    }
+
+    private void disableButtons() {
+        this.btnDelete.setEnabled(false);
+    }
+    
+    private void enabledButtons()
+    {
+        btnDelete.setEnabled(true);
     }
 }

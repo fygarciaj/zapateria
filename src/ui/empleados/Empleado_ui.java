@@ -5,15 +5,13 @@
  */
 package ui.empleados;
 
-import datos.Cliente;
 import datos.Usuario;
 import java.awt.Dimension;
+import java.awt.Frame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import negocios.ClientesBL;
 import negocios.UsuariosBL;
-import ui.Client.JEditClient;
 import ui.JAppmain_ui;
 
 /**
@@ -59,7 +57,9 @@ public class Empleado_ui extends javax.swing.JInternalFrame {
         btnEdit = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
-        jButton9 = new javax.swing.JButton();
+        btnChangePassword = new javax.swing.JButton();
+        jSeparator3 = new javax.swing.JToolBar.Separator();
+        btnRefresh = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUsers = new javax.swing.JTable();
@@ -88,8 +88,11 @@ public class Empleado_ui extends javax.swing.JInternalFrame {
 
         btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/bossedit24.png"))); // NOI18N
         btnEdit.setText("Editar");
+        btnEdit.setEnabled(false);
         btnEdit.setFocusable(false);
         btnEdit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEdit.setOpaque(false);
+        btnEdit.setRequestFocusEnabled(false);
         btnEdit.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -111,12 +114,30 @@ public class Empleado_ui extends javax.swing.JInternalFrame {
         jToolBar1.add(btnDelete);
         jToolBar1.add(jSeparator1);
 
-        jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/refresh_24.png"))); // NOI18N
-        jButton9.setText("Actualizar");
-        jButton9.setFocusable(false);
-        jButton9.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton9.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton9);
+        btnChangePassword.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/keyhole_24.png"))); // NOI18N
+        btnChangePassword.setText("Cambiar Contraseña");
+        btnChangePassword.setFocusable(false);
+        btnChangePassword.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnChangePassword.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnChangePassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChangePasswordActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnChangePassword);
+        jToolBar1.add(jSeparator3);
+
+        btnRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/refresh_24.png"))); // NOI18N
+        btnRefresh.setText("Actualizar");
+        btnRefresh.setFocusable(false);
+        btnRefresh.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnRefresh.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnRefresh);
         jToolBar1.add(jSeparator2);
 
         tblUsers.setModel(new javax.swing.table.DefaultTableModel(
@@ -162,17 +183,21 @@ public class Empleado_ui extends javax.swing.JInternalFrame {
 
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
 
+        // Mostrar el formulario de creación de usuarios
         JCrear_empleado createUsers = new JCrear_empleado();
+        // Centrado de formulario
         Dimension desktopSize = this.app.dskMain.getSize();
         Dimension FrameSize = createUsers.getSize();
         createUsers.setLocation((desktopSize.width - FrameSize.width) / 2, (desktopSize.height - FrameSize.height) / 2);
+        //Se agrega al entorno principal
         this.app.dskMain.add(createUsers);
+        // Se muestra el formulario
         createUsers.show();
 
     }//GEN-LAST:event_btnNewActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void tblUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUsersMouseClicked
@@ -203,6 +228,36 @@ public class Empleado_ui extends javax.swing.JInternalFrame {
             }
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        fillTableUsers();
+    }//GEN-LAST:event_btnRefreshActionPerformed
+
+    private void btnChangePasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePasswordActionPerformed
+        try {
+            if (userId != null) {
+                // Se traen los datos del usuario
+                user = UsuariosBL.findById(userId);
+                
+                // Crear un dialogo para cambiar la contraseña
+                Frame f = JOptionPane.getFrameForComponent(this);
+                // se le pasa el usuario
+                JCambiaContraseña changePassword = new JCambiaContraseña(f, true, user);
+
+                Dimension desktopSize = this.app.dskMain.getSize();
+                Dimension FrameSize = changePassword.getSize();
+                changePassword.setLocation((desktopSize.width - FrameSize.width) / 2, (desktopSize.height - FrameSize.height) / 2);
+                changePassword.setVisible(true);
+                
+                
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }//GEN-LAST:event_btnChangePasswordActionPerformed
 
     /**
      * @param args the command line arguments
@@ -241,19 +296,21 @@ public class Empleado_ui extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnChangePassword;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnNew;
-    private javax.swing.JButton jButton9;
+    private javax.swing.JButton btnRefresh;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTable tblUsers;
     // End of variables declaration//GEN-END:variables
 
     private void disableButtons() {
-        btnEdit.setEnabled(false);
+      //  btnEdit.setEnabled(false);
         btnDelete.setEnabled(false);
     }
 
@@ -282,7 +339,7 @@ public class Empleado_ui extends javax.swing.JInternalFrame {
     }
 
     private void enableButtons() {
-        btnEdit.setEnabled(true);
+       // btnEdit.setEnabled(true);
         btnDelete.setEnabled(true);
     }
 

@@ -1,7 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Formulario para los clientes
+ * 
  */
 package ui.Client;
 
@@ -16,24 +15,33 @@ import ui.repair.JAddReparClient;
 import ui.repair.jListRepairClient;
 
 /**
- *
- * @author REBOOTSYSTEM
+ * Clase para manejar el formulario de clientes
+ * 
+ * Modificado por jorge marquez 05/07/2018
+ * 
  */
 public class JClientes_ui extends javax.swing.JInternalFrame {
 
-    public static JDesktopPane dskApp = null;
-    private int cliente_id = 0;
-    public static JAppmain_ui app = null;
+    // Se crean las variables privadas del formulario
+    
+    public static JDesktopPane dskApp = null; //Para guardar el apuntador al panel donde se muestran los formularios
+    private int cliente_id = 0; // Para guardar el id del cliente seleccionado
+    public static JAppmain_ui app = null; // Para la referencia a la clase principal
 
     /**
-     * Creates new form JClientes_ui
+     * El constructor de la clase
+     * Recibe un parametro que es la clase principal de la aplicación
      *
      * @param app
      */
     public JClientes_ui(JAppmain_ui app) {
+        // Se guarda un apuntador a la clase de la aplicacion principal
         this.app = app;
+        // Se inicializa los componentes del formulario
         initComponents();
+        // Se desactivan los botones de edicion y borrado
         disableButtons();
+        // Se llenan la tabla con los datos de los clientes
         fillTable();
     }
 
@@ -234,6 +242,7 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
             }
         ));
         tblClients.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tblClients.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblClients.getTableHeader().setReorderingAllowed(false);
         tblClients.setUpdateSelectionOnSort(false);
         tblClients.setVerifyInputWhenFocusTarget(false);
@@ -290,8 +299,11 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
      */
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
 
+        // Se ejecuta el formulario de creacion de un nuevo cliente
         JAddClient addClient = new JAddClient(this);
+        // se agrega al panel principal de la aplicación
         this.dskApp.add(addClient);
+        // se muestra el formulario
         addClient.show();
     }//GEN-LAST:event_btnNewActionPerformed
 
@@ -301,6 +313,7 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
      * @param evt
      */
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        // Se hace un refresco de la tabla de clientes
         fillTable();
     }//GEN-LAST:event_btnRefreshActionPerformed
 
@@ -312,6 +325,7 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
      */
     private void tblClientsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientsMouseClicked
 
+        // Aqui se captura el click en la tabla de clientes, y se determina el id del cliente seleccionado
         int row = this.tblClients.getSelectedRow();
         if (row == -1) {
             JOptionPane.showMessageDialog(null, "Seleccione una fila");
@@ -329,12 +343,18 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
      * @param evt
      */
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // Verifica que se haya seleccionado un cliente para poder borrarlo
         if (cliente_id > 0) {
             try {
+                // Muestra un mensaje de confirmacion
                 int result = JOptionPane.showConfirmDialog(rootPane, "Desea borrar el cliente?", "Borrar Cliente", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                // Si la opcion seleccionada es si
                 if (result == 0) {
+                    // Borra el cliente en la base de datos
                     ClientesBL.delete(cliente_id);
+                    // Actualiza los datos de la tabla
                     fillTable();
+                    // Desactiva los botones 
                     disableButtons();
                 }
 
@@ -373,9 +393,13 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
      */
     private void txtBuscarClienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarClienteKeyReleased
 
+        // Verifica que haya algo en el campo de buscar
         if (this.txtBuscarCliente.getText().length() > 0) {
+            // ejecuta la busqueda
             buscarCliente(this.txtBuscarCliente.getText());
+            
         } else {
+            // Si no llena la tabla
             fillTable();
         }
 
@@ -388,10 +412,12 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
      * @param evt
      */
     private void btnNewRepairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewRepairActionPerformed
-
+        // Verifica que el cliente este seleccionado
         if (cliente_id != 0) {
             try {
+                // Busca un cliente por el id
                 Cliente cliente = ClientesBL.findById(cliente_id);
+                // Ejecuta el formulario de reparaciones cliente y le pasa los parametros requeridos
                 JAddReparClient repairClient = new JAddReparClient(this, cliente_id, this.app);
                 this.dskApp.add(repairClient);
                 repairClient.show();
@@ -447,10 +473,14 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
     public void fillTable() {
 
         try {
+            // Crea un modelo de clientes
             DefaultTableModel modelClients;
 
+            // busca el listado de clientes para poder meterlos en la tabla
             modelClients = ClientesBL.listar();
+            // configura el model de la tabla al listado de los clientes
             this.tblClients.setModel(modelClients);
+            // Configura las columnas de la tabla
             TableColumnModel columnModel = tblClients.getColumnModel();
 
             columnModel.getColumn(0).setPreferredWidth(30);
@@ -483,6 +513,7 @@ public class JClientes_ui extends javax.swing.JInternalFrame {
      * Activa los botones de borrar o editar cliente
      */
     private void enabledButtons() {
+        // Si se selecciona un cliente se activan los botones
         this.btnEdit.setEnabled(true);
         this.btnDelete.setEnabled(true);
         this.btnNewRepair.setEnabled(true);

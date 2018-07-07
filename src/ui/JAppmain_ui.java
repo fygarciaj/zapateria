@@ -7,11 +7,11 @@ package ui;
 
 import datos.Usuario;
 import java.awt.Dimension;
-import ui.Client.JClientes_ui;
 import javax.swing.JOptionPane;
+import ui.Client.JClientes_ui;
+import ui.empleados.Empleado_ui;
 import ui.repair.JReparaciones_ui;
 import ui.ticket.Tickets_ui;
-import ui.empleados.Empleado_ui;
 
 /**
  *
@@ -36,6 +36,7 @@ public class JAppmain_ui extends javax.swing.JFrame {
         this.setExtendedState(MAXIMIZED_BOTH);
         setStatusBar();
         //dashboard();
+        this.jMenuItem2.setVisible(false);
     }
 
     /**
@@ -303,8 +304,7 @@ public class JAppmain_ui extends javax.swing.JFrame {
      */
     private void mnuReparacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuReparacionesActionPerformed
         try {
-            JReparaciones_ui repara_ui = new JReparaciones_ui();
-            JReparaciones_ui.dskApp = this.dskMain;
+            JReparaciones_ui repara_ui = new JReparaciones_ui(this);
             this.dskMain.add(repara_ui);
             repara_ui.show();
         } catch (Exception e) {
@@ -369,9 +369,14 @@ public class JAppmain_ui extends javax.swing.JFrame {
      */
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         try {
-            jTipoCalzados tiposcalzados = new jTipoCalzados();
-            this.dskMain.add(tiposcalzados);
-            tiposcalzados.show();
+            jTipoCalzados tiposCalzados = new jTipoCalzados();
+            this.dskMain.add(tiposCalzados);
+
+            Dimension desktopSize = this.dskMain.getSize();
+            Dimension FrameSize = tiposCalzados.getSize();
+            tiposCalzados.setLocation((desktopSize.width - FrameSize.width) / 2, (desktopSize.height - FrameSize.height) / 2);
+            
+            tiposCalzados.show();
         } catch (Exception e) {
             // Pos normalmente no se hace esto porque hay que atrapar los errores bien.
             e.printStackTrace();

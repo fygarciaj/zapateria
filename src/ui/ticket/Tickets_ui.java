@@ -10,6 +10,8 @@ import java.awt.Dimension;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import negocios.ClientesBL;
+import negocios.ReparacionesBL;
 import negocios.TicketsBL;
 import ui.JAppmain_ui;
 
@@ -28,12 +30,14 @@ public class Tickets_ui extends javax.swing.JInternalFrame {
         disableButtons();
         llenarLista();
     }
+
     public Tickets_ui() {
 
         initComponents();
         disableButtons();
         llenarLista();
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -151,20 +155,22 @@ public class Tickets_ui extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        
+
         try {
-            JCrearTicket crearTicket = new JCrearTicket();
+            JCrearTicket crearTicket = new JCrearTicket(this.app);
             this.app.dskMain.add(crearTicket);
-            
+
             Dimension desktopSize = this.app.dskMain.getSize();
             Dimension FrameSize = crearTicket.getSize();
             crearTicket.setLocation((desktopSize.width - FrameSize.width) / 2, (desktopSize.height - FrameSize.height) / 2);
 
             crearTicket.show();
-            
+            disableButtons();
+
         } catch (Exception e) {
+            e.printStackTrace();
         }
-        
+
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
@@ -174,7 +180,7 @@ public class Tickets_ui extends javax.swing.JInternalFrame {
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         if (ticketId != 0) {
-            
+
             ticket = TicketsBL.findById(ticketId);
             JEditarTicket editTicket = new JEditarTicket(ticket);
             this.app.dskMain.add(editTicket);
@@ -188,6 +194,29 @@ public class Tickets_ui extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnNullingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNullingActionPerformed
+        // Anular un ticket equivale a marcar el ticket en su estado como Anulado
+        // también se debe cambiar el estado de la reparación a terminado
+        if (ticketId != null) {
+            try {
+                // Muestra un mensaje de confirmacion
+                int result = JOptionPane.showConfirmDialog(rootPane, "Desea anular el ticket?", "Anular Ticket", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                // Si la opcion seleccionada es si
+                if (result == 0) {
+                    ticket = TicketsBL.findById(ticketId);
+                    // Cambia el estado del ticket a Anulado
+                    TicketsBL.cancelTicket(ticketId);
+
+                    // Cambia el estado de la reparación
+                    ReparacionesBL.updateStatus("Terminado", ticket.getReparacionID());
+                    
+                    disableButtons();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
 
     }//GEN-LAST:event_btnNullingActionPerformed
 
@@ -217,16 +246,24 @@ public class Tickets_ui extends javax.swing.JInternalFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Tickets_ui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Tickets_ui.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Tickets_ui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Tickets_ui.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Tickets_ui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Tickets_ui.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Tickets_ui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Tickets_ui.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -268,7 +305,7 @@ public class Tickets_ui extends javax.swing.JInternalFrame {
             columnModel.getColumn(3).setPreferredWidth(250);
             columnModel.getColumn(4).setPreferredWidth(250);
             columnModel.getColumn(5).setPreferredWidth(250);
-            
+
             disableButtons();
 
         } catch (Exception e) {

@@ -11,6 +11,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import negocios.ClientesBL;
 import negocios.ReparacionesBL;
+import negocios.TicketsBL;
 import ui.JAppmain_ui;
 
 /**
@@ -38,8 +39,8 @@ public class JCrearTicket extends javax.swing.JInternalFrame {
     }
 
     /**
-     * 
-     * @param app 
+     *
+     * @param app
      */
     JCrearTicket(JAppmain_ui app) {
         initComponents();
@@ -191,27 +192,64 @@ public class JCrearTicket extends javax.swing.JInternalFrame {
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // Guarda los cambios
 
-        Ticket ticket = new Ticket();
+        try {
+            Ticket ticket = new Ticket();
 
-        ticket.setFecha(dtDateTicket.getDateFormatString());
-        ticket.setClienteID(clienteID);
-        ticket.setReparacionID(reparacionID);
-        ticket.setUsuarioID(this.app.user.getId());
+            if (dtDateTicket.getDateFormatString().length() > 0) {
+                ticket.setFecha(dtDateTicket.getDateFormatString());
+                if (clienteID != null) {
+                    ticket.setClienteID(clienteID);
+                    if (reparacionID != null) {
+                        ticket.setReparacionID(reparacionID);
+
+                        ticket.setUsuarioID(this.app.user.getId());
+                        ticket.setEstado("Facturado");
+                        if (txtValor.getText().length() > 0) {
+                            ticket.setValorTotal(Double.parseDouble(txtValor.getText()));
+
+                            //Crear el ticket
+                            TicketsBL.create(ticket);
+
+                            // Se actualiza el estado de la reparación a facturado
+                            ReparacionesBL.updateStatus("Facturado", reparacionID);
+                        }
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(cboReparacion, "Debe seleccionar una reparación para facturar");
+                        cboReparacion.requestFocus();
+                    }
+                        JOptionPane.showMessageDialog(cboCliente, "Debe seleccionar un cliente para facturar");
+                        cboCliente.requestFocus();
+                    
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void cboClienteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboClienteItemStateChanged
+
         ClientesBL.ClientesCbo cbo = (ClientesBL.ClientesCbo) cboCliente.getSelectedItem();
 
         this.clienteID = cbo.getId();
         this.nombreCliente = cbo.getNombre_completo();
 
-        fillComboRepairs();
         cboReparacion.setEnabled(true);
+        fillComboRepairs();
     }//GEN-LAST:event_cboClienteItemStateChanged
 
     private void cboReparacionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboReparacionItemStateChanged
-        // TODO add your handling code here:
+        // 
+        ReparacionesBL.ReparacionesCBO cbo = (ReparacionesBL.ReparacionesCBO) cboReparacion.getSelectedItem();
+
+        if (cbo != null) {
+            this.reparacionID = cbo.getId();
+        }
+
     }//GEN-LAST:event_cboReparacionItemStateChanged
 
 

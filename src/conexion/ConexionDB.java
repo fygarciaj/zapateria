@@ -1,5 +1,5 @@
 /**
- *
+ * Clase que permite hacer la conexion a la base de datos
  */
 package conexion;
 
@@ -8,8 +8,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,7 +17,7 @@ import javax.swing.JOptionPane;
 public class ConexionDB {
 
     private static Connection cnx = null;
-    private Statement stmt = null;
+    private final Statement stmt = null;
     private ResultSet rs = null;
 
     public ConexionDB() {

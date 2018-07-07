@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import jdk.nashorn.internal.codegen.CompilerConstants;
+
 
 /**
  *se crea la clase BaseBL
@@ -23,9 +23,9 @@ public class BaseBL {
  * 
  */
     private static Connection con = null;
-    private static ConexionDB cxn = null;
+    private static final ConexionDB cxn = null;
     private static PreparedStatement stmt = null;
-    private static ResultSet rs = null;
+    private static final ResultSet rs = null;
     private static final Logger LOG = Logger.getLogger(BaseBL.class.getName());
 
     public BaseBL() {
@@ -36,7 +36,7 @@ public class BaseBL {
         if (tableName != null) {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
-                con = cxn.openDB();
+                con = ConexionDB.openDB();
                 String sqlQuery = "DELETE FROM ? WHERE id=?";
                 stmt = con.prepareStatement(sqlQuery);
 

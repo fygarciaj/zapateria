@@ -6,16 +6,31 @@
 package ui.empleados;
 
 import datos.Usuario;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import negocios.UsuariosBL;
 
 public class Crear_empleados extends javax.swing.JPanel {
+
+    private String reqPassword;
 
     /**
      * Creates new form editar_empleado
      */
     public Crear_empleados() {
         initComponents();
+        reqPassword = "Requisitos para la contraseña:\n"
+                + "- Debe tener al menos un dígito\n"
+                + "- Debe teenr al menos una letra minúscula\n"
+                + "- Debe tener al menos una letra mayúscula\n"
+                + "- No debe tener carácteres especiales como #!¡?^¿|°\n"
+                + "- No se permiten espacios en blanco en toda la cadena\n"
+                + "- Al menos 8 caracteres";
+
+        txtreqPass.setText(reqPassword);
+        jLabel9.setVisible(false);
+        txtPasswordConfirm.setVisible(false);
     }
 
     /**
@@ -45,6 +60,8 @@ public class Crear_empleados extends javax.swing.JPanel {
         jLabel9 = new javax.swing.JLabel();
         txtPassword = new javax.swing.JTextField();
         txtPasswordConfirm = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtreqPass = new javax.swing.JTextPane();
 
         jLabel1.setText("Identificación:");
 
@@ -76,6 +93,17 @@ public class Crear_empleados extends javax.swing.JPanel {
 
         jLabel9.setText("Confirmar Contraseña:");
 
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPasswordKeyReleased(evt);
+            }
+        });
+
+        txtreqPass.setEditable(false);
+        txtreqPass.setBackground(new java.awt.Color(240, 240, 240));
+        txtreqPass.setOpaque(false);
+        jScrollPane1.setViewportView(txtreqPass);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -83,9 +111,7 @@ public class Crear_empleados extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -108,10 +134,13 @@ public class Crear_empleados extends javax.swing.JPanel {
                             .addComponent(txtDireccion)
                             .addComponent(txtEdad)
                             .addComponent(txtIdentificacion)
-                            .addComponent(txtNombresCompletos, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)))
+                            .addComponent(txtNombresCompletos, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnSaveUser)))
+                        .addComponent(btnSaveUser))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -149,7 +178,9 @@ public class Crear_empleados extends javax.swing.JPanel {
                     .addComponent(jLabel9)
                     .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtPasswordConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnSaveUser)
                 .addContainerGap())
         );
@@ -166,27 +197,29 @@ public class Crear_empleados extends javax.swing.JPanel {
             if (txtNombresCompletos.getText().length() > 0) {
                 // Si ha ingresado el nombre de usuario
                 if (txtUsername.getText().length() > 0) {
-                    // Si la contraseña y la confirmacion son iguales
-                    if (pass == null ? passConfirm == null : pass.equals(passConfirm)) {
+                    // Valida que el password no tenga caracteres especiales
+                    if (validaPassword(pass)) {
+                        // Si la contraseña y la confirmacion son iguales
+                        if (pass == null ? passConfirm == null : pass.equals(passConfirm)) {
 
-                        Usuario user = new Usuario();
-                        user.setIdentificacion(txtIdentificacion.getText());
-                        user.setNombreCompleto(txtNombresCompletos.getText());
-                        user.setEdad(Integer.parseInt(txtEdad.getText()));
-                        user.setTelefono(txtTelefono.getText());
-                        user.setDireccion(txtDireccion.getText());
-                        user.setNombreUsuario(txtUsername.getText());
+                            Usuario user = new Usuario();
+                            user.setIdentificacion(txtIdentificacion.getText());
+                            user.setNombreCompleto(txtNombresCompletos.getText());
+                            user.setEdad(Integer.parseInt(txtEdad.getText()));
+                            user.setTelefono(txtTelefono.getText());
+                            user.setDireccion(txtDireccion.getText());
+                            user.setNombreUsuario(txtUsername.getText());
 
-                        UsuariosBL.create(user);
+                            UsuariosBL.create(user);
 
-                        JOptionPane.showMessageDialog(this, "Se ha creado el usuario");
+                            JOptionPane.showMessageDialog(this, "Se ha creado el usuario");
 
-                        
-                    } else {
-                        JOptionPane.showMessageDialog(txtPassword, "La contraseña y la confirmación no son iguales");
-                        txtPassword.requestFocus();
-                        txtPassword.selectAll();
-                        txtPasswordConfirm.selectAll();
+                        } else {
+                            JOptionPane.showMessageDialog(txtPassword, "La contraseña y la confirmación no son iguales");
+                            txtPassword.requestFocus();
+                            txtPassword.selectAll();
+                            txtPasswordConfirm.selectAll();
+                        }
                     }
                 } else {
                     JOptionPane.showMessageDialog(txtUsername, "Debe indicar el nombre del usuario");
@@ -202,6 +235,14 @@ public class Crear_empleados extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnSaveUserActionPerformed
 
+    private void txtPasswordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyReleased
+
+        // Igualamos el confirm password
+        txtPasswordConfirm.setText(txtPassword.getText());
+
+
+    }//GEN-LAST:event_txtPasswordKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSaveUser;
@@ -214,6 +255,7 @@ public class Crear_empleados extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtEdad;
     private javax.swing.JTextField txtIdentificacion;
@@ -222,5 +264,22 @@ public class Crear_empleados extends javax.swing.JPanel {
     private javax.swing.JTextField txtPasswordConfirm;
     private javax.swing.JTextField txtTelefono;
     private javax.swing.JTextField txtUsername;
+    private javax.swing.JTextPane txtreqPass;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     *
+     * @return
+     */
+    private boolean validaPassword(String cadena) {
+        // expresión regular que revisa si tiene alguno de los siguientes caracteres
+        final String REG_EXP = "\\¿+|\\?+|\\°+|\\¬+|\\|+|\\!+|\\#+|\\$ + |"
+                + "\\%+|\\&+|\\+|\\=+|\\’+|\\¡+|\\++|\\*+|\\~+|\\[+|\\]"
+                + "+|\\{+|\\}+|\\^+|\\<+|\\>+|\\\"+ ";
+
+        Pattern pattern = Pattern.compile(REG_EXP);
+        Matcher matcher = pattern.matcher(cadena);
+        return matcher.find(); // devuelve  true si tiene alguno de los caracteres anteriores o false si no tiene ninguno
+
+    }
 }

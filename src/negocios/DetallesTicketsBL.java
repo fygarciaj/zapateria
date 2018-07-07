@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package negocios;
 
 import conexion.ConexionDB;
@@ -19,7 +15,8 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author REBOOTSYSTEM
+ * @author ...
+ * @version 0.0.1 beta
  */
 public class DetallesTicketsBL extends BaseBL {
 
@@ -30,14 +27,18 @@ public class DetallesTicketsBL extends BaseBL {
     private static PreparedStatement stmt = null;
     private static ResultSet rs = null;
     DefaultTableModel model = new DefaultTableModel();
-    private static final String tableName = "Reparaciones";
+    private static final String TABLE_NAME = "Reparaciones";
 
+    /**
+     * Constructor de la clase Detalles Tickets
+     * 
+     */
     public DetallesTicketsBL() {
 
         cxn = new ConexionDB();
 
         // Si no existe la tabla ClientesBL Crearla Automaticamente
-        if (!cxn.tableExist(tableName)) {
+        if (!cxn.tableExist(TABLE_NAME)) {
             Statement stmt = null;
 
             try {
@@ -80,7 +81,15 @@ public class DetallesTicketsBL extends BaseBL {
         }
     }
 
-    
+    /**
+     * Crear un nuevo detalle de ticket
+     * 
+     * @param valor_unitario
+     * @param cantidad
+     * @param subtotal
+     * @param tickets_id
+     * @param reparaciones_id 
+     */
     public static void create(Double valor_unitario, Integer cantidad, Double subtotal, Integer tickets_id, Integer reparaciones_id) {
 
         try {
@@ -114,12 +123,6 @@ public class DetallesTicketsBL extends BaseBL {
 
     }
 
-    /**
-     * Busca un registro por un campo diferente al id
-     */
-    public static void findByField() {
-
-    }
 
     public void update(Double valor_unitario, Integer cantidad, Double subtotal, Integer tickets_id, Integer reparaciones_id, Integer id) {
         try {
@@ -138,10 +141,10 @@ public class DetallesTicketsBL extends BaseBL {
             stmt.executeUpdate();
 
 
-            JOptionPane.showMessageDialog(null, "Se ha modificado un registro en " + tableName);
+            JOptionPane.showMessageDialog(null, "Se ha modificado un registro en " + TABLE_NAME);
 
         } catch (ClassNotFoundException | SQLException e) {
-            JOptionPane.showMessageDialog(null, "Ocurrio un error al modificar " + tableName);
+            JOptionPane.showMessageDialog(null, "Ocurrio un error al modificar " + TABLE_NAME);
             LOG.log(Level.SEVERE, null, e);
         }
     }
@@ -154,7 +157,7 @@ public class DetallesTicketsBL extends BaseBL {
                 String sqlQuery = "DELETE FROM ? WHERE id=?";
                 stmt = con.prepareStatement(sqlQuery);
 
-                stmt.setString(1, tableName);
+                stmt.setString(1, TABLE_NAME);
                 stmt.setInt(2, Id);
 
                 stmt.executeUpdate();
@@ -162,7 +165,7 @@ public class DetallesTicketsBL extends BaseBL {
                 JOptionPane.showMessageDialog(null, "Se ha eliminado el registro con el indice #" + Id);
 
             } catch (ClassNotFoundException | SQLException e) {
-                JOptionPane.showMessageDialog(null, "Ocurrio un error al eliminar " + tableName + " " + e.getClass().getName() + ": " + e.getMessage() + "]");
+                JOptionPane.showMessageDialog(null, "Ocurrio un error al eliminar " + TABLE_NAME + " " + e.getClass().getName() + ": " + e.getMessage() + "]");
                 LOG.log(Level.SEVERE, null, e);
             }
 
@@ -175,7 +178,7 @@ public class DetallesTicketsBL extends BaseBL {
             con = cxn.openDB();
 
             Statement st = con.createStatement();
-            String query = "SELECT * FROM " + tableName;
+            String query = "SELECT * FROM " + TABLE_NAME;
             rs = st.executeQuery(query);
             ResultSetMetaData rsMd = rs.getMetaData();
 

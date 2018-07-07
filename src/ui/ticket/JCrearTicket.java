@@ -1,7 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Formulario para crear un ticket
+ * 
  */
 package ui.ticket;
 
@@ -15,8 +14,10 @@ import negocios.TicketsBL;
 import ui.JAppmain_ui;
 
 /**
- *
- * @author REBOOTSYSTEM
+ *  Clase de crear un ticket
+ * @author Fabian Garcia
+ * @version 0.0.1 beta
+ * 
  */
 public class JCrearTicket extends javax.swing.JInternalFrame {
 
@@ -191,9 +192,8 @@ public class JCrearTicket extends javax.swing.JInternalFrame {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // Guarda los cambios
-
         try {
-            Ticket ticket = new Ticket();
+            ticket = new Ticket();
 
             if (dtDateTicket.getDateFormatString().length() > 0) {
                 ticket.setFecha(dtDateTicket.getDateFormatString());

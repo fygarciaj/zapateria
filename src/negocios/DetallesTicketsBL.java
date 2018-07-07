@@ -14,9 +14,14 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
+<<<<<<< HEAD
  *
  * @author ...
  * @version 0.0.1 beta
+=======
+ *se establece la clase 
+ * @author REBOOTSYSTEM
+>>>>>>> 8ba57808b62da0aea810723f292891cb9cf639e0
  */
 public class DetallesTicketsBL extends BaseBL {
 
@@ -106,7 +111,7 @@ public class DetallesTicketsBL extends BaseBL {
 
             stmt.executeUpdate();
 
-
+//muestra en pantalla un mensaje con los 
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
             LOG.log(Level.SEVERE, null, e);

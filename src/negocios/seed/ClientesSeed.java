@@ -1,11 +1,18 @@
+/** aqui se crea la lista de archivos para la clase ClienteSeed
+ * Clase Cliente
+ *
+ * Contiene informacion de cada Cliente
+ */
 package negocios.seed;
 
 import negocios.ClientesBL;
 
 /**
- * Clase para poder crear algunos registros iniciales en la base de datos 
+ * Clase para poder crear algunos registros iniciales en la base de datos
+ *
  * @author Fabian Garcia
- * @version 0.0.1 beta
+ * @version 0.0.1 beta ======= /**comentado por Ervin
+ * @author REBOOTSYSTEM
  */
 public class ClientesSeed {
 
@@ -15,6 +22,8 @@ public class ClientesSeed {
     public static void insertClients() {
 
         // Intancia del objeto de negocios
+
+        /* crear una lista de archivos de cliente en base de datos */
         ClientesBL cl = new ClientesBL();
 
         // Crea los registros

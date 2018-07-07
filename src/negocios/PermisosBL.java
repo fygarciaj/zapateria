@@ -18,7 +18,8 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ *en esta parte se extiende la clase PermisosBL a la clase BaseBL y se crea un 
+ * 
  * @author REBOOTSYSTEM
  */
 public class PermisosBL extends BaseBL {
@@ -178,7 +179,7 @@ public class PermisosBL extends BaseBL {
             for (int i = 0; i < countColumns; i++) {
                 model.addColumn(rsMd.getColumnLabel(i + 1));
             }
-
+            //metodo para mover un objeto de una fila 
             while (rs.next()) {
                 Object[] fila = new Object[countColumns];
                 for (int i = 0; i < countColumns; i++) {

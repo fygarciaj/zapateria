@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package negocios;
 
 import conexion.ConexionDB;
@@ -20,7 +16,8 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ *a continuacion se extiende la clase ReparacionesBL a la clase BaseBL
+ * para heredar sus atributos
  * @author REBOOTSYSTEM
  */
 public class ReparacionesBL extends BaseBL {
@@ -42,7 +39,7 @@ public class ReparacionesBL extends BaseBL {
     public ReparacionesBL() {
         cxn = new ConexionDB();
 
-        // Si no existe la tabla ClientesBL Crearla Automaticamente
+        // establecemos el condicional, si no existe la tabla ClientesBL Crearla Automaticamente
         if (!cxn.tableExist(tableName)) {
             Statement stmt = null;
 
@@ -392,21 +389,26 @@ public class ReparacionesBL extends BaseBL {
 
         public ReparacionesCBO() {
         }
-
+//constructor de la clase ReparacionesCBO
         public ReparacionesCBO(Integer id, String descripcion_reparacion, Double valor) {
             this.id = id;
             this.descripcion_reparacion = descripcion_reparacion;
             this.valor = valor;
         }
-
+//metodos Publicos de la clase ReparacionesCBO
+        
+        /**
+     * Devuelve el Id de ReparacionesCBO
+     * @return Id de ReparacionesCBO
+     */
         public Integer getId() {
             return id;
         }
-
         public void setId(Integer id) {
             this.id = id;
         }
-
+/**
+     * Devuelve el la descripcion de Reparaciones*/
         public String getDescripcion_reparacion() {
             return descripcion_reparacion;
         }
@@ -414,11 +416,18 @@ public class ReparacionesBL extends BaseBL {
         public void setDescripcion_reparacion(String descripcion_reparacion) {
             this.descripcion_reparacion = descripcion_reparacion;
         }
-
+/**
+     * Devuelve Valor de la reparación
+     * @return Valor 
+     */
+        
         public Double getValor() {
             return valor;
         }
-
+/**
+     * Modifica la cantidad del valor de la reparación
+     * @param Valor
+     */
         public void setValor(Double valor) {
             this.valor = valor;
         }
@@ -429,7 +438,6 @@ public class ReparacionesBL extends BaseBL {
         }
 
     }
-
     /**
      * Llena los datos del combobox de reparaciones
      *

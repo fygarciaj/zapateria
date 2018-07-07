@@ -38,7 +38,7 @@ public class TicketsBL extends BaseBL {
 
         cxn = new ConexionDB();
 
-        // Si no existe la tabla ClientesBL Crearla Automaticamente
+        // establecemos el condicional, si no existe la tabla TicketsBL Crearla Automaticamente
         if (!cxn.tableExist(tableName)) {
             Statement stmt = null;
 

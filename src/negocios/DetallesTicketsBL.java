@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ *se establece la clase 
  * @author REBOOTSYSTEM
  */
 public class DetallesTicketsBL extends BaseBL {
@@ -97,7 +97,7 @@ public class DetallesTicketsBL extends BaseBL {
 
             stmt.executeUpdate();
 
-
+//muestra en pantalla un mensaje con los 
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, e.getClass().getName() + ": " + e.getMessage());
             LOG.log(Level.SEVERE, null, e);

@@ -13,6 +13,7 @@ public class DetalleTickets {
     private Integer cantidad;
     private Double valor_unitario;
     private Double valor_total;
+   
 //constructor de la clase DetalleTickets
     public DetalleTickets(Integer row, String reparacion_descripcion, Integer cantidad, Double valor_unitario) {
         this.row = row;
